@@ -37,17 +37,19 @@ https://en.wikipedia.org/wiki/Multitier_architecture
 ### Running the project
     mvn spring-boot:run
 
+# Building docker image
+    mvn clean package dockerfile:build
+
 # Technologies 
 * Spring Framework 5
 * Spring Boot 2.5.5
-* Spring Native (For building native images with GraalVM)
 * Hibernate
 * Project Lombok
 * Okta (OIDC)
 * MYSQL
 * Docker
 * Mapstruct (To map entities to Data Transfer Objects)
-* native-image-maven-plugin
+* Spotify Maven Dockerfile Plugin
 
 ## Prerequisites
 * Java 17
