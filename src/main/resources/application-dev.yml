@@ -15,3 +15,15 @@ spring:
     username: 08e0e843a8251e
     password: 60e3d00f1c8e83
     protocol: smtp
+
+okta:
+  oauth2:
+    issuer: ${OKTA_ISSUER_URI}
+    client-id: ${OKTA_CLIENT_ID}
+    client-secret: ${OKTA_CLIENT_SECRET}
+    scopes:
+      - openid
+      - profile
+      - email
+    audience: api://default
+    groups-claim: roles
