@@ -45,6 +45,8 @@ public class Restaurant {
   private final Set<OpeningTimes> openingTimes = new HashSet<>();
   @ManyToMany(fetch = FetchType.LAZY)
   private final Set<Category> categories = new HashSet<>();
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private final Set<MenuItem> menuItems = new HashSet<>();
 
   /**
    * Enum representing the average cost of a restaurant.
