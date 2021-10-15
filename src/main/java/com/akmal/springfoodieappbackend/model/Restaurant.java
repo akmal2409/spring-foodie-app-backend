@@ -12,6 +12,12 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class represents the data model of a restaurant.
+ * @author akmal
+ * @version 1.0
+ * @since 1.0
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
@@ -40,6 +46,12 @@ public class Restaurant {
   @ManyToMany(fetch = FetchType.LAZY)
   private final Set<Category> categories = new HashSet<>();
 
+  /**
+   * Enum representing the average cost of a restaurant.
+   * @author akmal
+   * @version 1.0
+   * @since 1.0
+   */
   public enum PriceRange {
     AFFORDABLE, AVERAGE, EXPENSIVE
   }
