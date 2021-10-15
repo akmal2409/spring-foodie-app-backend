@@ -16,6 +16,8 @@ import java.util.Set;
  * then there is no limit in selecting the options from the set.
  * If set is {@code exclusive} then only one option can be selected, else multiple.
  * @author Akmal ALikhujaev
+ * @created 15/10/2021 - 9:21 PM
+ * @project Spring Foodie App Backend
  * @version 1.0
  * @since 1.0
  */

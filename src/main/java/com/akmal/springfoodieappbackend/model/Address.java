@@ -15,6 +15,8 @@ import javax.validation.constraints.Size;
  * flatten the object and include it as columns into the embedded object.
  * Fields that are not validated are optional.
  * @author Akmal ALikhujaev
+ * @created 15/10/2021 - 9:21 PM
+ * @project Spring Foodie App Backend
  * @version 1.0
  * @since 1.0
  */

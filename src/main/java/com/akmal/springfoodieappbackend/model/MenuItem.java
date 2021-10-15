@@ -15,6 +15,8 @@ import java.util.Set;
  * Class represents a single Menu Item which contains available for the
  * selection option sets.
  * @author Akmal ALikhujaev
+ * @created 15/10/2021 - 9:21 PM
+ * @project Spring Foodie App Backend
  * @version 1.0
  * @since 1.0
  */

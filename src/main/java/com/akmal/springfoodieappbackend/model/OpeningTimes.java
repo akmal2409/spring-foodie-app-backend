@@ -11,7 +11,9 @@ import java.time.LocalTime;
 /**
  * Class represents opening times of a facility.
  * Day is an integer from 1 to 7 where 1 is Sunday.
- * @author akmal
+ * @author Akmal Alikhujaev
+ * @created 15/10/2021 - 9:21 PM
+ * @project Spring Foodie App Backend
  * @version 1.0
  * @since 1.0
  */

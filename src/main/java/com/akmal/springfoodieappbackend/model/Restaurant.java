@@ -14,7 +14,9 @@ import java.util.Set;
 
 /**
  * Class represents the data model of a restaurant.
- * @author akmal
+ * @author Akmal ALikhujaev
+ * @created 15/10/2021 - 9:21 PM
+ * @project Spring Foodie App Backend
  * @version 1.0
  * @since 1.0
  */
