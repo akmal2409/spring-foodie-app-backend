@@ -11,6 +11,15 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * Class represents restaurant's category.
+ * A restaurant may relate to several categories, whereas
+ * one category may relate to multiple restaurants, hence,
+ * {@code @ManyToMany} was used.
+ * @author Akmal ALikhujaev
+ * @version 1.0
+ * @since 1.0
+ */
 @Entity
 @Getter
 @AllArgsConstructor
