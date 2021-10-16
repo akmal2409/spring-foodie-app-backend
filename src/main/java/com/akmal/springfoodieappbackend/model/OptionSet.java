@@ -27,17 +27,20 @@ import java.util.Set;
 @NoArgsConstructor(force = true)
 public class OptionSet {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
   @NotBlank(message = "Name is required")
   private final String name;
   @Min(value = 0)
-  private final int order;
+  private final int orderPosition;
   @Min(value = -1, message = "Maximum option selected can be ether -1 or greater")
   private final int maximumOptionsSelected;
   private final boolean exclusive;
   private final boolean required;
   @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "option_set_options",
+    joinColumns = @JoinColumn(name = "option_set_id"),
+    inverseJoinColumns = @JoinColumn(name = "option_id"))
   private final Set<Option> options = new HashSet<>();
   @Enumerated(EnumType.STRING)
   private final OptionSetType optionSetType;
