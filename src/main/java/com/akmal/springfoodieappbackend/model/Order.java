@@ -8,6 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Akmal Alikhujaev
@@ -20,9 +22,10 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Table(name = "Orders")
 public class Order {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
   private final String userId;
   @CreationTimestamp
@@ -31,6 +34,10 @@ public class Order {
   private final LocalDateTime updatedOn;
   @Enumerated(EnumType.STRING)
   private final OrderStatus orderStatus;
+  @Embedded
+  private final Address address;
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
+  private final Set<OrderLineItem> orderLineItems = new HashSet<>();
 
   public enum OrderStatus {
     AWAITING_PAYMENT, PROCESSING, PREPARING, DELIVERING, DELIVERED, CANCELED, REJECTED;
