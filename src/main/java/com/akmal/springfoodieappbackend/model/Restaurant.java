@@ -14,10 +14,11 @@ import java.util.Set;
 
 /**
  * Class represents the data model of a restaurant.
+ *
  * @author Akmal ALikhujaev
+ * @version 1.0
  * @created 15/10/2021 - 9:21 PM
  * @project Spring Foodie App Backend
- * @version 1.0
  * @since 1.0
  */
 @Getter
@@ -25,9 +26,6 @@ import java.util.Set;
 @NoArgsConstructor(force = true)
 @Entity
 public class Restaurant {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
   @NotBlank(message = "Name is required")
   private final String name;
   @NotBlank(message = "Phone is required")
@@ -42,16 +40,19 @@ public class Restaurant {
   @DecimalMin(value = "0.0")
   @DecimalMax(value = "5.0")
   private final double rating;
-
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant")
   private final Set<OpeningTimes> openingTimes = new HashSet<>();
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "restaurants")
   private final Set<Category> categories = new HashSet<>();
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant")
   private final Set<MenuItem> menuItems = new HashSet<>();
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
 
   /**
    * Enum representing the average cost of a restaurant.
+   *
    * @author akmal
    * @version 1.0
    * @since 1.0
