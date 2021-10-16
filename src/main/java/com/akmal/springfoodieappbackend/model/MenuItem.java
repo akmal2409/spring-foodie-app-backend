@@ -26,7 +26,7 @@ import java.util.Set;
 @NoArgsConstructor(force = true)
 public class MenuItem {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
   @NotBlank(message = "Name is required")
   private final String name;
@@ -34,4 +34,6 @@ public class MenuItem {
   private final BigDecimal basePrice;
   @ManyToMany(fetch = FetchType.LAZY)
   private final Set<OptionSet> optionSet = new HashSet<>();
+  @ManyToOne(fetch = FetchType.LAZY)
+  private final Restaurant restaurant;
 }
