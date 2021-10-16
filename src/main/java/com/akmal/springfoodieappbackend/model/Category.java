@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class represents restaurant's category.
@@ -28,7 +27,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor(force = true)
 public class Category {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
   @NotBlank(message = "Name is required")
   @Size(min = 3)
@@ -36,4 +35,6 @@ public class Category {
   @NotBlank(message = "Description is required")
   @Size(min = 5)
   private String description;
+  @ManyToMany(fetch = FetchType.LAZY)
+  private final Set<Restaurant> restaurants = new HashSet<>();
 }
