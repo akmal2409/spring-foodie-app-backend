@@ -9,7 +9,9 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,6 +28,9 @@ import java.util.Set;
 @NoArgsConstructor(force = true)
 @Entity
 public class Restaurant {
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
   @NotBlank(message = "Name is required")
   private final String name;
   @NotBlank(message = "Phone is required")
@@ -45,10 +50,7 @@ public class Restaurant {
   @ManyToMany(fetch = FetchType.LAZY, mappedBy = "restaurants")
   private final Set<Category> categories = new HashSet<>();
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant")
-  private final Set<MenuItem> menuItems = new HashSet<>();
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private final List<Menu> menus = new ArrayList<>();
 
   /**
    * Enum representing the average cost of a restaurant.

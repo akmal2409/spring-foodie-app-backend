@@ -35,5 +35,5 @@ public class MenuItem {
   @ManyToMany(fetch = FetchType.LAZY)
   private final Set<OptionSet> optionSet = new HashSet<>();
   @ManyToOne(fetch = FetchType.LAZY)
-  private final Restaurant restaurant;
+  private final Menu menu;
 }
