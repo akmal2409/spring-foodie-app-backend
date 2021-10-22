@@ -11,17 +11,17 @@ import javax.persistence.ManyToOne;
 
 /**
  * @author Akmal Alikhujaev
- * @created 16/10/2021 - 8:44 AM
- * @project Spring Foodie App Backend
  * @version 1.0
+ * @created 22/10/2021 - 8:05 PM
+ * @project Spring Foodie App Backend
  * @since 1.0
  */
-@Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-public final class OrderLineItem extends AbstractItem {
+@Entity
+public final class CartItem extends AbstractItem {
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "order_id")
-  private final Order order;
+  @JoinColumn(name = "cart_id")
+  private final Cart cart;
 }
