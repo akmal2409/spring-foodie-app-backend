@@ -23,7 +23,6 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-@Entity
 @MappedSuperclass
 public abstract sealed class AbstractItem permits OrderLineItem, CartItem {
   @Id
