@@ -21,7 +21,7 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
-public class OpeningTimes {
+public class OpeningTime {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
