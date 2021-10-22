@@ -46,7 +46,7 @@ public class Restaurant {
   @DecimalMax(value = "5.0")
   private final double rating;
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant")
-  private final Set<OpeningTimes> openingTimes = new HashSet<>();
+  private final Set<OpeningTime> openingTimes = new HashSet<>();
   @ManyToMany(fetch = FetchType.LAZY, mappedBy = "restaurants")
   private final Set<Category> categories = new HashSet<>();
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant")
