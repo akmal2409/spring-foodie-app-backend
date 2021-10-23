@@ -9,10 +9,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Class represents the data model of a restaurant.
@@ -60,6 +57,23 @@ public class Restaurant {
    * @since 1.0
    */
   public enum PriceRange {
-    AFFORDABLE, AVERAGE, EXPENSIVE
+    AFFORDABLE("Affordable"), AVERAGE("Average"), EXPENSIVE("Expensive");
+
+    private String type;
+
+    PriceRange(String type) {
+      this.type = type;
+    }
+
+    public static PriceRange from(String type) {
+      return Arrays.stream(PriceRange.values())
+              .filter(code -> code.type.equals(type))
+              .findFirst()
+              .orElse(null);
+    }
+
+    public String getType() {
+      return this.type;
+    }
   }
 }
