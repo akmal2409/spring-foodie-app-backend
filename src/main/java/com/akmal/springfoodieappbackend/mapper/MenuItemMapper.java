@@ -41,7 +41,7 @@ public abstract class MenuItemMapper {
             .orElse(List.of())
             .stream()
             .map(this.optionSetMapper::toDto)
-            .collect(Collectors.toList());
+            .toList();
   }
 
   protected List<OptionSet> mapToOptionSets(List<OptionSetDto> optionSets) {
@@ -49,6 +49,6 @@ public abstract class MenuItemMapper {
             .orElse(List.of())
             .stream()
             .map(this.optionSetMapper::from)
-            .collect(Collectors.toList());
+            .toList();
   }
 }

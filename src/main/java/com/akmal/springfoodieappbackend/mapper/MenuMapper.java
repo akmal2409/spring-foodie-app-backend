@@ -55,7 +55,7 @@ public abstract class MenuMapper {
             .orElse(List.of())
             .stream()
             .map(this.menuItemMapper::toDto)
-            .collect(Collectors.toList());
+            .toList();
   }
 
   protected List<MenuItem> mapToMenuItems(List<MenuItemDto> menuItems) {
@@ -63,6 +63,6 @@ public abstract class MenuMapper {
             .orElse(List.of())
             .stream()
             .map(this.menuItemMapper::from)
-            .collect(Collectors.toList());
+            .toList();
   }
 }

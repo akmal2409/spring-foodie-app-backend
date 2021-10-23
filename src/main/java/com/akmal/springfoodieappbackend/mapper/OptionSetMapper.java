@@ -45,7 +45,7 @@ public abstract class OptionSetMapper {
             .orElse(List.of())
             .stream()
             .map(this.optionMapper::toDto)
-            .collect(Collectors.toList());
+            .toList();
   }
 
   protected List<Option> mapToOptions(List<OptionDto> options) {
@@ -53,6 +53,6 @@ public abstract class OptionSetMapper {
             .orElse(List.of())
             .stream()
             .map(this.optionMapper::from)
-            .collect(Collectors.toList());
+            .toList();
   }
 }

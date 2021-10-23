@@ -51,7 +51,7 @@ public abstract class RestaurantMapper {
             .orElse(List.of())
             .stream()
             .map(this.openingTimeMapper::toDto)
-            .collect(Collectors.toList());
+            .toList();
   }
 
   protected List<OpeningTime> mapToOpeningTimes(List<OpeningTimeDto> openingTimes) {
@@ -59,7 +59,7 @@ public abstract class RestaurantMapper {
             .orElse(List.of())
             .stream()
             .map(this.openingTimeMapper::from)
-            .collect(Collectors.toList());
+            .toList();
   }
 
   protected List<CategoryDto> mapCategoriesToDto(List<Category> categories) {
@@ -67,7 +67,7 @@ public abstract class RestaurantMapper {
             .orElse(List.of())
             .stream()
             .map(this.categoryMapper::toDto)
-            .collect(Collectors.toList());
+            .toList();
   }
 
   protected List<Category> mapToCategories(List<CategoryDto> categories) {
@@ -75,7 +75,7 @@ public abstract class RestaurantMapper {
             .orElse(List.of())
             .stream()
             .map(this.categoryMapper::from)
-            .collect(Collectors.toList());
+            .toList();
   }
 
   protected List<MenuDto> mapMenusToDto(List<Menu> menus) {
@@ -83,7 +83,7 @@ public abstract class RestaurantMapper {
             .orElse(List.of())
             .stream()
             .map(this.menuMapper::toDto)
-            .collect(Collectors.toList());
+            .toList();
   }
 
   protected List<Menu> mapToMenus(List<MenuDto> menus) {
@@ -91,7 +91,7 @@ public abstract class RestaurantMapper {
             .orElse(List.of())
             .stream()
             .map(this.menuMapper::from)
-            .collect(Collectors.toList());
+            .toList();
   }
 
 
