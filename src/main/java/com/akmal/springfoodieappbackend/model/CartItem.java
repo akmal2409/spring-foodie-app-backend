@@ -3,6 +3,7 @@ package com.akmal.springfoodieappbackend.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +21,7 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity
+@SuperBuilder
 public final class CartItem extends AbstractItem {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cart_id")

@@ -1,9 +1,10 @@
 package com.akmal.springfoodieappbackend.dto;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * DTO class implemented using Java Record Classes representing OptionSet entity
+ *
  * @author Akmal Alikhujaev
  * @version 1.0
  * @created 22/10/2021 - 8:59 PM
@@ -17,5 +18,5 @@ public record OptionSetDto(long id,
                            boolean exclusive,
                            boolean required,
                            String optionSetType,
-                           Set<OptionDto> options) {
+                           List<OptionDto> options) {
 }

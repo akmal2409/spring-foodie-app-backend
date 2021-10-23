@@ -1,11 +1,11 @@
 package com.akmal.springfoodieappbackend.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,11 +19,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity
+@Builder
 public class Cart {
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart")
+  private final List<CartItem> cartItems;
+  private final String userId;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart")
-  private final List<CartItem> cartItems = new ArrayList<>();
-  private final String userId;
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * DTO class implemented using Java Record Classes representing Menu entity
+ *
  * @author Akmal Alikhujaev
  * @version 1.0
  * @created 22/10/2021 - 8:56 PM
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public record MenuDto(long id,
                       String name,
-                      CategoryDto categoryDto,
+                      CategoryDto category,
                       long restaurantId,
                       List<MenuItemDto> menuItems) {
 }

@@ -1,6 +1,7 @@
 package com.akmal.springfoodieappbackend.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,16 +17,18 @@ import javax.validation.constraints.Size;
  * A restaurant may relate to several categories, whereas
  * one category may relate to multiple restaurants, hence,
  * {@code @ManyToMany} was used.
+ *
  * @author Akmal ALikhujaev
+ * @version 1.0
  * @created 15/10/2021 - 9:21 PM
  * @project Spring Foodie App Backend
- * @version 1.0
  * @since 1.0
  */
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Builder
 public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

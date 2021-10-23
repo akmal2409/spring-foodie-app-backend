@@ -1,10 +1,11 @@
 package com.akmal.springfoodieappbackend.dto;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 /**
  * DTO class implemented using Java Record Classes representing MenuItem entity
+ *
  * @author Akmal Alikhujaev
  * @version 1.0
  * @created 22/10/2021 - 8:58 PM
@@ -15,5 +16,5 @@ public record MenuItemDto(long id,
                           String name,
                           BigDecimal basePrice,
                           long menuId,
-                          Set<OptionSetDto> optionSets) {
+                          List<OptionSetDto> optionSets) {
 }

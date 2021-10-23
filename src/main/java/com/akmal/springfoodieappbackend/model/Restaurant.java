@@ -1,6 +1,7 @@
 package com.akmal.springfoodieappbackend.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,8 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Class represents the data model of a restaurant.
@@ -24,10 +26,8 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity
+@Builder
 public class Restaurant {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
   @NotBlank(message = "Name is required")
   private final String name;
   @NotBlank(message = "Phone is required")
@@ -43,11 +43,14 @@ public class Restaurant {
   @DecimalMax(value = "5.0")
   private final double rating;
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant")
-  private final Set<OpeningTime> openingTimes = new HashSet<>();
-  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "restaurants")
-  private final Set<Category> categories = new HashSet<>();
+  private final List<OpeningTime> openingTimes;
+  @ManyToMany(fetch = FetchType.LAZY)
+  private final List<Category> categories;
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant")
-  private final List<Menu> menus = new ArrayList<>();
+  private final List<Menu> menus;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
 
   /**
    * Enum representing the average cost of a restaurant.
@@ -59,7 +62,7 @@ public class Restaurant {
   public enum PriceRange {
     AFFORDABLE("Affordable"), AVERAGE("Average"), EXPENSIVE("Expensive");
 
-    private String type;
+    private final String type;
 
     PriceRange(String type) {
       this.type = type;

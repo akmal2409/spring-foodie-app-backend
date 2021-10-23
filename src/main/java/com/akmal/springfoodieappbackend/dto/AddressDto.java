@@ -2,6 +2,7 @@ package com.akmal.springfoodieappbackend.dto;
 
 /**
  * DTO class implemented using Java Record Classes representing Address entity
+ *
  * @author Akmal Alikhujaev
  * @version 1.0
  * @created 22/10/2021 - 8:46 PM
@@ -14,5 +15,5 @@ public record AddressDto(String country,
                          String street,
                          String addition,
                          String apartmentNumber,
-                         LocationDto locationDto) {
+                         LocationDto location) {
 }

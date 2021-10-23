@@ -1,6 +1,7 @@
 package com.akmal.springfoodieappbackend.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,16 +16,18 @@ import javax.validation.constraints.Size;
  * The class is embeddable and therefore, the Spring Data JPA will
  * flatten the object and include it as columns into the embedded object.
  * Fields that are not validated are optional.
+ *
  * @author Akmal ALikhujaev
+ * @version 1.0
  * @created 15/10/2021 - 9:21 PM
  * @project Spring Foodie App Backend
- * @version 1.0
  * @since 1.0
  */
 @Getter
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Embeddable
+@Builder
 public class Address {
   private final String country;
   @NotBlank
@@ -43,6 +46,7 @@ public class Address {
   /**
    * Inner static class representing location object, needed
    * for geospatial queries.
+   *
    * @author Akmal Alikhujaev
    * @version 1.0
    * @since 1.0
@@ -51,6 +55,7 @@ public class Address {
   @NoArgsConstructor(force = true)
   @AllArgsConstructor
   @Embeddable
+  @Builder
   public static class Location {
     private final double lat;
     private final double lon;
