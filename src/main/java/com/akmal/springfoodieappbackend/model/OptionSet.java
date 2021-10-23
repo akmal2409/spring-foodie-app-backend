@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,6 +47,23 @@ public class OptionSet {
   private final OptionSetType optionSetType;
 
   public enum OptionSetType {
-    BEVERAGE, TOPPING, EXTRA, SAUCE, ICE_CREAM;
+    BEVERAGE("Beverage"), TOPPING("Topping"), EXTRA("Extra"), SAUCE("Sauce"), DESSERT("Dessert");
+
+    private final String type;
+
+    OptionSetType(String type) {
+      this.type = type;
+    }
+
+    public static OptionSetType from(String type) {
+      return Arrays.stream(OptionSetType.values())
+              .filter(code -> code.type.equals(type))
+              .findFirst()
+              .orElse(null);
+    }
+
+    public String getType() {
+      return this.type;
+    }
   }
 }
