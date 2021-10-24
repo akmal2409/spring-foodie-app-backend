@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
+ * The class encapsulates the behaviour when the entity has not been found.
+ * The exception, therefore, must be intercepted by the global controller advice.
  * @author Akmal Alikhujaev
  * @version 1.0
  * @created 24/10/2021 - 9:22 AM
