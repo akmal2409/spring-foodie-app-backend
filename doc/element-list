@@ -1,0 +1,9 @@
+com.akmal.springfoodieappbackend
+com.akmal.springfoodieappbackend.config
+com.akmal.springfoodieappbackend.controller
+com.akmal.springfoodieappbackend.dto
+com.akmal.springfoodieappbackend.exception
+com.akmal.springfoodieappbackend.mapper
+com.akmal.springfoodieappbackend.model
+com.akmal.springfoodieappbackend.repository
+com.akmal.springfoodieappbackend.service
