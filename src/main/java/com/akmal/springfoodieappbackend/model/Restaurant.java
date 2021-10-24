@@ -42,11 +42,11 @@ public class Restaurant {
   @DecimalMin(value = "0.0")
   @DecimalMax(value = "5.0")
   private final double rating;
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant")
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
   private final List<OpeningTime> openingTimes;
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private final List<Category> categories;
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant")
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
   private final List<Menu> menus;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

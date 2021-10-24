@@ -21,7 +21,7 @@ import java.util.List;
 @Entity
 @Builder
 public class Cart {
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart", cascade = CascadeType.ALL)
   private final List<CartItem> cartItems;
   private final String userId;
   @Id

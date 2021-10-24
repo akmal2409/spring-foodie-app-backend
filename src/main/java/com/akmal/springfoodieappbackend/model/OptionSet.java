@@ -37,7 +37,7 @@ public class OptionSet {
   private final int maximumOptionsSelected;
   private final boolean exclusive;
   private final boolean required;
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.REFRESH})
   @JoinTable(name = "option_set_options",
           joinColumns = @JoinColumn(name = "option_set_id"),
           inverseJoinColumns = @JoinColumn(name = "option_id"))
