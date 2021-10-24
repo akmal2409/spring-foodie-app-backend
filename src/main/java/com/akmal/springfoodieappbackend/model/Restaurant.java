@@ -1,9 +1,7 @@
 package com.akmal.springfoodieappbackend.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;
@@ -26,7 +24,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity
-@Builder
+@Builder(toBuilder = true)
+@With
 public class Restaurant {
   @NotBlank(message = "Name is required")
   private final String name;
@@ -44,7 +43,7 @@ public class Restaurant {
   private final double rating;
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
   private final List<OpeningTime> openingTimes;
-  @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
   private final List<Category> categories;
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
   private final List<Menu> menus;

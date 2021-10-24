@@ -1,9 +1,6 @@
 package com.akmal.springfoodieappbackend.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -23,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder
+@With
 public class Menu {
   @NotBlank(message = "Name is required")
   private final String name;
