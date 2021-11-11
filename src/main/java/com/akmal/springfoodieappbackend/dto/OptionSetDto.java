@@ -18,5 +18,6 @@ public record OptionSetDto(long id,
                            boolean exclusive,
                            boolean required,
                            String optionSetType,
+                           long menuItemId,
                            List<OptionDto> options) {
 }

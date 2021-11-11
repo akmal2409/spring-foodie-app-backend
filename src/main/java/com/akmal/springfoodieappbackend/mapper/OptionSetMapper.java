@@ -29,10 +29,12 @@ public abstract class OptionSetMapper {
 
   @Mapping(target = "optionSetType", source = "optionSetType.type")
   @Mapping(target = "options", expression = "java(mapOptionsToDto(optionSet.getOptions()))")
+  @Mapping(target = "menuItemId", source = "menuItem.id")
   public abstract OptionSetDto toDto(OptionSet optionSet);
 
   @Mapping(target = "optionSetType", expression = "java(mapOptionSetType(optionSetDto.optionSetType()))")
   @Mapping(target = "options", expression = "java(mapToOptions(optionSetDto.options()))")
+  @Mapping(target = "menuItem", ignore = true)
   public abstract OptionSet from(OptionSetDto optionSetDto);
 
   protected OptionSet.OptionSetType mapOptionSetType(String type) {

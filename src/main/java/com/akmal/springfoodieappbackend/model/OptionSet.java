@@ -12,9 +12,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class represents a set of options that can be added to the menu item.
- * One important thing to know is that if {@code maximumOptionsSelected} is -1
- * then there is no limit in selecting the options from the set.
+ * <h1>OptionSet</h1>
+ * Class represents a set of options that can be added to the menu item. <br/>
+ * One important thing to know is that if {@code maximumOptionsSelected} is -1 <br/>
+ * then there is no limit in selecting the options from the set. <br/>
  * If set is {@code exclusive} then only one option can be selected, else multiple.
  *
  * @author Akmal ALikhujaev
@@ -37,11 +38,13 @@ public class OptionSet {
   private final int maximumOptionsSelected;
   private final boolean exclusive;
   private final boolean required;
-  @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+  @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
   @JoinTable(name = "option_set_options",
           joinColumns = @JoinColumn(name = "option_set_id"),
           inverseJoinColumns = @JoinColumn(name = "option_id"))
   private final List<Option> options;
+  @ManyToOne(fetch = FetchType.LAZY)
+  private final MenuItem menuItem;
   @Enumerated(EnumType.STRING)
   private final OptionSetType optionSetType;
   @Id
@@ -49,7 +52,7 @@ public class OptionSet {
   private long id;
 
   public enum OptionSetType {
-    BEVERAGE("Beverage"), TOPPING("Topping"), EXTRA("Extra"), SAUCE("Sauce"), DESSERT("Dessert");
+    BEVERAGE("Beverage"), TOPPING("Topping"), EXTRA("Extra"), SAUCE("Sauce"), DESSERT("Dessert"), SIZE("SIZE");
 
     private final String type;
 
