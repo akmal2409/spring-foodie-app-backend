@@ -1,14 +1,22 @@
 package com.akmal.springfoodieappbackend.controller;
 
 import com.akmal.springfoodieappbackend.dto.RestaurantDto;
+import com.akmal.springfoodieappbackend.service.RestaurantService;
+import com.akmal.springfoodieappbackend.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+import static com.akmal.springfoodieappbackend.shared.http.ResponseEntityConverter.ok;
 
 /**
  * The RestController class containing methods of different HTTP request type handlers.
- * The data returned is strictly JSON/
+ * The data returned is strictly JSON.
+ * The class is using strictly constructor bean injection.
+ *
  * @author Akmal Alikhujaev
  * @version 1.0
  * @created 22/10/2021 - 8:42 PM
@@ -17,11 +25,25 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(RestaurantController.BASE_URL)
+@RequiredArgsConstructor
 public class RestaurantController {
   public static final String BASE_URL = "/api/restaurants";
+  private final RestaurantService restaurantService;
+  private final UserService userService;
 
   @GetMapping
-  public Page<RestaurantDto> findAll() {
-    return Page.empty();
+  public ResponseEntity<Page<RestaurantDto>> findAll(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "10") int size) {
+    return ok(this.restaurantService.findAll(page, size));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<RestaurantDto> findById(@PathVariable long id) {
+    return ok(this.restaurantService.findById(id));
+  }
+
+  @PostMapping
+  public RestaurantDto save(@RequestBody @Valid RestaurantDto restaurantDto) {
+    return this.restaurantService.save(restaurantDto);
   }
 }

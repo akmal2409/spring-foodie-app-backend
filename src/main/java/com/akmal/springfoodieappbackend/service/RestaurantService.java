@@ -59,4 +59,11 @@ public class RestaurantService {
             .map(this.restaurantMapper::toDto)
             .orElse(null);
   }
+
+  @Transactional
+  public RestaurantDto save(RestaurantDto restaurantDto) {
+    var restaurant = this.restaurantMapper.from(restaurantDto);
+
+    return null;
+  }
 }
