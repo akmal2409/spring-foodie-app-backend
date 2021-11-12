@@ -18,6 +18,8 @@ https://en.wikipedia.org/wiki/Multitier_architecture
 * Implement CI/CD
 * Integration with AWS S3 for image upload
 * Deploy it on AWS in a managed Kubernetes cluster as set of microservices
+* Add ElasticSearch
+* Integrate with TomTom API to query delivery places
 
 # Clone repository
 #### SSH
