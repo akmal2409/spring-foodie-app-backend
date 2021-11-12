@@ -25,7 +25,7 @@ import java.util.List;
 @Builder
 public class Cart {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart", cascade = CascadeType.ALL)
-  private final List<CartItem> cartItems = new ArrayList<>();
+  private List<CartItem> cartItems = new ArrayList<>();
   private final String userId;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

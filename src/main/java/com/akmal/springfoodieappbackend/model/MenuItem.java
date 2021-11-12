@@ -31,7 +31,7 @@ public class MenuItem {
   @DecimalMin(value = "0.0", message = "Base price must be greater than 0")
   private final BigDecimal basePrice;
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "menuItem")
-  private final List<OptionSet> optionSets = new ArrayList<>();
+  private List<OptionSet> optionSets = new ArrayList<>();
   @ManyToOne(fetch = FetchType.LAZY)
   private final Menu menu;
   @Id

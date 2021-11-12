@@ -29,7 +29,7 @@ public class Menu {
   @JoinColumn(name = "category_id", referencedColumnName = "id")
   private final Category category;
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "menu")
-  private final List<MenuItem> menuItems = new ArrayList<>();
+  private List<MenuItem> menuItems = new ArrayList<>();
   @ManyToOne(fetch = FetchType.LAZY)
   private final Restaurant restaurant;
   @Id

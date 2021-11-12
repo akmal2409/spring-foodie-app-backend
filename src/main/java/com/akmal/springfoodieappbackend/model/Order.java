@@ -40,7 +40,7 @@ public class Order {
   @Embedded
   private final Address address;
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
-  private final List<OrderLineItem> orderLineItems = new ArrayList<>();
+  private List<OrderLineItem> orderLineItems = new ArrayList<>();
   private final BigDecimal totalPrice;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
