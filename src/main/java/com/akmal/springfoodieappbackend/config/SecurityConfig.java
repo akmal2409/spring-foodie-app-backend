@@ -15,8 +15,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests(authorizeRequests ->
                     authorizeRequests
-                            .mvcMatchers(HttpMethod.GET, RestaurantController.BASE_URL, RestaurantController.BASE_URL + "/{id}")
+                            .antMatchers(HttpMethod.GET, RestaurantController.BASE_URL, RestaurantController.BASE_URL + "/{id}")
                             .permitAll()
+                            .antMatchers(HttpMethod.POST, RestaurantController.BASE_URL).hasAnyRole("RESTAURANT", "ADMIN")
+                            .antMatchers(HttpMethod.PUT, RestaurantController.BASE_URL + "/{id}").hasAnyRole("RESTAURANT", "ADMIN")
                             .anyRequest().authenticated())
             .oauth2ResourceServer().jwt();
   }
