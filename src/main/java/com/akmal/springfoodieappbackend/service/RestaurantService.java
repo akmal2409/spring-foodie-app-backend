@@ -100,7 +100,8 @@ public class RestaurantService {
     }
 
     final var updatedRestaurant = this.restaurantMapper.from(restaurantDto)
-            .withId(existingRestaurant.getId());
+            .withId(existingRestaurant.getId())
+            .withOwnerId(currentUser.getUserId());
 
     return this.restaurantMapper.toDto(this.restaurantRepository.save(updatedRestaurant));
   }
