@@ -1,13 +1,11 @@
 package com.akmal.springfoodieappbackend.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,6 +27,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder
+@With
 public class OptionSet {
   @NotBlank(message = "Name is required")
   private final String name;
@@ -38,11 +37,11 @@ public class OptionSet {
   private final int maximumOptionsSelected;
   private final boolean exclusive;
   private final boolean required;
-  @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+  @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
   @JoinTable(name = "option_set_options",
           joinColumns = @JoinColumn(name = "option_set_id"),
           inverseJoinColumns = @JoinColumn(name = "option_id"))
-  private final List<Option> options;
+  private final List<Option> options = new ArrayList<>();
   @ManyToOne(fetch = FetchType.LAZY)
   private final MenuItem menuItem;
   @Enumerated(EnumType.STRING)
