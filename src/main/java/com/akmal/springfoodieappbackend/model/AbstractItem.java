@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public abstract sealed class AbstractItem permits OrderLineItem, CartItem {
   @JoinColumn(name = "menu_item_id")
   private final MenuItem menuItem;
   @ManyToMany(fetch = FetchType.LAZY)
-  private final List<Option> selectedOptions;
+  private final List<Option> selectedOptions = new ArrayList<>();
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
