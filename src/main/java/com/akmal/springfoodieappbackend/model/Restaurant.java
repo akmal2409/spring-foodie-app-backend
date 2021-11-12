@@ -8,6 +8,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,17 +37,18 @@ public class Restaurant {
   private final int averageDeliveryTime;
   private final BigDecimal deliveryCost;
   private final double minimumOrderValue;
+  private final String userId;
   @Enumerated(value = EnumType.STRING)
   private final PriceRange priceRange;
   @DecimalMin(value = "0.0")
   @DecimalMax(value = "5.0")
   private final double rating;
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
-  private final List<OpeningTime> openingTimes;
+  private final List<OpeningTime> openingTimes = new ArrayList<>();
   @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
-  private final List<Category> categories;
+  private final List<Category> categories = new ArrayList<>();
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
-  private final List<Menu> menus;
+  private final List<Menu> menus = new ArrayList<>();
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
@@ -77,5 +79,20 @@ public class Restaurant {
     public String getType() {
       return this.type;
     }
+  }
+
+  /**
+   * <strong>addOpeningTime(OpeningTime openingTime)</strong> is a helper method that enables the client
+   * to synchronize the both sides of the @OneToMany relationship.
+   * The owning side of the relationship is the {@link OpeningTime} class
+   * and therefore, it should manage the persistence of the restaurant by itself.
+   * @param openingTime - object representing opening time of a restaurant
+   * @return immutable copy of the {@link OpeningTime} instance with the restaurant reference
+   */
+  public OpeningTime addOpeningTime(OpeningTime openingTime) {
+    final var openingTimeWithRestaurant = openingTime.withRestaurant(this);
+    this.openingTimes.add(openingTimeWithRestaurant);
+
+    return openingTimeWithRestaurant;
   }
 }
