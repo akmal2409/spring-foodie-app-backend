@@ -37,7 +37,7 @@ public class Restaurant {
   private final int averageDeliveryTime;
   private final BigDecimal deliveryCost;
   private final double minimumOrderValue;
-  private final String userId;
+  private final String ownerId;
   @Enumerated(value = EnumType.STRING)
   private final PriceRange priceRange;
   @DecimalMin(value = "0.0")
