@@ -1,7 +1,6 @@
 package com.akmal.springfoodieappbackend.service;
 
 import com.akmal.springfoodieappbackend.dto.RestaurantDto;
-import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import com.akmal.springfoodieappbackend.mapper.RestaurantMapper;
 import com.akmal.springfoodieappbackend.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RestaurantService {
   private final RestaurantRepository restaurantRepository;
   private final RestaurantMapper restaurantMapper;
+  private final UserService userService;
 
   /**
    * The method is responsible for finding all restaurants with specified
@@ -49,6 +49,7 @@ public class RestaurantService {
    * If the value is not found it will return null. Otherwise it will map
    * {@link com.akmal.springfoodieappbackend.model.Restaurant} to a DTO object
    * {@link RestaurantDto}
+   *
    * @param id - of a Restaurant Entity
    * @return restaurantDTO - {@link RestaurantDto}
    */
@@ -62,8 +63,12 @@ public class RestaurantService {
 
   @Transactional
   public RestaurantDto save(RestaurantDto restaurantDto) {
-    var restaurant = this.restaurantMapper.from(restaurantDto);
+    final var currentUser = this.userService.getCurrentUser();
 
-    return null;
+    final var restaurant = this.restaurantMapper.from(restaurantDto)
+            .withOwnerId(currentUser.getUserId());
+
+    final var savedRestaurant = this.restaurantRepository.save(restaurant);
+    return this.restaurantMapper.toDto(savedRestaurant);
   }
 }
