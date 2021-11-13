@@ -76,7 +76,7 @@ public class RestaurantService {
     final var currentUser = this.userService.getCurrentUser();
 
     final var restaurant = this.restaurantMapper.from(restaurantDto)
-            .withOwnerId(currentUser.getUserId());
+            .withOwnerId(currentUser.userId());
 
     final var savedRestaurant = this.restaurantRepository.save(restaurant);
     return this.restaurantMapper.toDto(savedRestaurant);
@@ -98,13 +98,13 @@ public class RestaurantService {
             .orElseThrow(() -> new NotFoundException(String.format("Restaurant entity with ID %S was not found", id)));
     final var currentUser = this.userService.getCurrentUser();
 
-    if (!currentUser.getUserId().equals(existingRestaurant.getOwnerId())) {
+    if (!currentUser.userId().equals(existingRestaurant.getOwnerId())) {
       throw new InsufficientRightsException("You must be the owner of the resource in order to modify it");
     }
 
     final var updatedRestaurant = this.restaurantMapper.from(restaurantDto)
             .withId(existingRestaurant.getId())
-            .withOwnerId(currentUser.getUserId());
+            .withOwnerId(currentUser.userId());
 
     return this.restaurantMapper.toDto(this.restaurantRepository.save(updatedRestaurant));
   }
@@ -123,7 +123,7 @@ public class RestaurantService {
             .orElseThrow(() -> new NotFoundException(String.format("Restaurant entity with ID %S was not found", id)));
     final var currentUser = this.userService.getCurrentUser();
 
-    if (!currentUser.getUserId().equals(existingRestaurant.getOwnerId())) {
+    if (!currentUser.userId().equals(existingRestaurant.getOwnerId())) {
       throw new InsufficientRightsException("You must be the owner of the resource in order to modify it");
     }
 

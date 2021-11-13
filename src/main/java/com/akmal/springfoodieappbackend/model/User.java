@@ -16,15 +16,9 @@ import java.util.Map;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-@Getter
-@ToString
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class User {
+public record User(String userId, String username) {
   public static final String OKTA_ID_KEY = "uid";
   public static final String OKTA_USERNAME_KEY = "sub";
-
-  private final String userId;
-  private final String username;
 
   /**
    * The method is a static factory that converts the attributes from the okta
