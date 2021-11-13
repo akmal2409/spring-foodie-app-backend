@@ -5,6 +5,7 @@ import com.akmal.springfoodieappbackend.service.RestaurantService;
 import com.akmal.springfoodieappbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,7 @@ public class RestaurantController {
   }
 
   @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
   public RestaurantDto save(@RequestBody @Valid RestaurantDto restaurantDto) {
     return this.restaurantService.save(restaurantDto);
   }
@@ -51,5 +53,10 @@ public class RestaurantController {
   public RestaurantDto update(@PathVariable long id,
                               @RequestBody @Valid RestaurantDto restaurantDto) {
     return this.restaurantService.update(id, restaurantDto);
+  }
+
+  @DeleteMapping("/{id}")
+  public void deleteById(@PathVariable long id) {
+    this.restaurantService.deleteById(id);
   }
 }

@@ -67,6 +67,7 @@ public class RestaurantService {
    * The method is responsible for saving the {@link com.akmal.springfoodieappbackend.model.Restaurant} entity.
    * Firstly, it converts the {@link RestaurantDto} object to the entity model,
    * adds the current user ID and persists it into the Database.
+   *
    * @param restaurantDto - restaurant dto object
    * @return saved {@link com.akmal.springfoodieappbackend.model.Restaurant} entity mapped to DTO {@link RestaurantDto}
    */
@@ -84,10 +85,12 @@ public class RestaurantService {
   /**
    * The method is responsible for updating the {@link com.akmal.springfoodieappbackend.model.Restaurant} entity.
    * It expects the ID of an existing restaurant and a valid {@link RestaurantDto} object.
-   * @throws NotFoundException in case the restaurant with the provided ID is not found
-   * @param id - ID of existing restaurant in the database
+   *
+   * @param id            - ID of existing restaurant in the database
    * @param restaurantDto - valid restaurant DTO object
    * @return updated {@link com.akmal.springfoodieappbackend.model.Restaurant} entity mapped to DT O{@link RestaurantDto}
+   * @throws NotFoundException           in case the restaurant with the provided ID is not found
+   * @throws InsufficientRightsException if the user is not the owner of the resource
    */
   @Transactional
   public RestaurantDto update(long id, RestaurantDto restaurantDto) {
@@ -104,5 +107,26 @@ public class RestaurantService {
             .withOwnerId(currentUser.getUserId());
 
     return this.restaurantMapper.toDto(this.restaurantRepository.save(updatedRestaurant));
+  }
+
+  /**
+   * The method is responsible for deleting the {@link com.akmal.springfoodieappbackend.model.Restaurant} entity
+   * by ID.
+   *
+   * @param id - of existing restaurant
+   * @throws NotFoundException           if the restaurant was not found
+   * @throws InsufficientRightsException if the user is not the owner of the resource
+   */
+  @Transactional
+  public void deleteById(long id) {
+    final var existingRestaurant = this.restaurantRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(String.format("Restaurant entity with ID %S was not found", id)));
+    final var currentUser = this.userService.getCurrentUser();
+
+    if (!currentUser.getUserId().equals(existingRestaurant.getOwnerId())) {
+      throw new InsufficientRightsException("You must be the owner of the resource in order to modify it");
+    }
+
+    this.restaurantRepository.deleteById(id);
   }
 }

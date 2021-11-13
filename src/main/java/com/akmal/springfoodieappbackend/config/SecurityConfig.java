@@ -10,6 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+  public static final String ROLE_USER = "USER";
+  public static final String ROLE_RESTAURANT = "RESTAURANT";
+  public static final String ROLE_ADMIN = "ADMIN";
+
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -17,8 +21,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     authorizeRequests
                             .antMatchers(HttpMethod.GET, RestaurantController.BASE_URL, RestaurantController.BASE_URL + "/{id}")
                             .permitAll()
-                            .antMatchers(HttpMethod.POST, RestaurantController.BASE_URL).hasAnyRole("RESTAURANT", "ADMIN")
-                            .antMatchers(HttpMethod.PUT, RestaurantController.BASE_URL + "/{id}").hasAnyRole("RESTAURANT", "ADMIN")
+                            .antMatchers(HttpMethod.POST, RestaurantController.BASE_URL).hasAnyRole(ROLE_RESTAURANT, SecurityConfig.ROLE_ADMIN)
+                            .antMatchers(HttpMethod.PUT, RestaurantController.BASE_URL + "/{id}").hasAnyRole(ROLE_RESTAURANT, SecurityConfig.ROLE_ADMIN)
+                            .antMatchers(HttpMethod.DELETE, RestaurantController.BASE_URL + "/{id}").hasAnyRole(ROLE_RESTAURANT, SecurityConfig.ROLE_ADMIN)
+                            .antMatchers(HttpMethod.DELETE, RestaurantController.BASE_URL).hasRole(SecurityConfig.ROLE_ADMIN)
                             .anyRequest().authenticated())
             .oauth2ResourceServer().jwt();
   }
