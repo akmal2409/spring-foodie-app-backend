@@ -59,4 +59,9 @@ public class RestaurantController {
   public void deleteById(@PathVariable long id) {
     this.restaurantService.deleteById(id);
   }
+
+  @DeleteMapping
+  public void deleteAll() {
+    this.restaurantService.deleteAll();
+  }
 }

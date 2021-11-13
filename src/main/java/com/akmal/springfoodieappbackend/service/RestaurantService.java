@@ -129,4 +129,13 @@ public class RestaurantService {
 
     this.restaurantRepository.deleteById(id);
   }
+
+  /**
+   * The method is responsible for deleting all the restaurant entities in the database.
+   * It is accessible solely to the administrator.
+   */
+  @Transactional
+  public void deleteAll() {
+    this.restaurantRepository.deleteAll();
+  }
 }
