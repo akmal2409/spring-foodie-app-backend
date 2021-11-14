@@ -1,5 +1,6 @@
 package com.akmal.springfoodieappbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,8 +33,10 @@ import java.util.List;
 public class Order {
   private final String userId;
   @CreationTimestamp
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
   private final LocalDateTime placedOn;
   @UpdateTimestamp
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
   private final LocalDateTime updatedOn;
   @Enumerated(EnumType.STRING)
   private final OrderStatus orderStatus;
