@@ -1,2 +1,8 @@
 FD00000:
   message: "Malformed JSON request"
+FD00001:
+  message: "Authentication failed"
+FD00002:
+  message: "Your rights are insufficient to perform this action"
+FD00003:
+  message: "Requested resource was not found"

@@ -1,5 +1,8 @@
 package com.akmal.springfoodieappbackend.errorHandling;
 
+import com.akmal.springfoodieappbackend.exception.AuthException;
+import com.akmal.springfoodieappbackend.exception.InsufficientRightsException;
+import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -7,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -39,6 +43,21 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                 HttpStatus status,
                                                                 WebRequest request) {
     return buildResponseEntity(buildApiError("FD00000", status, ex));
+  }
+
+  @ExceptionHandler(AuthException.class)
+  protected ResponseEntity<Object> handleAuthException(AuthException ex) {
+    return buildResponseEntity(buildApiError("FD00001", HttpStatus.UNAUTHORIZED, ex));
+  }
+
+  @ExceptionHandler(InsufficientRightsException.class)
+  protected ResponseEntity<Object> handleInsufficientRightsException(AuthException ex) {
+    return buildResponseEntity(buildApiError("FD00002", HttpStatus.FORBIDDEN, ex));
+  }
+
+  @ExceptionHandler(NotFoundException.class)
+  protected ResponseEntity<Object> handleNotFoundException(AuthException ex) {
+    return buildResponseEntity(buildApiError("FD00003", HttpStatus.NOT_FOUND, ex));
   }
 
   /**
