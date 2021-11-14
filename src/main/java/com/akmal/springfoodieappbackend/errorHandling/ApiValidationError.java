@@ -43,7 +43,7 @@ public class ApiValidationError extends ApiSubError {
    * Inner builder class following the Builder Design Pattern.
    * Allows user to define optional number of arguments.
    */
-  private static class Builder {
+  public static class Builder {
     private String object;
     private String field;
     private Object rejectedValue;

@@ -22,6 +22,7 @@ public record ApiError(HttpStatus status,
                        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
                        LocalDateTime timestamp,
                        String message,
+                       String errorCode,
                        String debugMessage,
                        List<ApiSubError> subErrors) {
 
@@ -39,9 +40,10 @@ public record ApiError(HttpStatus status,
    * Constructs the builder object and lets the user define optional
    * number of parameters.
    */
-  private static class Builder {
+  public static class Builder {
     private HttpStatus status;
     private LocalDateTime timestamp;
+    private String errorCode;
     private String message;
     private String debugMessage;
     private List<ApiSubError> subErrors = new ArrayList<>();
@@ -71,8 +73,13 @@ public record ApiError(HttpStatus status,
       return this;
     }
 
+    public Builder errorCode(String errorCode) {
+      this.errorCode = errorCode;
+      return this;
+    }
+
     public ApiError build() {
-      return new ApiError(this.status, this.timestamp, this.message, this.debugMessage, this.subErrors);
+      return new ApiError(this.status, this.timestamp, this.message, this.errorCode, this.debugMessage, this.subErrors);
     }
   }
 }
