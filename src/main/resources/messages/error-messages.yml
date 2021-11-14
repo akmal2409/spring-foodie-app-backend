@@ -1,8 +1,57 @@
 FD00000:
   message: "Malformed JSON request"
+  debug: "HttpMessageNotReadableException occurred"
 FD00001:
   message: "Authentication failed"
+  debug: "AuthException occurred"
 FD00002:
   message: "Your rights are insufficient to perform this action"
+  debug: "InsufficientRightsException occurred"
 FD00003:
   message: "Requested resource was not found"
+  debug: "NotFoundException occurred"
+FD00004:
+  message: "HTTP Request Method is not supported"
+  debug: "HttpRequestMethodNotSupportedException occurred"
+FD00005:
+  message: "HTTP Media Type is not supported"
+  debug: "HttpMediaTypeNotSupportedException occurred"
+FD00006:
+  message: "HTTP Media Type is not acceptable"
+  debug: "HttpMediaTypeNotAcceptableException occurred"
+FD00007:
+  message: "Given URL is missing path variables, check the URL and try again"
+  debug: "MissingPathVariableException occurred"
+FD00008:
+  message: "Given URL is missing request parameters, check the URL and try again"
+  debug: "MissingServletRequestParameterException occurred"
+FD00009:
+  message: "There was an error while processing your request"
+  debug: "ServletRequestBindingException occurred"
+FD00010:
+  message: "Conversion type is not supported"
+  debug: "ConversionNotSupportedException occurred"
+FD00011:
+  message: "Type mismatch in the request body"
+  debug: "TypeMismatchException occurred"
+FD00012:
+  message: "Response message cannot be written"
+  debug: "HttpMessageNotWritableException occurred"
+FD00013:
+  message: "The method arguments are invalid"
+  debug: "MethodArgumentNotValidException occurred"
+FD00014:
+  message: "There was an error while processing your request"
+  debug: "MissingServletRequestPartException occurred"
+FD00015:
+  message: "There was an error while processing your request"
+  debug: "BindException occurred"
+FD00016:
+  message: "There is no handler for the request"
+  debug: "NoHandlerFoundException occurred"
+FD00017:
+  message: "Request timed out"
+  debug: "AsyncRequestTimeoutException occurred"
+FD00018:
+  message: "There was an error while processing your request"
+  debug: "Exception occurred"
