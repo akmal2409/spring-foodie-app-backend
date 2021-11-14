@@ -1,3 +1,2 @@
-error:
-  FD00000:
-    message: "Malformed JSON request"
+FD00000:
+  message: "Malformed JSON request"

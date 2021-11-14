@@ -42,7 +42,6 @@ public record ApiError(HttpStatus status,
    */
   public static class Builder {
     private HttpStatus status;
-    private LocalDateTime timestamp;
     private String errorCode;
     private String message;
     private String debugMessage;
@@ -50,11 +49,6 @@ public record ApiError(HttpStatus status,
 
     public Builder status(HttpStatus status) {
       this.status = status;
-      return this;
-    }
-
-    public Builder timestamp(LocalDateTime timestamp) {
-      this.timestamp = timestamp;
       return this;
     }
 
@@ -79,7 +73,7 @@ public record ApiError(HttpStatus status,
     }
 
     public ApiError build() {
-      return new ApiError(this.status, this.timestamp, this.message, this.errorCode, this.debugMessage, this.subErrors);
+      return new ApiError(this.status, LocalDateTime.now(), this.message, this.errorCode, this.debugMessage, this.subErrors);
     }
   }
 }
