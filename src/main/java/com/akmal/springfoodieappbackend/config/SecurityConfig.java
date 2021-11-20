@@ -2,6 +2,7 @@ package com.akmal.springfoodieappbackend.config;
 
 import com.akmal.springfoodieappbackend.controller.RestaurantController;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Profile("!test & !integrationTest")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
   public static final String ROLE_USER = "USER";
   public static final String ROLE_RESTAURANT = "RESTAURANT";
