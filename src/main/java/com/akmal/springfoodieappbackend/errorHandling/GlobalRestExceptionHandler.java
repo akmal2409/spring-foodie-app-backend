@@ -1,8 +1,6 @@
 package com.akmal.springfoodieappbackend.errorHandling;
 
-import com.akmal.springfoodieappbackend.exception.AuthException;
-import com.akmal.springfoodieappbackend.exception.InsufficientRightsException;
-import com.akmal.springfoodieappbackend.exception.NotFoundException;
+import com.akmal.springfoodieappbackend.exception.*;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -65,6 +63,21 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(NotFoundException.class)
   protected ResponseEntity<Object> handleNotFoundException(NotFoundException ex) {
     return buildResponseEntity(buildApiError("FD00003", HttpStatus.NOT_FOUND, ex));
+  }
+
+  @ExceptionHandler(FileException.class)
+  protected ResponseEntity<Object> handleFileException(FileException ex) {
+    return buildResponseEntity(buildApiError("FD00019", HttpStatus.INTERNAL_SERVER_ERROR, ex));
+  }
+
+  @ExceptionHandler(InvalidFileException.class)
+  protected ResponseEntity<Object> handleInvalidFileException(InvalidFileException ex) {
+    return buildResponseEntity(buildApiError("FD00020", HttpStatus.BAD_REQUEST, ex));
+  }
+
+  @ExceptionHandler(NotImplementedException.class)
+  protected ResponseEntity<Object> handleNotImplementedException(NotImplementedException ex) {
+    return buildResponseEntity(buildApiError("FD00021", HttpStatus.BAD_REQUEST, ex));
   }
 
   @Override
