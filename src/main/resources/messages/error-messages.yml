@@ -55,3 +55,12 @@ FD00017:
 FD00018:
   message: "There was an error while processing your request"
   debug: "Exception occurred"
+FD00019:
+  message: "There was an error while processing a file"
+  debug: "FileException occurred"
+FD00020:
+  message: "Provided file is invalid"
+  debug: "InvalidFileException occurred"
+FD00021:
+  message: "Service not yet implemented"
+  debug: "NotImplementedException occurred"
