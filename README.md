@@ -33,6 +33,18 @@ https://en.wikipedia.org/wiki/Multitier_architecture
     docker compose up -d
 
 # Manual deployment
+    You have to set following environmental properties on your machine using following commands
+    (Windows CLI) $ set PROPERTY_NAME=VALUE
+    (Linux CLI) $ export PROPERTY_NAME=VALUE
+    
+    OKTA_OAUTH2_ISSUER=https://issuer.domain
+    OKTA_OAUTH2_CLIENT_ID=<clientId>
+    OKTA_OAUTH2_CLIENT_SECRET=<clientSecret>
+    CLOUD_AWS_CREDENTIALS_ACCESS_KEY=<aws access key>
+    CLOUD_AWS_CREDENTIALS_SECRET_KEY=<aws secret key>
+
+    
+
 ### Building project
     mvn clean install 
 
