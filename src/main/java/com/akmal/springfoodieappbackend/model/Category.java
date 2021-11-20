@@ -1,9 +1,6 @@
 package com.akmal.springfoodieappbackend.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +26,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder
+@With
 public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,4 +37,5 @@ public class Category {
   @NotBlank(message = "Description is required")
   @Size(min = 5)
   private String description;
+  private int groupId;
 }
