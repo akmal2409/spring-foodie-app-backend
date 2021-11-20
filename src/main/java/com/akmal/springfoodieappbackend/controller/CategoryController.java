@@ -22,7 +22,7 @@ import static com.akmal.springfoodieappbackend.shared.http.ResponseEntityConvert
 @RequestMapping(CategoryController.BASE_URL)
 @RequiredArgsConstructor
 public class CategoryController {
-  public static final String BASE_URL = "/categories";
+  public static final String BASE_URL = "/api/categories";
   private final CategoryService categoryService;
 
 
