@@ -1,7 +1,6 @@
 package com.akmal.springfoodieappbackend.controller;
 
 import com.akmal.springfoodieappbackend.config.MessageSourceConfig;
-import com.akmal.springfoodieappbackend.dto.AddressDto;
 import com.akmal.springfoodieappbackend.dto.RestaurantDto;
 import com.akmal.springfoodieappbackend.errorHandling.GlobalRestExceptionHandler;
 import com.akmal.springfoodieappbackend.service.RestaurantService;
@@ -25,13 +24,13 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -80,8 +79,7 @@ class RestaurantControllerTest {
   @DisplayName("Test findAll() should return a list of restaurant objects of size 1")
   void testFindAllSucceeds() throws Exception {
     final var expectedRestaurant = new RestaurantDto(1L, "Test name", null,
-            null, 0,null,0,null,0,null,null,
-            null);
+            null, 0, BigDecimal.valueOf(0),0,0.0,null,null,null);
     final var expectedPage = new TestPage<>(List.of(expectedRestaurant), PageRequest.ofSize(1), 1);
 
     given(restaurantService.findAll(anyInt(), anyInt())).willReturn(expectedPage);
