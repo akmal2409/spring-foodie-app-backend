@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,8 +59,8 @@ class RestaurantServiceTest {
     final var expectedRestaurantPage = new PageImpl<Restaurant>(
             List.of(Restaurant.builder().id(1).name("First").build()));
     final var expectedDTO = new RestaurantDto(1, "First", null, null, 0,
-            null, 0, null, 0,
-            null, null, null);
+            null, 0, 0, null,
+            null, null);
 
     given(restaurantRepository.findAll(any(PageRequest.class))).willReturn(expectedRestaurantPage);
     given(restaurantMapper.toDto(any(Restaurant.class))).willReturn(expectedDTO);
@@ -75,8 +76,8 @@ class RestaurantServiceTest {
   void testFindByIdSucceeds() {
     final var expectedRestaurant = Restaurant.builder().id(1).name("First").build();
     final var expectedDTO = new RestaurantDto(1, "First", null, null, 0,
-            null, 0, null, 0,
-            null, null, null);
+            BigDecimal.valueOf(0), 0, 0.0, null,
+            null, null);
 
     given(restaurantRepository.findById(anyLong())).willReturn(Optional.of(expectedRestaurant));
     given(restaurantMapper.toDto(any(Restaurant.class))).willReturn(expectedDTO);
@@ -92,8 +93,8 @@ class RestaurantServiceTest {
     final var mockRestaurant = mock(Restaurant.class);
     final var expectedRestaurant = Restaurant.builder().id(1).ownerId("3423434").build();
     final var expectedDTO = new RestaurantDto(1, null, null, null, 0,
-            null, 0, null, 0,
-            null, null, null);
+            BigDecimal.valueOf(0), 0, 0, null,
+            null, null);
 
     given(userService.getCurrentUser()).willReturn(new User("3423434", "testUser"));
     given(restaurantMapper.from(any(RestaurantDto.class))).willReturn(mockRestaurant);
@@ -113,8 +114,8 @@ class RestaurantServiceTest {
   void testUpdateSucceeds() {
     final var expectedRestaurant = Restaurant.builder().id(1).ownerId("000").build();
     final var expectedDTO = new RestaurantDto(1, null, null, null, 0,
-            null, 0, null, 0,
-            null, null, null);
+            BigDecimal.valueOf(0), 0.0, 0.0, null,
+            null, null);
 
     given(restaurantRepository.findById(any())).willReturn(Optional.of(expectedRestaurant));
     given(userService.getCurrentUser()).willReturn(new User("000", "test"));
@@ -132,8 +133,9 @@ class RestaurantServiceTest {
   @DisplayName("Test update() method will fail and  throw NotFoundException, when restaurant was not found")
   void testUpdateFailsRestaurantNotFound() {
     final var expectedDTO = new RestaurantDto(1, null, null, null, 0,
-            null, 0, null, 0,
-            null, null, null);
+            null, 0.0, 0.0,
+            null,
+            null, null);
 
     given(restaurantRepository.findById(anyLong())).willReturn(Optional.empty());
 
@@ -147,8 +149,8 @@ class RestaurantServiceTest {
   void testUpdateFailsOwnerNotMatch() {
     final var expectedRestaurant = Restaurant.builder().id(1).ownerId("000").build();
     final var expectedDTO = new RestaurantDto(1, null, null, null, 0,
-            null, 0, null, 0,
-            null, null, null);
+            null, 0.0, 0.0, null,
+            null, null);
 
     given(restaurantRepository.findById(anyLong())).willReturn(Optional.of(expectedRestaurant));
     given(userService.getCurrentUser()).willReturn(new User("324", "test"));
