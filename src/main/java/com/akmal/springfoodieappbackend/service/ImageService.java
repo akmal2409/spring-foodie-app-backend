@@ -1,8 +1,16 @@
 package com.akmal.springfoodieappbackend.service;
 
+import com.akmal.springfoodieappbackend.dto.ImageDto;
+import com.akmal.springfoodieappbackend.exception.NotFoundException;
+import com.akmal.springfoodieappbackend.model.FileMetaData;
+import com.akmal.springfoodieappbackend.model.Image;
 import com.akmal.springfoodieappbackend.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * ImageService class is a {@link org.springframework.stereotype.Service} that abstracts
@@ -20,4 +28,43 @@ import org.springframework.stereotype.Service;
 public class ImageService {
 
   private final ImageRepository imageRepository;
+  private final FileService fileService;
+
+  /**
+   * Method is responsible for uploading new images with a given title
+   * by means of the underlying file service provider.
+   * Thereafter, it prepares the {@link Image} entity object that contains
+   * fields like url, key as well as title.
+   * Url and key are gotten from the {@link FileMetaData} returned by the
+   * {@link FileService#upload(MultipartFile, FileService.FileType)}.
+   * @param image {@link MultipartFile} file object
+   * @param title of the file
+   * @return image entity in the database as DTO object {@link ImageDto}
+   */
+  @Transactional
+  public ImageDto uploadAndSave(MultipartFile image, String title) {
+    FileMetaData imageMetaData = this.fileService.upload(image, FileService.FileType.IMAGE);
+
+    final var imageEntity = new Image(imageMetaData.key(), imageMetaData.location(), title);
+
+    return ImageDto.fromImage(this.imageRepository.save(imageEntity));
+  }
+
+  /**
+   * Method is responsible for deleting the image by ID.
+   * @throws NotFoundException if image is not found
+   * @param key of the image
+   */
+  @Transactional
+  public void deleteFileByKey(String key) {
+    final var image = this.imageRepository.findById(key)
+            .orElseThrow(() -> new NotFoundException(String.format("Image with ID %s was not found", key)));
+
+    this.fileService.deleteById(key);
+    this.imageRepository.delete(image);
+  }
+
+  public Iterable<Image> findAll() {
+    return this.imageRepository.findAll();
+  }
 }
