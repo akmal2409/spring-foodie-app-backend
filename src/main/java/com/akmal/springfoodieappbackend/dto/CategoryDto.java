@@ -11,5 +11,6 @@ package com.akmal.springfoodieappbackend.dto;
  */
 public record CategoryDto(long id,
                           String name,
-                          String description) {
+                          String description,
+                          int groupId) {
 }
