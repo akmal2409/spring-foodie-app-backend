@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "cloud.aws.bucket.name",
+      "type": "java.lang.String",
+      "description": "S3 bucket name"
+    }
+  ] }

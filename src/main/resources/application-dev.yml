@@ -27,3 +27,22 @@ okta:
       - email
     audience: api://default
     groups-claim: roles
+
+cloud:
+  aws:
+    region:
+      static: eu-central-1
+      auto: false
+    stack:
+      auto: false
+
+    bucket.name: "talci-bucket"
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
+        internal:
+          InstanceMetadataServiceResourceFetcher: error
