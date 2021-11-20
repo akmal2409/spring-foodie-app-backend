@@ -2,7 +2,6 @@ package com.akmal.springfoodieappbackend.controller;
 
 import com.akmal.springfoodieappbackend.dto.RestaurantDto;
 import com.akmal.springfoodieappbackend.service.RestaurantService;
-import com.akmal.springfoodieappbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -30,12 +29,11 @@ import static com.akmal.springfoodieappbackend.shared.http.ResponseEntityConvert
 public class RestaurantController {
   public static final String BASE_URL = "/api/restaurants";
   private final RestaurantService restaurantService;
-  private final UserService userService;
 
   @GetMapping
-  public ResponseEntity<Page<RestaurantDto>> findAll(@RequestParam(defaultValue = "0") int page,
+  public Page<RestaurantDto> findAll(@RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "10") int size) {
-    return ok(this.restaurantService.findAll(page, size));
+    return this.restaurantService.findAll(page, size);
   }
 
   @GetMapping("/{id}")
