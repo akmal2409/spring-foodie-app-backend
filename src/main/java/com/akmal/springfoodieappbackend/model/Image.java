@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * The class represents the image class
  * @author Akmal Alikhujaev
@@ -12,11 +15,13 @@ import lombok.NoArgsConstructor;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
+@Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Image {
-  private long id;
+  @Id
+  private String id;
   private final String url;
   private final String title;
 }

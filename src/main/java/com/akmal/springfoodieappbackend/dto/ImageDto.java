@@ -12,7 +12,7 @@ import com.akmal.springfoodieappbackend.model.Image;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-public record ImageDto(long id,
+public record ImageDto(String key,
                        String url,
                        String title) {
 
@@ -34,6 +34,6 @@ public record ImageDto(long id,
    * @return {@link Image} object
    */
   public Image toImage() {
-    return new Image(this.id, this.url, this.title);
+    return new Image(this.key, this.url, this.title);
   }
 }

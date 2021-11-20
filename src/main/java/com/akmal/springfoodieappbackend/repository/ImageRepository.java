@@ -12,5 +12,5 @@ import org.springframework.data.repository.CrudRepository;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-public interface ImageRepository extends CrudRepository<Image, Long> {
+public interface ImageRepository extends CrudRepository<Image, String> {
 }
