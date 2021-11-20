@@ -32,14 +32,12 @@ public abstract class RestaurantMapper {
   private OpeningTimeMapper openingTimeMapper;
 
   @Mapping(target = "address", expression = "java(mapAddressToDto(restaurant.getAddress()))")
-  @Mapping(target = "priceRange", source = "restaurant.priceRange.type")
   @Mapping(target = "openingTimes", expression = "java(mapOpeningTimesToDto(restaurant.getOpeningTimes()))")
   @Mapping(target = "categories", expression = "java(mapCategoriesToDto(restaurant.getCategories()))")
   @Mapping(target = "menus", expression = "java(mapMenusToDto(restaurant.getMenus()))")
   public abstract RestaurantDto toDto(Restaurant restaurant);
 
   @Mapping(target = "address", expression = "java(mapToAddress(restaurantDto.address()))")
-  @Mapping(target = "priceRange", expression = "java(mapPriceRange(restaurantDto.name()))")
   @Mapping(target = "openingTimes", expression = "java(mapToOpeningTimes(restaurantDto.openingTimes()))")
   @Mapping(target = "categories", expression = "java(mapToCategories(restaurantDto.categories()))")
   @Mapping(target = "menus", expression = "java(mapToMenus(restaurantDto.menus()))")
@@ -100,9 +98,5 @@ public abstract class RestaurantMapper {
 
   protected Address mapToAddress(AddressDto address) {
     return this.addressMapper.from(address);
-  }
-
-  protected Restaurant.PriceRange mapPriceRange(String type) {
-    return Restaurant.PriceRange.from(type);
   }
 }

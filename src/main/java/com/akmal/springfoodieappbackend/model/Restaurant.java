@@ -38,8 +38,6 @@ public class Restaurant {
   private final BigDecimal deliveryCost;
   private final double minimumOrderValue;
   private final String ownerId;
-  @Enumerated(value = EnumType.STRING)
-  private final PriceRange priceRange;
   @DecimalMin(value = "0.0")
   @DecimalMax(value = "5.0")
   private final double rating;
@@ -52,34 +50,6 @@ public class Restaurant {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
-
-  /**
-   * Enum representing the average cost of a restaurant.
-   *
-   * @author akmal
-   * @version 1.0
-   * @since 1.0
-   */
-  public enum PriceRange {
-    AFFORDABLE("Affordable"), AVERAGE("Average"), EXPENSIVE("Expensive");
-
-    private final String type;
-
-    PriceRange(String type) {
-      this.type = type;
-    }
-
-    public static PriceRange from(String type) {
-      return Arrays.stream(PriceRange.values())
-              .filter(code -> code.type.equals(type))
-              .findFirst()
-              .orElse(null);
-    }
-
-    public String getType() {
-      return this.type;
-    }
-  }
 
   /**
    * <strong>addOpeningTime(OpeningTime openingTime)</strong> is a helper method that enables the client
