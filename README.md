@@ -16,7 +16,7 @@ https://en.wikipedia.org/wiki/Multitier_architecture
 # Future Plans and Improvements
 * Move it to Microservice architecture with Spring Cloud
 * Implement CI/CD
-* Integration with AWS S3 for image upload
+* Implemented ~~Integration with AWS S3 for image upload~~
 * Deploy it on AWS in a managed Kubernetes cluster as set of microservices
 * Add ElasticSearch
 * Integrate with TomTom API to query delivery places
@@ -48,10 +48,13 @@ https://en.wikipedia.org/wiki/Multitier_architecture
 * Hibernate
 * Project Lombok
 * Okta (OIDC)
+* AWS S3 Image Upload
 * MYSQL
 * Docker
 * Mapstruct (To map entities to Data Transfer Objects)
 * Spotify Maven Dockerfile Plugin
+* Mockito
+* JUnit 5
 
 ## Prerequisites
 * Java 17
