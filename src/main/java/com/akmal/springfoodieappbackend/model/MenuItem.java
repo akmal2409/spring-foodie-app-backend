@@ -34,6 +34,10 @@ public class MenuItem {
   private List<OptionSet> optionSets = new ArrayList<>();
   @ManyToOne(fetch = FetchType.LAZY)
   private final Menu menu;
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private final Image thumbnailImage;
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private final Image fullImage;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;

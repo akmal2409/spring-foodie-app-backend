@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -21,6 +22,7 @@ import javax.persistence.Id;
 @NoArgsConstructor(force = true)
 public class Image {
   @Id
+  @Column(name = "id", nullable = false)
   private String id;
   private final String url;
   private final String title;

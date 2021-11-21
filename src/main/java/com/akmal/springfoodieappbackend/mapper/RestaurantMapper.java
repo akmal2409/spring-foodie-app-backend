@@ -35,12 +35,16 @@ public abstract class RestaurantMapper {
   @Mapping(target = "openingTimes", expression = "java(mapOpeningTimesToDto(restaurant.getOpeningTimes()))")
   @Mapping(target = "categories", expression = "java(mapCategoriesToDto(restaurant.getCategories()))")
   @Mapping(target = "menus", expression = "java(mapMenusToDto(restaurant.getMenus()))")
+  @Mapping(target = "thumbnailImage", expression = "java(mapImageToDto(restaurant.getThumbnailImage()))")
+  @Mapping(target = "fullImage", expression = "java(mapImageToDto(restaurant.getFullImage()))")
   public abstract RestaurantDto toDto(Restaurant restaurant);
 
   @Mapping(target = "address", expression = "java(mapToAddress(restaurantDto.address()))")
   @Mapping(target = "openingTimes", expression = "java(mapToOpeningTimes(restaurantDto.openingTimes()))")
   @Mapping(target = "categories", expression = "java(mapToCategories(restaurantDto.categories()))")
   @Mapping(target = "menus", expression = "java(mapToMenus(restaurantDto.menus()))")
+  @Mapping(target = "thumbnailImage", expression = "java(mapToImage(restaurantDto.thumbnailImage()))")
+  @Mapping(target = "fullImage", expression = "java(mapToImage(restaurantDto.fullImage()))")
   public abstract Restaurant from(RestaurantDto restaurantDto);
 
   protected List<OpeningTimeDto> mapOpeningTimesToDto(List<OpeningTime> openingTimes) {
@@ -98,5 +102,19 @@ public abstract class RestaurantMapper {
 
   protected Address mapToAddress(AddressDto address) {
     return this.addressMapper.from(address);
+  }
+
+  protected ImageDto mapImageToDto(Image image) {
+    if (image == null) {
+      return null;
+    }
+    return ImageDto.fromImage(image);
+  }
+
+  protected Image mapToImage(ImageDto imageDto) {
+    if (imageDto == null) {
+      return null;
+    }
+    return imageDto.toImage();
   }
 }

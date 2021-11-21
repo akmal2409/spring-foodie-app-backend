@@ -1,8 +1,11 @@
 package com.akmal.springfoodieappbackend.mapper;
 
 import com.akmal.springfoodieappbackend.dto.CategoryDto;
+import com.akmal.springfoodieappbackend.dto.ImageDto;
 import com.akmal.springfoodieappbackend.model.Category;
+import com.akmal.springfoodieappbackend.model.Image;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 
 /**
@@ -16,9 +19,25 @@ import org.mapstruct.NullValueCheckStrategy;
  * @since 1.0
  */
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-public interface CategoryMapper {
+public abstract class CategoryMapper {
 
-  CategoryDto toDto(Category category);
+  @Mapping(target = "icon", expression = "java(mapImageToDto(category.getIcon()))")
+  public abstract CategoryDto toDto(Category category);
 
-  Category from(CategoryDto categoryDto);
+  @Mapping(target = "icon", expression = "java(mapToImage(categoryDto.icon()))")
+  public abstract Category from(CategoryDto categoryDto);
+
+  protected ImageDto mapImageToDto(Image image) {
+    if (image == null) {
+      return null;
+    }
+    return ImageDto.fromImage(image);
+  }
+
+  protected Image mapToImage(ImageDto imageDto) {
+    if (imageDto == null) {
+      return null;
+    }
+    return imageDto.toImage();
+  }
 }

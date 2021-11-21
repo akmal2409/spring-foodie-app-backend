@@ -47,6 +47,11 @@ public class Restaurant {
   private List<Category> categories = new ArrayList<>();
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
   private List<Menu> menus = new ArrayList<>();
+  @OneToOne(fetch = FetchType.LAZY)
+  private Image thumbnailImage;
+  @OneToOne(fetch = FetchType.LAZY)
+  private Image fullImage;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;

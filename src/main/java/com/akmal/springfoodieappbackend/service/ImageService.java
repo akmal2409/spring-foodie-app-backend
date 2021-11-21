@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 /**
  * ImageService class is a {@link org.springframework.stereotype.Service} that abstracts
  * the business logic of managing {@link com.akmal.springfoodieappbackend.model.Image}
@@ -37,13 +35,14 @@ public class ImageService {
    * fields like url, key as well as title.
    * Url and key are gotten from the {@link FileMetaData} returned by the
    * {@link FileService#upload(MultipartFile, FileService.FileType)}.
+   *
    * @param image {@link MultipartFile} file object
    * @param title of the file
    * @return image entity in the database as DTO object {@link ImageDto}
    */
   @Transactional
   public ImageDto uploadAndSave(MultipartFile image, String title) {
-    FileMetaData imageMetaData = this.fileService.upload(image, FileService.FileType.IMAGE);
+    final FileMetaData imageMetaData = this.fileService.upload(image, FileService.FileType.IMAGE);
 
     final var imageEntity = new Image(imageMetaData.key(), imageMetaData.location(), title);
 
@@ -52,8 +51,9 @@ public class ImageService {
 
   /**
    * Method is responsible for deleting the image by ID.
-   * @throws NotFoundException if image is not found
+   *
    * @param key of the image
+   * @throws NotFoundException if image is not found
    */
   @Transactional
   public void deleteFileByKey(String key) {

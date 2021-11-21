@@ -79,7 +79,7 @@ class RestaurantControllerTest {
   @DisplayName("Test findAll() should return a list of restaurant objects of size 1")
   void testFindAllSucceeds() throws Exception {
     final var expectedRestaurant = new RestaurantDto(1L, "Test name", null,
-            null, 0, BigDecimal.valueOf(0),0,0.0,null,null,null);
+            null, 0, BigDecimal.valueOf(0),0,0.0,null,null,null, null, null);
     final var expectedPage = new TestPage<>(List.of(expectedRestaurant), PageRequest.ofSize(1), 1);
 
     given(restaurantService.findAll(anyInt(), anyInt())).willReturn(expectedPage);

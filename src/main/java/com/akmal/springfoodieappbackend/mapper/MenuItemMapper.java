@@ -1,7 +1,9 @@
 package com.akmal.springfoodieappbackend.mapper;
 
+import com.akmal.springfoodieappbackend.dto.ImageDto;
 import com.akmal.springfoodieappbackend.dto.MenuItemDto;
 import com.akmal.springfoodieappbackend.dto.OptionSetDto;
+import com.akmal.springfoodieappbackend.model.Image;
 import com.akmal.springfoodieappbackend.model.MenuItem;
 import com.akmal.springfoodieappbackend.model.OptionSet;
 import org.mapstruct.Mapper;
@@ -29,10 +31,14 @@ public abstract class MenuItemMapper {
 
   @Mapping(target = "menuId", source = "menuItem.menu.id")
   @Mapping(target = "optionSets", expression = "java(mapOptionSetsToDto(menuItem.getOptionSets()))")
+  @Mapping(target = "thumbnailImage", expression = "java(mapImageToDto(menuItem.getThumbnailImage()))")
+  @Mapping(target = "fullImage", expression = "java(mapImageToDto(menuItem.getFullImage()))")
   public abstract MenuItemDto toDto(MenuItem menuItem);
 
   @Mapping(target = "menu", ignore = true)
   @Mapping(target = "optionSets", expression = "java(mapToOptionSets(menuItemDto.optionSets()))")
+  @Mapping(target = "thumbnailImage", expression = "java(mapToImage(menuItemDto.thumbnailImage()))")
+  @Mapping(target = "fullImage", expression = "java(mapToImage(menuItemDto.fullImage()))")
   public abstract MenuItem from(MenuItemDto menuItemDto);
 
   protected List<OptionSetDto> mapOptionSetsToDto(List<OptionSet> optionSets) {
@@ -49,5 +55,19 @@ public abstract class MenuItemMapper {
             .stream()
             .map(this.optionSetMapper::from)
             .toList();
+  }
+
+  protected ImageDto mapImageToDto(Image image) {
+    if (image == null) {
+      return null;
+    }
+    return ImageDto.fromImage(image);
+  }
+
+  protected Image mapToImage(ImageDto imageDto) {
+    if (imageDto == null) {
+      return null;
+    }
+    return imageDto.toImage();
   }
 }

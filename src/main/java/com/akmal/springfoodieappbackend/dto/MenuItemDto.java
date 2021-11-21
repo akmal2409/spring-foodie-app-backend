@@ -16,5 +16,7 @@ public record MenuItemDto(long id,
                           String name,
                           BigDecimal basePrice,
                           long menuId,
-                          List<OptionSetDto> optionSets) {
+                          List<OptionSetDto> optionSets,
+                          ImageDto thumbnailImage,
+                          ImageDto fullImage) {
 }
