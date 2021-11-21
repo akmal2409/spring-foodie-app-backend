@@ -78,6 +78,7 @@ public class RestaurantService {
     final var restaurant = this.restaurantMapper.from(restaurantDto)
             .withOwnerId(currentUser.userId());
 
+
     final var savedRestaurant = this.restaurantRepository.save(restaurant);
     return this.restaurantMapper.toDto(savedRestaurant);
   }
