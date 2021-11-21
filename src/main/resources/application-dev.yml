@@ -38,6 +38,10 @@ cloud:
 
     bucket.name: "talci-bucket"
 
+tomtom:
+  api:
+    url: "https://api.tomtom.com"
+
 logging:
   level:
     com:

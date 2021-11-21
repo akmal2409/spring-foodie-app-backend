@@ -15,4 +15,7 @@ public record PlaceSearchResults(int numResults,
                                  int offset,
                                  int totalResults,
                                  List<PlaceSearchResult> results) {
+  public static PlaceSearchResults empty() {
+    return new PlaceSearchResults(0, 0, 0, List.of());
+  }
 }
