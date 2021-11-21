@@ -16,7 +16,7 @@ https://en.wikipedia.org/wiki/Multitier_architecture
 # Future Plans and Improvements
 * Move it to Microservice architecture with Spring Cloud
 * Implement CI/CD
-* Integration with AWS S3 for image upload
+* Implemented ~~Integration with AWS S3 for image upload~~
 * Deploy it on AWS in a managed Kubernetes cluster as set of microservices
 * Add ElasticSearch
 * Integrate with TomTom API to query delivery places
@@ -33,6 +33,18 @@ https://en.wikipedia.org/wiki/Multitier_architecture
     docker compose up -d
 
 # Manual deployment
+    You have to set following environmental properties on your machine using following commands
+    (Windows CLI) $ set PROPERTY_NAME=VALUE
+    (Linux CLI) $ export PROPERTY_NAME=VALUE
+    
+    OKTA_OAUTH2_ISSUER=https://issuer.domain
+    OKTA_OAUTH2_CLIENT_ID=<clientId>
+    OKTA_OAUTH2_CLIENT_SECRET=<clientSecret>
+    CLOUD_AWS_CREDENTIALS_ACCESS_KEY=<aws access key>
+    CLOUD_AWS_CREDENTIALS_SECRET_KEY=<aws secret key>
+
+    
+
 ### Building project
     mvn clean install 
 
@@ -48,10 +60,13 @@ https://en.wikipedia.org/wiki/Multitier_architecture
 * Hibernate
 * Project Lombok
 * Okta (OIDC)
+* AWS S3 Image Upload
 * MYSQL
 * Docker
 * Mapstruct (To map entities to Data Transfer Objects)
 * Spotify Maven Dockerfile Plugin
+* Mockito
+* JUnit 5
 
 ## Prerequisites
 * Java 17
