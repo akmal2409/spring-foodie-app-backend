@@ -5,6 +5,7 @@ import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import com.akmal.springfoodieappbackend.model.FileMetaData;
 import com.akmal.springfoodieappbackend.model.Image;
 import com.akmal.springfoodieappbackend.repository.ImageRepository;
+import com.akmal.springfoodieappbackend.shared.database.TransactionRunner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

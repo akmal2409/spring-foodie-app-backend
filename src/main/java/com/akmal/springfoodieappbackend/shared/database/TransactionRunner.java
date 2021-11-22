@@ -1,4 +1,4 @@
-package com.akmal.springfoodieappbackend.service;
+package com.akmal.springfoodieappbackend.shared.database;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
