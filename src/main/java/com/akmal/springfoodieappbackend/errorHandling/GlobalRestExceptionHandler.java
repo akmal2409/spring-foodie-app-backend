@@ -80,6 +80,11 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntity(buildApiError("FD00021", HttpStatus.BAD_REQUEST, ex));
   }
 
+  @ExceptionHandler(ExternalCallException.class)
+  protected ResponseEntity<Object> handleExternalCallException(ExternalCallException ex) {
+    return buildResponseEntity(buildApiError("FD00022", HttpStatus.BAD_REQUEST, ex));
+  }
+
   @Override
   protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                                                                 HttpHeaders headers,
