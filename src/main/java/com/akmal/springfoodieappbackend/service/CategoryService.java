@@ -3,6 +3,7 @@ package com.akmal.springfoodieappbackend.service;
 import com.akmal.springfoodieappbackend.dto.CategoryDto;
 import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import com.akmal.springfoodieappbackend.mapper.CategoryMapper;
+import com.akmal.springfoodieappbackend.model.Category;
 import com.akmal.springfoodieappbackend.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -98,5 +99,15 @@ public class CategoryService {
   @Transactional
   public void deleteById(long id) {
     this.categoryRepository.deleteById(id);
+  }
+
+  @Transactional
+  public void removeImageReferences(String imageId) {
+    final Iterable<Category> categories = this.categoryRepository.findAllByIconId(imageId);
+
+    for (Category category: categories) {
+      final var updatedCategory = category.withIcon(null);
+      this.categoryRepository.save(updatedCategory);
+    }
   }
 }
