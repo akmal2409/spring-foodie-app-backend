@@ -1,6 +1,6 @@
 package com.akmal.springfoodieappbackend.controller;
 
-import com.akmal.springfoodieappbackend.dto.PlaceSearchResults;
+import com.akmal.springfoodieappbackend.dto.tomtom.PlaceSearchResults;
 import com.akmal.springfoodieappbackend.service.LocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,3 +30,4 @@ public class LocationController {
     return this.locationService.search(query, limit);
   }
 }
+
