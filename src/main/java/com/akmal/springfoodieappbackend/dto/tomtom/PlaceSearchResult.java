@@ -1,4 +1,6 @@
-package com.akmal.springfoodieappbackend.dto;
+package com.akmal.springfoodieappbackend.dto.tomtom;
+
+import com.akmal.springfoodieappbackend.dto.LocationDto;
 
 /**
  * @author Akmal Alikhujaev

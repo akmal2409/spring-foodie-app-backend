@@ -1,4 +1,4 @@
-package com.akmal.springfoodieappbackend.dto;
+package com.akmal.springfoodieappbackend.dto.tomtom;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.akmal.springfoodieappbackend.dto;
+package com.akmal.springfoodieappbackend.dto.tomtom;
 
 /**
  * The class represents the address object embedded into Place Search Result,
