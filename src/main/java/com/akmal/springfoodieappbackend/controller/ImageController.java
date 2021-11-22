@@ -33,7 +33,7 @@ public class ImageController {
 
   @DeleteMapping("/{key}")
   public void delete(@PathVariable String key) {
-    this.imageService.deleteFileByKey(key);
+    this.imageService.deleteImageByKey(key);
   }
 
   @GetMapping

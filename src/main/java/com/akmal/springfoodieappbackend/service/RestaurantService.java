@@ -4,12 +4,15 @@ import com.akmal.springfoodieappbackend.dto.RestaurantDto;
 import com.akmal.springfoodieappbackend.exception.InsufficientRightsException;
 import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import com.akmal.springfoodieappbackend.mapper.RestaurantMapper;
+import com.akmal.springfoodieappbackend.model.Restaurant;
 import com.akmal.springfoodieappbackend.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 /**
  * The {@code RestaurantService} is a service class that abstracts the business logic from the controller.
@@ -138,5 +141,34 @@ public class RestaurantService {
   @Transactional
   public void deleteAll() {
     this.restaurantRepository.deleteAll();
+  }
+
+  /**
+   * The method is responsible for finding all the {@link com.akmal.springfoodieappbackend.model.Restaurant}
+   * entities that reference particular image id and sets those fields to null.
+   * The workflow is following, if the image id equals to thumbnail image ID, then it sets the field to null,
+   * same for full image.
+   *
+   * @param imageId - of the to be removed image
+   * @throws NullPointerException if the {@code imageId} is null.
+   */
+  @Transactional
+  public void removeImageReferences(String imageId) {
+    Objects.requireNonNull(imageId, "Image id cannot be null");
+    final Iterable<Restaurant> restaurants = this.restaurantRepository.findAllByThumbnailImageOrFullImageId(imageId);
+
+    for (Restaurant restaurant : restaurants) {
+      Restaurant updatedRestaurant = restaurant;
+      if (restaurant.getThumbnailImage() != null
+              && imageId.equals(restaurant.getThumbnailImage().getId())) {
+        updatedRestaurant = updatedRestaurant.withThumbnailImage(null);
+      }
+
+      if (restaurant.getFullImage() != null
+              && imageId.equals(restaurant.getFullImage().getId())) {
+        updatedRestaurant = updatedRestaurant.withFullImage(null);
+      }
+      this.restaurantRepository.save(updatedRestaurant);
+    }
   }
 }

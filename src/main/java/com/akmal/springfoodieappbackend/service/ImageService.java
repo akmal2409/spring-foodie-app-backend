@@ -26,7 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageService {
 
   private final ImageRepository imageRepository;
+  private final RestaurantService restaurantService;
   private final FileService fileService;
+  private final TransactionRunner transactionRunner;
+
 
   /**
    * Method is responsible for uploading new images with a given title
@@ -56,12 +59,25 @@ public class ImageService {
    * @throws NotFoundException if image is not found
    */
   @Transactional
-  public void deleteFileByKey(String key) {
+  public void deleteImageByKey(String key) {
     final var image = this.imageRepository.findById(key)
             .orElseThrow(() -> new NotFoundException(String.format("Image with ID %s was not found", key)));
 
+    this.transactionRunner.runInTransaction(() -> this.removeReferences(image.getId()));
+    this.imageRepository.deleteById(image.getId());
     this.fileService.deleteById(key);
-    this.imageRepository.delete(image);
+  }
+
+  /**
+   * The method is responsible for deleting all the references to the particular image
+   * in the tables like Restaurant, Categories and MenuItems to avoid violating
+   * FK constraints.
+   *
+   * @param imageId of the deleted image
+   */
+  private void removeReferences(String imageId) {
+    this.restaurantService.removeImageReferences(imageId);
+
   }
 
   public Iterable<Image> findAll() {

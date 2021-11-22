@@ -31,4 +31,14 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
    */
   @Query("SELECT res FROM Restaurant res WHERE res.address.country = ?1 AND res.address.city = ?2")
   Page<Restaurant> findAllByCountryAndCity(String country, String city, Pageable pageable);
+
+  /**
+   * Method is using custom JPQL Hibernate query, finds all restaurants that have
+   * thumbnail image or full image id's matching with the provided one.
+   *
+   * @param imageId of the image.
+   * @return collection of {@link Restaurant} entities.
+   */
+  @Query("SELECT res FROM Restaurant res WHERE res.thumbnailImage.id = ?1 OR res.fullImage.id = ?1")
+  Iterable<Restaurant> findAllByThumbnailImageOrFullImageId(String imageId);
 }
