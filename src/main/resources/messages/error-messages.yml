@@ -64,3 +64,6 @@ FD00020:
 FD00021:
   message: "Service not yet implemented"
   debug: "NotImplementedException occurred"
+FD00022:
+  message: "Call to the external service has failed"
+  debug: "ExternalCallException occurred"
