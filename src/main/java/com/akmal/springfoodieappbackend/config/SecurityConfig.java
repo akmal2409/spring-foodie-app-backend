@@ -1,6 +1,7 @@
 package com.akmal.springfoodieappbackend.config;
 
 import com.akmal.springfoodieappbackend.controller.CategoryController;
+import com.akmal.springfoodieappbackend.controller.LocationController;
 import com.akmal.springfoodieappbackend.controller.RestaurantController;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -23,6 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.authorizeRequests(authorizeRequests ->
                     authorizeRequests
                             .antMatchers(HttpMethod.GET, RestaurantController.BASE_URL, RestaurantController.BASE_URL + "/{id}")
+                            .permitAll()
+                            .antMatchers(LocationController.BASE_URL + "/search")
                             .permitAll()
                             .antMatchers(HttpMethod.GET, CategoryController.BASE_URL, CategoryController.BASE_URL + "/{id}")
                             .permitAll()
