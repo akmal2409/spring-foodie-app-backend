@@ -13,4 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 1.0
  */
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+  Iterable<Category> findAllByIconId(String iconId);
 }

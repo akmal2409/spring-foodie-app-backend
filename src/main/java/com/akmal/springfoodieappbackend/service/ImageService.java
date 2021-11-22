@@ -29,7 +29,7 @@ public class ImageService {
   private final RestaurantService restaurantService;
   private final FileService fileService;
   private final TransactionRunner transactionRunner;
-
+  private final CategoryService categoryService;
 
   /**
    * Method is responsible for uploading new images with a given title
@@ -77,7 +77,7 @@ public class ImageService {
    */
   private void removeReferences(String imageId) {
     this.restaurantService.removeImageReferences(imageId);
-
+    this.categoryService.removeImageReferences(imageId);
   }
 
   public Iterable<Image> findAll() {
