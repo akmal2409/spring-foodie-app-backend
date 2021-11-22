@@ -35,6 +35,17 @@ public class TransactionRunner {
   }
 
   /**
+   * The method is responsible for taking in a {@link Runnable} function
+   * and executing it within the same transaction.
+   *
+   * @param runnable {@link Runnable} instance
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void runInTransaction(Runnable runnable) {
+    runnable.run();
+  }
+
+  /**
    * The method is responsible for taking in a {@link Supplier} function
    * and executing it in a new transaction.
    *
@@ -45,5 +56,16 @@ public class TransactionRunner {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public <T> T runInNewTransaction(Supplier<T> supplier) {
     return supplier.get();
+  }
+
+  /**
+   * The method is responsible for taking in a {@link Runnable} function
+   * and executing it in a new transaction.
+   *
+   * @param runnable {@link Runnable} instance
+   */
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void runInNewTransaction(Runnable runnable) {
+    runnable.run();
   }
 }
