@@ -1,5 +1,6 @@
 # Spring Boot Foodie App Backend
 ## Part of a full stack project featuring react app in a separate repo
+https://github.com/akmal2409/spring-foodie-app-react
 
 Foodie App Backend repository contains the source code and documentation of the Spring Boot backend
 
