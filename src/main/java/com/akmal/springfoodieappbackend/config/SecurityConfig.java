@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             .antMatchers(HttpMethod.DELETE, RestaurantController.BASE_URL).hasRole(SecurityConfig.ROLE_ADMIN)
                             .antMatchers(CategoryController.BASE_URL).hasRole(SecurityConfig.ROLE_ADMIN)
                             .anyRequest().authenticated())
+            .csrf().disable()
             .oauth2ResourceServer().jwt();
   }
 }

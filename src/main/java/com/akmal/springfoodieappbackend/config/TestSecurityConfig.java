@@ -22,6 +22,7 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
     http.authorizeRequests(authorizeRequests ->
                     authorizeRequests
                             .anyRequest()
-                            .permitAll());
+                            .permitAll())
+            .csrf().disable();
   }
 }
