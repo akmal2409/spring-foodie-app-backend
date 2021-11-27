@@ -18,3 +18,22 @@ spring:
     username: 08e0e843a8251e
     password: 60e3d00f1c8e83
     protocol: smtp
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextCredentialsAutoConfiguration
+
+cloud:
+  aws:
+    region:
+      static: eu-central-1
+      auto: false
+    stack:
+      auto: false
+    bucket.name: "test-bucket"
+
+tomtom:
+  api:
+    url: "https://api.tomtom.com"
+    key: "testAPIKEY"
+

@@ -4,5 +4,15 @@
       "name": "cloud.aws.bucket.name",
       "type": "java.lang.String",
       "description": "S3 bucket name"
+    },
+    {
+      "name": "tomtom.api.url",
+      "type": "java.lang.String",
+      "description": "TomTom API URL"
+    },
+    {
+      "name": "tomtom.api.key",
+      "type": "java.lang.String",
+      "description": "TomTom API key for search services"
     }
   ] }
