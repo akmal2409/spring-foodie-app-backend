@@ -6,11 +6,13 @@ import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import com.akmal.springfoodieappbackend.mapper.RestaurantMapper;
 import com.akmal.springfoodieappbackend.model.Restaurant;
 import com.akmal.springfoodieappbackend.repository.RestaurantRepository;
+import com.akmal.springfoodieappbackend.shared.database.TransactionRunner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
@@ -31,6 +33,7 @@ public class RestaurantService {
   private final RestaurantRepository restaurantRepository;
   private final RestaurantMapper restaurantMapper;
   private final UserService userService;
+  private final TransactionRunner transactionRunner;
 
   /**
    * The method is responsible for finding all restaurants with specified
@@ -81,7 +84,6 @@ public class RestaurantService {
     final var restaurant = this.restaurantMapper.from(restaurantDto)
             .withOwnerId(currentUser.userId());
 
-
     final var savedRestaurant = this.restaurantRepository.save(restaurant);
     return this.restaurantMapper.toDto(savedRestaurant);
   }
@@ -102,9 +104,7 @@ public class RestaurantService {
             .orElseThrow(() -> new NotFoundException(String.format("Restaurant entity with ID %S was not found", id)));
     final var currentUser = this.userService.getCurrentUser();
 
-    if (!currentUser.userId().equals(existingRestaurant.getOwnerId())) {
-      throw new InsufficientRightsException("You must be the owner of the resource in order to modify it");
-    }
+    this.transactionRunner.runInTransaction(() -> this.verifyUserIsOwner(existingRestaurant));
 
     final var updatedRestaurant = this.restaurantMapper.from(restaurantDto)
             .withId(existingRestaurant.getId())
@@ -125,11 +125,8 @@ public class RestaurantService {
   public void deleteById(long id) {
     final var existingRestaurant = this.restaurantRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(String.format("Restaurant entity with ID %S was not found", id)));
-    final var currentUser = this.userService.getCurrentUser();
 
-    if (!currentUser.userId().equals(existingRestaurant.getOwnerId())) {
-      throw new InsufficientRightsException("You must be the owner of the resource in order to modify it");
-    }
+    this.transactionRunner.runInTransaction(() -> this.verifyUserIsOwner(existingRestaurant));
 
     this.restaurantRepository.deleteById(id);
   }
@@ -169,6 +166,22 @@ public class RestaurantService {
         updatedRestaurant = updatedRestaurant.withFullImage(null);
       }
       this.restaurantRepository.save(updatedRestaurant);
+    }
+  }
+
+  /**
+   * Helper method that checks if the current user is the owner of the resource.
+   *
+   * @param restaurant {@link Restaurant} entity.
+   * @throws InsufficientRightsException if user id does not match restaurant owner id.
+   */
+  @Transactional
+  public void verifyUserIsOwner(Restaurant restaurant) {
+    final var currentUser = this.userService.getCurrentUser();
+
+    if (!StringUtils.hasText(currentUser.userId()) || !StringUtils.hasText(restaurant.getOwnerId())
+            || !currentUser.userId().equals(restaurant.getOwnerId())) {
+      throw new InsufficientRightsException("You must be the owner of the resource in order to modify it");
     }
   }
 }
