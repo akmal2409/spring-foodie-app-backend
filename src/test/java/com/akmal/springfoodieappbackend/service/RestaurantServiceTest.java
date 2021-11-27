@@ -7,13 +7,11 @@ import com.akmal.springfoodieappbackend.mapper.RestaurantMapper;
 import com.akmal.springfoodieappbackend.model.Restaurant;
 import com.akmal.springfoodieappbackend.model.User;
 import com.akmal.springfoodieappbackend.repository.RestaurantRepository;
+import com.akmal.springfoodieappbackend.shared.database.TransactionRunner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +37,8 @@ import static org.mockito.Mockito.*;
 class RestaurantServiceTest {
   @Mock
   private RestaurantRepository restaurantRepository;
+  @Spy
+  private TransactionRunner transactionRunner;
   @Mock
   private RestaurantMapper restaurantMapper;
   @Mock

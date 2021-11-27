@@ -11,6 +11,7 @@ import com.akmal.springfoodieappbackend.service.RestaurantService;
 import com.akmal.springfoodieappbackend.shared.database.TransactionRunner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +51,7 @@ public class MenuService {
             .runInTransaction(() -> this.findRestaurantById(restaurantId));
 
     return this.menuRepository
-            .findAllByRestaurantId(restaurant.getId())
+            .findAllByRestaurantId(PageRequest.of(page, size), restaurant.getId())
             .map(this.menuMapper::toDto);
   }
 
