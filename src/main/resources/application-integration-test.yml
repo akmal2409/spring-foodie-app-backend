@@ -1,12 +1,14 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:AZ
-    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    database: h2
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
   mail:
     host: smtp.mailtrap.io
     port: 25
@@ -22,4 +24,3 @@ tomtom:
   api:
     url: "https://api.tomtom.com"
     key: "testAPIKEY"
-

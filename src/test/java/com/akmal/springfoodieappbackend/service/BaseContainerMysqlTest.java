@@ -20,7 +20,6 @@ import org.testcontainers.containers.MySQLContainer;
  * @since 1.0
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles(profiles = "test")
 public abstract class BaseContainerMysqlTest {
 
   public static MySQLContainer mySQLContainer =

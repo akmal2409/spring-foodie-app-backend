@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(RestaurantController.class)
 @Import({GlobalRestExceptionHandler.class, MessageSourceConfig.class})
 @ExtendWith(MockitoExtension.class)
-@ActiveProfiles(profiles = "test")
+@ActiveProfiles(profiles = {"test", "aws-disabled"})
 class RestaurantControllerTest {
 
   @MockBean

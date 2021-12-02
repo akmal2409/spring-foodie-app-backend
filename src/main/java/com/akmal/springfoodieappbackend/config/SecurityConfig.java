@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Profile("!test & !integrationTest")
+@Profile("!test & !integration-test")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
   public static final String ROLE_USER = "USER";
   public static final String ROLE_RESTAURANT = "RESTAURANT";

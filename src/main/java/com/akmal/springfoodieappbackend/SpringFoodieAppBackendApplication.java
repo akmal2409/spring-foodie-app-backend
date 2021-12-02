@@ -23,7 +23,7 @@ public class SpringFoodieAppBackendApplication {
   }
 
   @Bean
-  @Profile("!test && !integrationTest")
+  @Profile("!test && !integration-test")
   public CommandLineRunner commandLineRunner(RestaurantRepository restaurantRepository,
                                              CategoryRepository categoryRepository,
                                              MenuRepository menuRepository,
