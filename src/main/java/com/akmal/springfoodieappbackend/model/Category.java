@@ -34,7 +34,8 @@ public class Category {
   @NotBlank(message = "Description is required")
   @Size(min = 5)
   private String description;
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name="icon_id", referencedColumnName = "id", nullable = true)
   private Image icon;
   private int groupId;
 }

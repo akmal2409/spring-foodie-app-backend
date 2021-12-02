@@ -9,7 +9,7 @@ package com.akmal.springfoodieappbackend.dto;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-public record CategoryDto(long id,
+public record CategoryDto(Long id,
                           String name,
                           String description,
                           int groupId,
