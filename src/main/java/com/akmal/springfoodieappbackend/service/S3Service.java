@@ -4,6 +4,7 @@ import com.akmal.springfoodieappbackend.exception.FileException;
 import com.akmal.springfoodieappbackend.model.FileMetaData;
 import com.akmal.springfoodieappbackend.shared.validation.file.FileValidatorFactory;
 import com.amazonaws.SdkClientException;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -30,9 +31,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class S3Service implements FileService {
+class S3Service implements FileService {
 
-  private final AmazonS3Client s3Client;
+  private final AmazonS3 s3Client;
   @Value("${cloud.aws.bucket.name}")
   private String bucketName;
 
@@ -58,8 +59,7 @@ public class S3Service implements FileService {
 
     this.s3Client.setObjectAcl(bucketName, key, CannedAccessControlList.PublicRead);
 
-    final var url = this.s3Client.getResourceUrl(bucketName, key);
-
+    final var url = this.s3Client.getUrl(bucketName, key).toString();
     return new FileMetaData(url, key);
   }
 
