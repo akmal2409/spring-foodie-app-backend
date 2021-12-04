@@ -9,7 +9,5 @@ test-job:
   script:
     - ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent install -P integration-test
 
-after_script:
-  - bash <(curl -s https://codecov.io/bash) -f target/site/jacoco/jacoco.xml
 
 
