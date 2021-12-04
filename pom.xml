@@ -288,9 +288,7 @@
                             <excludes>
                                 <exclude>**/*Test.java</exclude>
                             </excludes>
-                            <additionalClasspathElements>
-                                <additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
-                            </additionalClasspathElements>
+                            <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                         </configuration>
                     </plugin>
                 </plugins>
