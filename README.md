@@ -1,4 +1,4 @@
-[![Build Status](https://app.travis-ci.com/akmal2409/spring-foodie-app-backend.svg?branch=main)](https://app.travis-ci.com/akmal2409/spring-foodie-app-backend)
+[![Build Status](https://gitlab.com/akmal2409/spring-foodie-app-backend/badges/main/pipeline.svg)](https://gitlab.com/akmal2409/spring-foodie-app-backend/)
 # Spring Boot Foodie App Backend
 ## Part of a full stack project featuring react app in a separate repo
 https://github.com/akmal2409/spring-foodie-app-react
