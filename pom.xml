@@ -138,7 +138,6 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                    <classifier>sb-executable</classifier>
                 </configuration>
             </plugin>
             <plugin>
@@ -273,7 +272,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>3.0.0-M5</version>
+                        <version>2.22.0</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -289,6 +288,7 @@
                             <excludes>
                                 <exclude>**/*Test.java</exclude>
                             </excludes>
+                            <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                         </configuration>
                     </plugin>
                 </plugins>
