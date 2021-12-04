@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @since 1.0
  */
 @Transactional
-@ActiveProfiles(profiles = {"integration-test", "aws-disabled"})
+@ActiveProfiles(profiles = {"integration-test", "aws-disabled", "integration-test-mysql"})
 class CategoryServiceIT extends BaseContainerMysqlTest {
   @Autowired
   CategoryService categoryService;
