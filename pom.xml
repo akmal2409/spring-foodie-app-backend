@@ -138,6 +138,7 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <classifier>sb-executable</classifier>
                 </configuration>
             </plugin>
             <plugin>
@@ -288,7 +289,6 @@
                             <excludes>
                                 <exclude>**/*Test.java</exclude>
                             </excludes>
-                            <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                         </configuration>
                     </plugin>
                 </plugins>
