@@ -287,7 +287,6 @@
                             <excludes>
                                 <exclude>**/*Test.java</exclude>
                             </excludes>
-                            <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                         </configuration>
                     </plugin>
                 </plugins>

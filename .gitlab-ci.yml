@@ -1,7 +1,20 @@
+# DinD service is required for Testcontainers
+services:
+  - name: docker:19.03.12-dind
+    # explicitly disable tls to avoid docker startup interruption
+    command: ["--tls=false"]
+
+variables:
+  # Instruct Testcontainers to use the daemon of DinD.
+  DOCKER_HOST: "tcp://docker:2375"
+  # Instruct Docker not to start over TLS.
+  DOCKER_TLS_CERTDIR: ""
+  # Improve performance with overlayfs.
+  DOCKER_DRIVER: overlay2
+
 image: eclipse-temurin:17.0.1_12-jdk-focal
 
 stages:
-  - build
   - test
 
 before_script:
