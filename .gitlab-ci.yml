@@ -1,4 +1,4 @@
-image: openjdk:17.0-slim
+image: eclipse-temurin:17.0.1_12-jdk-focal
 
 stages:
   - build
