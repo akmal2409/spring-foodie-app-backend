@@ -54,6 +54,12 @@ https://en.wikipedia.org/wiki/Multitier_architecture
 
 # Building docker image
     mvn clean package dockerfile:build
+    
+# Running unit tests
+    mvn clean test
+
+# Running integration tests with unit tests
+    mvn clean verify -P integration-test
 
 # Technologies 
 * Spring Framework 5
@@ -68,6 +74,9 @@ https://en.wikipedia.org/wiki/Multitier_architecture
 * Spotify Maven Dockerfile Plugin
 * Mockito
 * JUnit 5
+* Testcontainers
+* Maven Surefire for Unit Tests
+* Maven Failsafe for integration tests
 
 ## Prerequisites
 * Java 17
