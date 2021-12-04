@@ -38,6 +38,7 @@ cloud:
     stack:
       auto: false
 
+
     bucket.name: "talci-bucket"
 
 tomtom:
