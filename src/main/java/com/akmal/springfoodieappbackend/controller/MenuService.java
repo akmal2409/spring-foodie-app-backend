@@ -4,6 +4,8 @@ import com.akmal.springfoodieappbackend.dto.MenuDto;
 import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import com.akmal.springfoodieappbackend.mapper.MenuMapper;
 import com.akmal.springfoodieappbackend.model.Menu;
+import com.akmal.springfoodieappbackend.model.MenuItem;
+import com.akmal.springfoodieappbackend.model.OptionSet;
 import com.akmal.springfoodieappbackend.model.Restaurant;
 import com.akmal.springfoodieappbackend.repository.MenuRepository;
 import com.akmal.springfoodieappbackend.repository.RestaurantRepository;
@@ -14,6 +16,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The Service class that manages the data transformation of the {@link com.akmal.springfoodieappbackend.model.Menu}
@@ -83,12 +89,12 @@ public class MenuService {
     final var restaurant = this.transactionRunner
             .runInTransaction(() -> this.findRestaurantById(menuDto.restaurantId()));
 
-    final var mappedMenu = this.menuMapper.from(menuDto);
+    final var mappedMenu = this.menuMapper.from(menuDto)
+            .withRestaurant(restaurant);
 
     this.restaurantService.verifyUserIsOwner(restaurant);
-    final var menuWithRestaurant = mappedMenu.withRestaurant(restaurant);
 
-    return this.menuMapper.toDto(this.menuRepository.save(menuWithRestaurant));
+    return this.menuMapper.toDto(this.menuRepository.save(mappedMenu));
   }
 
   /**

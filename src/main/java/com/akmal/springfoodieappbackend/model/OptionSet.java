@@ -48,10 +48,10 @@ public class OptionSet {
   private final OptionSetType optionSetType;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private Long id;
 
   public enum OptionSetType {
-    BEVERAGE("Beverage"), TOPPING("Topping"), EXTRA("Extra"), SAUCE("Sauce"), DESSERT("Dessert"), SIZE("SIZE");
+    BEVERAGE("Beverage"), TOPPING("Topping"), EXTRA("Extra"), SAUCE("Sauce"), DESSERT("Dessert"), SIZE("Size");
 
     private final String type;
 

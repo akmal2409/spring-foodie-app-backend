@@ -11,7 +11,7 @@ import java.util.List;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-public record OptionSetDto(long id,
+public record OptionSetDto(Long id,
                            String name,
                            int orderPosition,
                            int maximumOptionsSelected,

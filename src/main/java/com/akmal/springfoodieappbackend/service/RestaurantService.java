@@ -177,6 +177,7 @@ public class RestaurantService {
    */
   @Transactional
   public void verifyUserIsOwner(Restaurant restaurant) {
+    Objects.requireNonNull(restaurant, "Restaurant must not be null");
     final var currentUser = this.userService.getCurrentUser();
 
     if (!StringUtils.hasText(currentUser.userId()) || !StringUtils.hasText(restaurant.getOwnerId())

@@ -35,5 +35,5 @@ public class Option {
   private final BigDecimal price;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private Long id;
 }

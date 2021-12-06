@@ -12,7 +12,7 @@ import java.util.List;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-public record MenuItemDto(long id,
+public record MenuItemDto(Long id,
                           String name,
                           BigDecimal basePrice,
                           long menuId,

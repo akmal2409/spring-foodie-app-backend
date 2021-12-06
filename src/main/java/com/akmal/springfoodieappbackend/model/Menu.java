@@ -28,13 +28,13 @@ public class Menu {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "category_id", referencedColumnName = "id")
   private final Category category;
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "menu")
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "menu", orphanRemoval = true)
   private List<MenuItem> menuItems = new ArrayList<>();
   @ManyToOne(fetch = FetchType.LAZY)
   private final Restaurant restaurant;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private Long id;
 
   /**
    * <strong>addMenuItem(MenuItem menuItem)</strong> is a helper method that enables the client

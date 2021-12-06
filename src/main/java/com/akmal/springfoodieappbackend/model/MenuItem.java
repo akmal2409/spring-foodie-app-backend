@@ -25,12 +25,13 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 @Builder
 @With
+@ToString
 public class MenuItem {
   @NotBlank(message = "Name is required")
   private final String name;
   @DecimalMin(value = "0.0", message = "Base price must be greater than 0")
   private final BigDecimal basePrice;
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "menuItem")
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "menuItem", orphanRemoval = true)
   private List<OptionSet> optionSets = new ArrayList<>();
   @ManyToOne(fetch = FetchType.LAZY)
   private final Menu menu;
@@ -40,7 +41,7 @@ public class MenuItem {
   private final Image fullImage;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private Long id;
 
   /**
    * <strong>addOptionSet(OptionSet optionSet)</strong> is a helper method that enables the client

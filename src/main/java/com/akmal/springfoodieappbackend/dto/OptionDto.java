@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-public record OptionDto(long id,
+public record OptionDto(Long id,
                         String name,
                         BigDecimal price) {
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-public record MenuDto(long id,
+public record MenuDto(Long id,
                       @NotEmpty(message = "Name is required") String name,
                       @NotNull(message = "Category is required") CategoryDto category,
                       long restaurantId,
