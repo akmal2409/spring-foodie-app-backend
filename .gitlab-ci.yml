@@ -21,7 +21,7 @@ test-job:
   image: maven:3.8.4-openjdk-17-slim
   stage: test
   script:
-    - ./mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -P integration-test
+    - ./mvn clean test
 
 
 
