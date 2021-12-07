@@ -27,38 +27,32 @@ public class CategoryService {
   private final CategoryRepository categoryRepository;
 
   /**
-   * The method is responsible for finding all {@link com.akmal.springfoodieappbackend.model.Category}
-   * objects in the database and mapping them to {@link CategoryDto} objects.
+   * The method is responsible for finding all {@link
+   * com.akmal.springfoodieappbackend.model.Category} objects in the database and mapping them to
+   * {@link CategoryDto} objects.
    *
    * @return {@link CategoryDto} objects.
    */
   @Transactional(readOnly = true)
   public List<CategoryDto> findAll() {
-    return this.categoryRepository
-            .findAll()
-            .stream()
-            .map(this.categoryMapper::toDto)
-            .toList();
+    return this.categoryRepository.findAll().stream().map(this.categoryMapper::toDto).toList();
   }
 
   /**
-   * The method is responsible for finding the {@link com.akmal.springfoodieappbackend.model.Category}
-   * by ID.
-   * Returns null if not found.
+   * The method is responsible for finding the {@link
+   * com.akmal.springfoodieappbackend.model.Category} by ID. Returns null if not found.
    *
    * @param id of a {@link com.akmal.springfoodieappbackend.model.Category} entity
    * @return {@link CategoryDto} objects.
    */
   @Transactional(readOnly = true)
   public CategoryDto findById(long id) {
-    return this.categoryRepository.findById(id)
-            .map(this.categoryMapper::toDto)
-            .orElse(null);
+    return this.categoryRepository.findById(id).map(this.categoryMapper::toDto).orElse(null);
   }
 
   /**
-   * The method is responsible for saving the {@link CategoryDto} object as
-   * {@link com.akmal.springfoodieappbackend.model.Category} entity in the database.
+   * The method is responsible for saving the {@link CategoryDto} object as {@link
+   * com.akmal.springfoodieappbackend.model.Category} entity in the database.
    *
    * @param categoryDto {@link CategoryDto} object
    * @return {@link CategoryDto} object
@@ -70,20 +64,24 @@ public class CategoryService {
   }
 
   /**
-   * The method is responsible for updating existing {@link com.akmal.springfoodieappbackend.model.Category}
-   * entity.
+   * The method is responsible for updating existing {@link
+   * com.akmal.springfoodieappbackend.model.Category} entity.
    *
    * @param categoryDto {@link CategoryDto} object
-   * @param id          of a {@link com.akmal.springfoodieappbackend.model.Category} entity.
+   * @param id of a {@link com.akmal.springfoodieappbackend.model.Category} entity.
    * @return {@link CategoryDto} object
    * @throws NotFoundException if entity was not found.
    */
   @Transactional
   public CategoryDto update(CategoryDto categoryDto, long id) {
-    final var existingCategory = this.categoryRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(String.format("Category with ID %d was not found", id)));
-    final var mappedCategory = this.categoryMapper.from(categoryDto)
-            .withId(existingCategory.getId());
+    final var existingCategory =
+        this.categoryRepository
+            .findById(id)
+            .orElseThrow(
+                () ->
+                    new NotFoundException(String.format("Category with ID %d was not found", id)));
+    final var mappedCategory =
+        this.categoryMapper.from(categoryDto).withId(existingCategory.getId());
 
     final var savedCategory = this.categoryRepository.save(mappedCategory);
 
@@ -91,9 +89,10 @@ public class CategoryService {
   }
 
   /**
-   * The method is responsible for deleting the {@link com.akmal.springfoodieappbackend.model.Category}
-   * entity by ID.
-   * Succeeds even if the object does not exist.
+   * The method is responsible for deleting the {@link
+   * com.akmal.springfoodieappbackend.model.Category} entity by ID. Succeeds even if the object does
+   * not exist.
+   *
    * @param id of {@link com.akmal.springfoodieappbackend.model.Category} entity.
    */
   @Transactional
@@ -105,7 +104,7 @@ public class CategoryService {
   public void removeImageReferences(String imageId) {
     final Iterable<Category> categories = this.categoryRepository.findAllByIconId(imageId);
 
-    for (Category category: categories) {
+    for (Category category : categories) {
       final var updatedCategory = category.withIcon(null);
       this.categoryRepository.save(updatedCategory);
     }

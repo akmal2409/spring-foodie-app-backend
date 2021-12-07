@@ -29,9 +29,10 @@ public class MenuController {
   private final MenuService menuService;
 
   @GetMapping
-  public Page<MenuDto> findAllByRestaurant(@PathVariable long restaurantId,
-                                           @RequestParam(defaultValue = "0") int page,
-                                           @RequestParam(defaultValue = "10") int size) {
+  public Page<MenuDto> findAllByRestaurant(
+      @PathVariable long restaurantId,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
     return this.menuService.findAllByRestaurantId(restaurantId, page, size);
   }
 
@@ -46,8 +47,7 @@ public class MenuController {
   }
 
   @PutMapping("/{id}")
-  public MenuDto update(@RequestBody @Valid MenuDto menuDto,
-                        @PathVariable long id) {
+  public MenuDto update(@RequestBody @Valid MenuDto menuDto, @PathVariable long id) {
     return this.menuService.update(menuDto, id);
   }
 

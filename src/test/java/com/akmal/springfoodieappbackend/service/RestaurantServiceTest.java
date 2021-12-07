@@ -35,32 +35,21 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class RestaurantServiceTest {
-  @Mock
-  private RestaurantRepository restaurantRepository;
-  @Spy
-  private TransactionRunner transactionRunner;
-  @Mock
-  private RestaurantMapper restaurantMapper;
-  @Mock
-  private UserService userService;
-
-  @InjectMocks
-  private RestaurantService restaurantService;
-
-  @Captor
-  ArgumentCaptor<Restaurant> restaurantArgumentCaptor;
-
-  @Captor
-  ArgumentCaptor<Long> idArgumentCaptor;
+  @Captor ArgumentCaptor<Restaurant> restaurantArgumentCaptor;
+  @Captor ArgumentCaptor<Long> idArgumentCaptor;
+  @Mock private RestaurantRepository restaurantRepository;
+  @Spy private TransactionRunner transactionRunner;
+  @Mock private RestaurantMapper restaurantMapper;
+  @Mock private UserService userService;
+  @InjectMocks private RestaurantService restaurantService;
 
   @Test
   @DisplayName("Test findAll() method returns correct result")
   void testFindAllSucceeds() {
-    final var expectedRestaurantPage = new PageImpl<Restaurant>(
-            List.of(Restaurant.builder().id(1).name("First").build()));
-    final var expectedDTO = new RestaurantDto(1, "First", null, null, 0,
-            null, 0, 0, null,
-            null, null,null);
+    final var expectedRestaurantPage =
+        new PageImpl<Restaurant>(List.of(Restaurant.builder().id(1).name("First").build()));
+    final var expectedDTO =
+        new RestaurantDto(1, "First", null, null, 0, null, 0, 0, null, null, null, null);
 
     given(restaurantRepository.findAll(any(PageRequest.class))).willReturn(expectedRestaurantPage);
     given(restaurantMapper.toDto(any(Restaurant.class))).willReturn(expectedDTO);
@@ -75,9 +64,9 @@ class RestaurantServiceTest {
   @DisplayName("Test findById() method will return correct restaurant")
   void testFindByIdSucceeds() {
     final var expectedRestaurant = Restaurant.builder().id(1).name("First").build();
-    final var expectedDTO = new RestaurantDto(1, "First", null, null, 0,
-            BigDecimal.valueOf(0), 0, 0.0, null,
-            null, null, null);
+    final var expectedDTO =
+        new RestaurantDto(
+            1, "First", null, null, 0, BigDecimal.valueOf(0), 0, 0.0, null, null, null, null);
 
     given(restaurantRepository.findById(anyLong())).willReturn(Optional.of(expectedRestaurant));
     given(restaurantMapper.toDto(any(Restaurant.class))).willReturn(expectedDTO);
@@ -92,9 +81,9 @@ class RestaurantServiceTest {
   void testSaveSucceeds() {
     final var mockRestaurant = mock(Restaurant.class);
     final var expectedRestaurant = Restaurant.builder().id(1).ownerId("3423434").build();
-    final var expectedDTO = new RestaurantDto(1, null, null, null, 0,
-            BigDecimal.valueOf(0), 0, 0, null,
-            null, null, null);
+    final var expectedDTO =
+        new RestaurantDto(
+            1, null, null, null, 0, BigDecimal.valueOf(0), 0, 0, null, null, null, null);
 
     given(userService.getCurrentUser()).willReturn(new User("3423434", "testUser"));
     given(restaurantMapper.from(any(RestaurantDto.class))).willReturn(mockRestaurant);
@@ -113,9 +102,9 @@ class RestaurantServiceTest {
   @DisplayName("Test update() method will update the restaurant entity and return the DTO")
   void testUpdateSucceeds() {
     final var expectedRestaurant = Restaurant.builder().id(1).ownerId("000").build();
-    final var expectedDTO = new RestaurantDto(1, null, null, null, 0,
-            BigDecimal.valueOf(0), 0.0, 0.0, null,
-            null, null, null);
+    final var expectedDTO =
+        new RestaurantDto(
+            1, null, null, null, 0, BigDecimal.valueOf(0), 0.0, 0.0, null, null, null, null);
 
     given(restaurantRepository.findById(any())).willReturn(Optional.of(expectedRestaurant));
     given(userService.getCurrentUser()).willReturn(new User("000", "test"));
@@ -130,34 +119,37 @@ class RestaurantServiceTest {
   }
 
   @Test
-  @DisplayName("Test update() method will fail and  throw NotFoundException, when restaurant was not found")
+  @DisplayName(
+      "Test update() method will fail and  throw NotFoundException, when restaurant was not found")
   void testUpdateFailsRestaurantNotFound() {
-    final var expectedDTO = new RestaurantDto(1, null, null, null, 0,
-            null, 0.0, 0.0,
-            null,
-            null, null,null);
+    final var expectedDTO =
+        new RestaurantDto(1, null, null, null, 0, null, 0.0, 0.0, null, null, null, null);
 
     given(restaurantRepository.findById(anyLong())).willReturn(Optional.empty());
 
-    assertThatThrownBy(() -> {
-      restaurantService.update(1L, expectedDTO);
-    }).isInstanceOf(NotFoundException.class);
+    assertThatThrownBy(
+            () -> {
+              restaurantService.update(1L, expectedDTO);
+            })
+        .isInstanceOf(NotFoundException.class);
   }
 
   @Test
-  @DisplayName("Test update() method will fail and  throw InsufficientRightsException, when owner id and current user id do not match")
+  @DisplayName(
+      "Test update() method will fail and  throw InsufficientRightsException, when owner id and current user id do not match")
   void testUpdateFailsOwnerNotMatch() {
     final var expectedRestaurant = Restaurant.builder().id(1).ownerId("000").build();
-    final var expectedDTO = new RestaurantDto(1, null, null, null, 0,
-            null, 0.0, 0.0, null,
-            null, null, null);
+    final var expectedDTO =
+        new RestaurantDto(1, null, null, null, 0, null, 0.0, 0.0, null, null, null, null);
 
     given(restaurantRepository.findById(anyLong())).willReturn(Optional.of(expectedRestaurant));
     given(userService.getCurrentUser()).willReturn(new User("324", "test"));
 
-    assertThatThrownBy(() -> {
-      restaurantService.update(1L, expectedDTO);
-    }).isInstanceOf(InsufficientRightsException.class);
+    assertThatThrownBy(
+            () -> {
+              restaurantService.update(1L, expectedDTO);
+            })
+        .isInstanceOf(InsufficientRightsException.class);
   }
 
   @Test
@@ -179,22 +171,27 @@ class RestaurantServiceTest {
   void testDeleteByIdFailsNotFound() {
     given(restaurantRepository.findById(anyLong())).willReturn(Optional.empty());
 
-    assertThatThrownBy(() -> {
-      restaurantService.deleteById(1L);
-    }).isInstanceOf(NotFoundException.class);
+    assertThatThrownBy(
+            () -> {
+              restaurantService.deleteById(1L);
+            })
+        .isInstanceOf(NotFoundException.class);
   }
 
   @Test
-  @DisplayName("Test deleteById() will fail, when the owner id does not match to the current user's one")
+  @DisplayName(
+      "Test deleteById() will fail, when the owner id does not match to the current user's one")
   void testDeleteByIdFailsInsufficientRights() {
     final var expectedRestaurant = Restaurant.builder().id(1).ownerId("000").build();
 
     given(restaurantRepository.findById(anyLong())).willReturn(Optional.of(expectedRestaurant));
     given(userService.getCurrentUser()).willReturn(new User("4324", null));
 
-    assertThatThrownBy(() -> {
-      restaurantService.deleteById(1L);
-    }).isInstanceOf(InsufficientRightsException.class);
+    assertThatThrownBy(
+            () -> {
+              restaurantService.deleteById(1L);
+            })
+        .isInstanceOf(InsufficientRightsException.class);
   }
 
   @Test

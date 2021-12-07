@@ -15,9 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@code Order} class represents a single user's order consisting
- * of the {@link OrderLineItem} class's instances. Encapsulates all the data
- * and logic needed to complete the order from a restaurant.
+ * The {@code Order} class represents a single user's order consisting of the {@link OrderLineItem}
+ * class's instances. Encapsulates all the data and logic needed to complete the order from a
+ * restaurant.
+ *
  * @author Akmal Alikhujaev
  * @version 1.0
  * @created 15/10/2021 - 9:34 PM
@@ -32,33 +33,35 @@ import java.util.List;
 @Builder
 public class Order {
   private final String userId;
+
   @CreationTimestamp
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
   private final LocalDateTime placedOn;
+
   @UpdateTimestamp
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
   private final LocalDateTime updatedOn;
+
   @Enumerated(EnumType.STRING)
   private final OrderStatus orderStatus;
-  @Embedded
-  private final Address address;
+
+  @Embedded private final Address address;
+  private final BigDecimal totalPrice;
+
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
   @Builder.Default
   private List<OrderLineItem> orderLineItems = new ArrayList<>();
-  private final BigDecimal totalPrice;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
 
-  public enum OrderStatus {
-    AWAITING_PAYMENT, PROCESSING, PREPARING, DELIVERING, DELIVERED, CANCELED, REJECTED
-  }
-
   /**
-   * <strong>addOrderLineItems(OrderLineItem orderLineItem)</strong> is a helper method that enables the client
-   * to synchronize the both sides of the @OneToMany relationship.
-   * The owning side of the relationship is the {@link OrderLineItem} class
-   * and therefore, it should manage the persistence of an order by itself.
+   * <strong>addOrderLineItems(OrderLineItem orderLineItem)</strong> is a helper method that enables
+   * the client to synchronize the both sides of the @OneToMany relationship. The owning side of the
+   * relationship is the {@link OrderLineItem} class and therefore, it should manage the persistence
+   * of an order by itself.
+   *
    * @param orderLineItem - object representing a single item in the order
    * @return immutable copy of the {@link OrderLineItem} instance with the order reference.
    */
@@ -66,5 +69,15 @@ public class Order {
     final var itemWithOrder = orderLineItem.withOrder(this);
     this.orderLineItems.add(itemWithOrder);
     return itemWithOrder;
+  }
+
+  public enum OrderStatus {
+    AWAITING_PAYMENT,
+    PROCESSING,
+    PREPARING,
+    DELIVERING,
+    DELIVERED,
+    CANCELED,
+    REJECTED
   }
 }

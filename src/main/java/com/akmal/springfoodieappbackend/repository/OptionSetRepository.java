@@ -12,5 +12,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-public interface OptionSetRepository extends JpaRepository<OptionSet, Long> {
-}
+public interface OptionSetRepository extends JpaRepository<OptionSet, Long> {}

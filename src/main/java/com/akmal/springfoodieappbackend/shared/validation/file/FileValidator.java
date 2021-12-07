@@ -17,12 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 public interface FileValidator {
 
   /**
-   * Method is responsible for validating the fields and
-   * contents of the {@link MultipartFile} uploaded by the client.
+   * Method is responsible for validating the fields and contents of the {@link MultipartFile}
+   * uploaded by the client.
    *
    * @param file {@link MultipartFile} object
    * @throws InvalidFileException if file does not meet requirements.
-   * @throws FileException        in case file processing fails.
+   * @throws FileException in case file processing fails.
    */
   void validate(MultipartFile file) throws InvalidFileException, FileException;
 

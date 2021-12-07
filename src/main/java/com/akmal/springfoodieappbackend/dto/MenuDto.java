@@ -2,7 +2,6 @@ package com.akmal.springfoodieappbackend.dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * DTO class implemented using Java Record Classes representing Menu entity

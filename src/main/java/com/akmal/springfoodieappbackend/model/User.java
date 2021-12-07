@@ -1,10 +1,5 @@
 package com.akmal.springfoodieappbackend.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
-
 import java.util.Map;
 
 /**

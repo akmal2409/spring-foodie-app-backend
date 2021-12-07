@@ -40,27 +40,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-
 @WebMvcTest(RestaurantController.class)
 @Import({GlobalRestExceptionHandler.class, MessageSourceConfig.class})
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles(profiles = {"test", "aws-disabled"})
 class RestaurantControllerTest {
 
-  @MockBean
-  RestaurantService restaurantService;
-  @Autowired
-  ObjectMapper objectMapper;
-  @Autowired
-  private MockMvc mockMvc;
+  @MockBean RestaurantService restaurantService;
+  @Autowired ObjectMapper objectMapper;
+  @Autowired private MockMvc mockMvc;
 
   private static RestaurantDto emptyRestaurantWithNameAndId() {
-    return new RestaurantDto(1L, "Test name", null,
-            null, 0, BigDecimal.valueOf(0), 0, 0.0, null, null, null, null);
+    return new RestaurantDto(
+        1L, "Test name", null, null, 0, BigDecimal.valueOf(0), 0, 0.0, null, null, null, null);
   }
 
   private static Page<RestaurantDto> pageOf(List<RestaurantDto> dtos) {
-    return new TestPage<>(dtos, PageRequest.ofSize(Math.max(dtos.size(), 1)), Math.max(dtos.size(), 1));
+    return new TestPage<>(
+        dtos, PageRequest.ofSize(Math.max(dtos.size(), 1)), Math.max(dtos.size(), 1));
   }
 
   @Test
@@ -68,14 +65,15 @@ class RestaurantControllerTest {
   void testFindSucceedsEmptyResponse() throws Exception {
     given(restaurantService.findAll(anyInt(), anyInt())).willReturn(pageOf(List.of()));
 
-    MockHttpServletResponse response = this.mockMvc.perform(get(RestaurantController.BASE_URL)
-                    .accept(MediaType.APPLICATION_JSON))
+    MockHttpServletResponse response =
+        this.mockMvc
+            .perform(get(RestaurantController.BASE_URL).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();
 
-    TestPage<RestaurantDto> actualPage = this.objectMapper.readValue(response.getContentAsString(), new TypeReference<>() {
-    });
+    TestPage<RestaurantDto> actualPage =
+        this.objectMapper.readValue(response.getContentAsString(), new TypeReference<>() {});
 
     assertThat(actualPage.getContent()).isEmpty();
   }
@@ -87,13 +85,14 @@ class RestaurantControllerTest {
     final var expectedPage = pageOf(List.of(expectedRestaurant));
     given(restaurantService.findAll(anyInt(), anyInt())).willReturn(expectedPage);
 
-    MockHttpServletResponse response = this.mockMvc.perform(get(RestaurantController.BASE_URL)
-                    .accept(MediaType.APPLICATION_JSON))
+    MockHttpServletResponse response =
+        this.mockMvc
+            .perform(get(RestaurantController.BASE_URL).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();
-    TestPage<RestaurantDto> actualPage = this.objectMapper.readValue(response.getContentAsString(), new TypeReference<>() {
-    });
+    TestPage<RestaurantDto> actualPage =
+        this.objectMapper.readValue(response.getContentAsString(), new TypeReference<>() {});
 
     assertThat(actualPage.getContent()).hasSize(1);
     assertThat(actualPage.getContent()).containsOnly(expectedRestaurant);
@@ -106,36 +105,42 @@ class RestaurantControllerTest {
 
     given(restaurantService.findById(anyLong())).willReturn(expectedRestaurantDto);
 
-    MockHttpServletResponse response = this.mockMvc.perform(get(RestaurantController.BASE_URL + "/1")
-                    .accept(MediaType.APPLICATION_JSON))
+    MockHttpServletResponse response =
+        this.mockMvc
+            .perform(get(RestaurantController.BASE_URL + "/1").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();
 
-    final var actualRestaurantDto = this.objectMapper.readValue(response.getContentAsString(), RestaurantDto.class);
+    final var actualRestaurantDto =
+        this.objectMapper.readValue(response.getContentAsString(), RestaurantDto.class);
 
-    assertThat(actualRestaurantDto).usingRecursiveComparison()
-            .isEqualTo(expectedRestaurantDto);
+    assertThat(actualRestaurantDto).usingRecursiveComparison().isEqualTo(expectedRestaurantDto);
   }
 
   @Test
-  @DisplayName("Test findById() succeeds when entity has not been found, returns null. Expected HTTP 204")
+  @DisplayName(
+      "Test findById() succeeds when entity has not been found, returns null. Expected HTTP 204")
   void testFindByIdSucceedsEmptyResult() throws Exception {
     given(restaurantService.findById(anyLong())).willReturn(null);
 
-    this.mockMvc.perform(get(RestaurantController.BASE_URL + "/2")
-                    .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNoContent())
-            .andExpect(content().string(""));
+    this.mockMvc
+        .perform(get(RestaurantController.BASE_URL + "/2").accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNoContent())
+        .andExpect(content().string(""));
   }
 
   @Test
   @DisplayName("Test update() will succeed and return DTO")
   void testUpdateSucceeds() throws Exception {
     final var expectedDto = emptyRestaurantWithNameAndId();
-    given(this.restaurantService.update(anyLong(), any(RestaurantDto.class))).willReturn(expectedDto);
+    given(this.restaurantService.update(anyLong(), any(RestaurantDto.class)))
+        .willReturn(expectedDto);
 
-    MockHttpServletResponse response = this.mockMvc.perform(put(RestaurantController.BASE_URL + "/1")
+    MockHttpServletResponse response =
+        this.mockMvc
+            .perform(
+                put(RestaurantController.BASE_URL + "/1")
                     .content(Objects.requireNonNull(asJson(expectedDto)))
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON))
@@ -143,12 +148,10 @@ class RestaurantControllerTest {
             .andReturn()
             .getResponse();
 
-    final var actualDto = this.objectMapper.readValue(response.getContentAsString(), RestaurantDto.class);
+    final var actualDto =
+        this.objectMapper.readValue(response.getContentAsString(), RestaurantDto.class);
 
-    assertThat(actualDto)
-            .isNotNull()
-            .usingRecursiveComparison()
-            .isEqualTo(expectedDto);
+    assertThat(actualDto).isNotNull().usingRecursiveComparison().isEqualTo(expectedDto);
   }
 
   @Test
@@ -157,7 +160,10 @@ class RestaurantControllerTest {
     final var expectedDto = emptyRestaurantWithNameAndId();
     given(this.restaurantService.save(any(RestaurantDto.class))).willReturn(expectedDto);
 
-    MockHttpServletResponse response = this.mockMvc.perform(post(RestaurantController.BASE_URL)
+    MockHttpServletResponse response =
+        this.mockMvc
+            .perform(
+                post(RestaurantController.BASE_URL)
                     .content(Objects.requireNonNull(asJson(expectedDto)))
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON))
@@ -165,30 +171,28 @@ class RestaurantControllerTest {
             .andReturn()
             .getResponse();
 
-    final var actualDto = this.objectMapper.readValue(response.getContentAsString(), RestaurantDto.class);
+    final var actualDto =
+        this.objectMapper.readValue(response.getContentAsString(), RestaurantDto.class);
 
-    assertThat(actualDto)
-            .isNotNull()
-            .usingRecursiveComparison()
-            .isEqualTo(expectedDto);
+    assertThat(actualDto).isNotNull().usingRecursiveComparison().isEqualTo(expectedDto);
   }
 
   @Test
   @DisplayName("Test deleteById() Will succeed")
   void deleteById() throws Exception {
-    this.mockMvc.perform(delete(RestaurantController.BASE_URL + "/2")
-                    .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(""));
+    this.mockMvc
+        .perform(delete(RestaurantController.BASE_URL + "/2").accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().string(""));
   }
 
   @Test
   @DisplayName("Test deleteAll() will succeed")
   void deleteAll() throws Exception {
-    this.mockMvc.perform(delete(RestaurantController.BASE_URL)
-                    .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(""));
+    this.mockMvc
+        .perform(delete(RestaurantController.BASE_URL).accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().string(""));
   }
 
   private <T> String asJson(T obj) {

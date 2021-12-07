@@ -4,8 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Custom exception is thrown in case the user does not have sufficient rights to perform
- * and action.
+ * Custom exception is thrown in case the user does not have sufficient rights to perform and
+ * action.
+ *
  * @author Akmal Alikhujaev
  * @version 1.0
  * @created 12/11/2021 - 9:23 PM
@@ -15,8 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.FORBIDDEN)
 public class InsufficientRightsException extends RuntimeException {
 
-  public InsufficientRightsException() {
-  }
+  public InsufficientRightsException() {}
 
   public InsufficientRightsException(String message) {
     super(message);
@@ -30,7 +30,8 @@ public class InsufficientRightsException extends RuntimeException {
     super(cause);
   }
 
-  public InsufficientRightsException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+  public InsufficientRightsException(
+      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 }

@@ -25,7 +25,6 @@ public class CategoryController {
   public static final String BASE_URL = "/api/categories";
   private final CategoryService categoryService;
 
-
   @GetMapping
   public List<CategoryDto> findAll() {
     return this.categoryService.findAll();
@@ -43,8 +42,7 @@ public class CategoryController {
   }
 
   @PutMapping("/{id}")
-  public CategoryDto update(@PathVariable long id,
-                            @RequestBody CategoryDto categoryDto) {
+  public CategoryDto update(@PathVariable long id, @RequestBody CategoryDto categoryDto) {
     return this.categoryService.update(categoryDto, id);
   }
 

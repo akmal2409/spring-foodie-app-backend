@@ -24,9 +24,9 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
    * @param imageId of the image.
    * @return collection of {@link MenuItem} entities.
    */
-  @Query("SELECT menuItem FROM MenuItem menuItem WHERE menuItem.thumbnailImage.id = ?1 OR menuItem.fullImage.id = ?1")
+  @Query(
+      "SELECT menuItem FROM MenuItem menuItem WHERE menuItem.thumbnailImage.id = ?1 OR menuItem.fullImage.id = ?1")
   Iterable<MenuItem> findAllByThumbnailImageOrFullImageId(String imageId);
-
 
   Collection<MenuItem> findAllByMenuId(Long menuId);
 }

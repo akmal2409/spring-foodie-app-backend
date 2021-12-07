@@ -6,8 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 
 /**
- * Interface represents a contract based on which Mapstruct library generates the
- * mapper class at runtime. Converts Option Object to DTO and vice versa.
+ * Interface represents a contract based on which Mapstruct library generates the mapper class at
+ * runtime. Converts Option Object to DTO and vice versa.
  *
  * @author Akmal Alikhujaev
  * @version 1.0

@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class represents a contract based on which Mapstruct library generates the
- * mapper class at runtime. Converts MenuItem Object to DTO and vice versa.
+ * Class represents a contract based on which Mapstruct library generates the mapper class at
+ * runtime. Converts MenuItem Object to DTO and vice versa.
  *
  * @author Akmal Alikhujaev
  * @version 1.0
@@ -26,12 +26,13 @@ import java.util.Optional;
  */
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public abstract class MenuItemMapper {
-  @Autowired
-  private OptionSetMapper optionSetMapper;
+  @Autowired private OptionSetMapper optionSetMapper;
 
   @Mapping(target = "menuId", source = "menuItem.menu.id")
   @Mapping(target = "optionSets", expression = "java(mapOptionSetsToDto(menuItem.getOptionSets()))")
-  @Mapping(target = "thumbnailImage", expression = "java(mapImageToDto(menuItem.getThumbnailImage()))")
+  @Mapping(
+      target = "thumbnailImage",
+      expression = "java(mapImageToDto(menuItem.getThumbnailImage()))")
   @Mapping(target = "fullImage", expression = "java(mapImageToDto(menuItem.getFullImage()))")
   public abstract MenuItemDto toDto(MenuItem menuItem);
 
@@ -42,19 +43,15 @@ public abstract class MenuItemMapper {
   public abstract MenuItem from(MenuItemDto menuItemDto);
 
   protected List<OptionSetDto> mapOptionSetsToDto(List<OptionSet> optionSets) {
-    return Optional.ofNullable(optionSets)
-            .orElse(List.of())
-            .stream()
-            .map(this.optionSetMapper::toDto)
-            .toList();
+    return Optional.ofNullable(optionSets).orElse(List.of()).stream()
+        .map(this.optionSetMapper::toDto)
+        .toList();
   }
 
   protected List<OptionSet> mapToOptionSets(List<OptionSetDto> optionSets) {
-    return Optional.ofNullable(optionSets)
-            .orElse(List.of())
-            .stream()
-            .map(this.optionSetMapper::from)
-            .toList();
+    return Optional.ofNullable(optionSets).orElse(List.of()).stream()
+        .map(this.optionSetMapper::from)
+        .toList();
   }
 
   protected ImageDto mapImageToDto(Image image) {

@@ -11,10 +11,8 @@ import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 /**
- * Class represents option in an option set.
- * Option may relate to multiple option sets to reduce the overhead
- * of storing unnecessary data and reuse the values to improve user
- * experience.
+ * Class represents option in an option set. Option may relate to multiple option sets to reduce the
+ * overhead of storing unnecessary data and reuse the values to improve user experience.
  *
  * @author Akmal ALikhujaev
  * @version 1.0
@@ -31,8 +29,10 @@ import java.math.BigDecimal;
 public class Option {
   @NotBlank(message = "Name is required")
   private final String name;
+
   @DecimalMin(value = "0.0", message = "Price is required")
   private final BigDecimal price;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
