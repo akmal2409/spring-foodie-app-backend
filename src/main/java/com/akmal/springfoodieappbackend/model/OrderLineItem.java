@@ -30,6 +30,6 @@ import javax.persistence.ManyToOne;
 @With
 public final class OrderLineItem extends AbstractItem {
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "order_id")
+  @JoinColumn(name = "order_id", referencedColumnName = "id")
   private final Order order;
 }

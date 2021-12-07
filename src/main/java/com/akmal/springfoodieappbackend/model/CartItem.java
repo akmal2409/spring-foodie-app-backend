@@ -30,6 +30,6 @@ import javax.persistence.ManyToOne;
 @With
 public final class CartItem extends AbstractItem {
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "cart_id")
+  @JoinColumn(name = "cart_id", referencedColumnName = "id")
   private final Cart cart;
 }
