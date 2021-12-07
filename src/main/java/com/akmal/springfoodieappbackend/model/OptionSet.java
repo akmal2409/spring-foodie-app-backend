@@ -41,8 +41,10 @@ public class OptionSet {
   @JoinTable(name = "option_set_options",
           joinColumns = @JoinColumn(name = "option_set_id"),
           inverseJoinColumns = @JoinColumn(name = "option_id"))
+  @Builder.Default
   private List<Option> options = new ArrayList<>();
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "menu_item_id", referencedColumnName = "id")
   private final MenuItem menuItem;
   @Enumerated(EnumType.STRING)
   private final OptionSetType optionSetType;

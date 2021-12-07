@@ -23,12 +23,12 @@ import java.time.LocalTime;
 @Builder
 @With
 public class OpeningTime {
-  @Column(name = "openingDay")
+  @Column(name = "opening_day")
   private final int day;
   private final LocalTime openFrom;
   private final LocalTime openTill;
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(referencedColumnName = "id")
+  @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
   private final Restaurant restaurant;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

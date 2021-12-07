@@ -56,7 +56,7 @@ class RestaurantControllerTest {
 
   private static RestaurantDto emptyRestaurantWithNameAndId() {
     return new RestaurantDto(1L, "Test name", null,
-            null, 0, BigDecimal.valueOf(0), 0, 0.0, null, null, null, null, null);
+            null, 0, BigDecimal.valueOf(0), 0, 0.0, null, null, null, null);
   }
 
   private static Page<RestaurantDto> pageOf(List<RestaurantDto> dtos) {

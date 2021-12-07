@@ -24,8 +24,7 @@ import java.util.Optional;
 public abstract class RestaurantMapper {
   @Autowired
   private AddressMapper addressMapper;
-  @Autowired
-  private MenuMapper menuMapper;
+
   @Autowired
   private CategoryMapper categoryMapper;
   @Autowired
@@ -34,7 +33,6 @@ public abstract class RestaurantMapper {
   @Mapping(target = "address", expression = "java(mapAddressToDto(restaurant.getAddress()))")
   @Mapping(target = "openingTimes", expression = "java(mapOpeningTimesToDto(restaurant.getOpeningTimes()))")
   @Mapping(target = "categories", expression = "java(mapCategoriesToDto(restaurant.getCategories()))")
-  @Mapping(target = "menus", expression = "java(mapMenusToDto(restaurant.getMenus()))")
   @Mapping(target = "thumbnailImage", expression = "java(mapImageToDto(restaurant.getThumbnailImage()))")
   @Mapping(target = "fullImage", expression = "java(mapImageToDto(restaurant.getFullImage()))")
   public abstract RestaurantDto toDto(Restaurant restaurant);
@@ -42,7 +40,6 @@ public abstract class RestaurantMapper {
   @Mapping(target = "address", expression = "java(mapToAddress(restaurantDto.address()))")
   @Mapping(target = "openingTimes", expression = "java(mapToOpeningTimes(restaurantDto.openingTimes()))")
   @Mapping(target = "categories", expression = "java(mapToCategories(restaurantDto.categories()))")
-  @Mapping(target = "menus", expression = "java(mapToMenus(restaurantDto.menus()))")
   @Mapping(target = "thumbnailImage", expression = "java(mapToImage(restaurantDto.thumbnailImage()))")
   @Mapping(target = "fullImage", expression = "java(mapToImage(restaurantDto.fullImage()))")
   public abstract Restaurant from(RestaurantDto restaurantDto);
@@ -76,22 +73,6 @@ public abstract class RestaurantMapper {
             .orElse(List.of())
             .stream()
             .map(this.categoryMapper::from)
-            .toList();
-  }
-
-  protected List<MenuDto> mapMenusToDto(List<Menu> menus) {
-    return Optional.ofNullable(menus)
-            .orElse(List.of())
-            .stream()
-            .map(this.menuMapper::toDto)
-            .toList();
-  }
-
-  protected List<Menu> mapToMenus(List<MenuDto> menus) {
-    return Optional.ofNullable(menus)
-            .orElse(List.of())
-            .stream()
-            .map(this.menuMapper::from)
             .toList();
   }
 

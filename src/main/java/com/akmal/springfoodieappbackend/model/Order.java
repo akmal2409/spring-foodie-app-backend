@@ -43,6 +43,7 @@ public class Order {
   @Embedded
   private final Address address;
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
+  @Builder.Default
   private List<OrderLineItem> orderLineItems = new ArrayList<>();
   private final BigDecimal totalPrice;
   @Id
