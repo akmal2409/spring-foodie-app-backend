@@ -33,12 +33,10 @@ public abstract class MenuMapper {
 
   @Mapping(target = "category", expression = "java(mapCategoryToDto(menu.getCategory()))")
   @Mapping(target = "restaurantId", source = "restaurant.id")
-  @Mapping(target = "menuItems", expression = "java(mapMenuItemsToDto(menu.getMenuItems()))")
   public abstract MenuDto toDto(Menu menu);
 
   @Mapping(target = "category", expression = "java(mapToCategory(menuDto.category()))")
   @Mapping(target = "restaurant", ignore = true)
-  @Mapping(target = "menuItems", expression = "java(mapToMenuItems(menuDto.menuItems()))")
   public abstract Menu from(MenuDto menuDto);
 
   protected CategoryDto mapCategoryToDto(Category category) {

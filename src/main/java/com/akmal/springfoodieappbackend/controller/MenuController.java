@@ -1,6 +1,7 @@
 package com.akmal.springfoodieappbackend.controller;
 
 import com.akmal.springfoodieappbackend.dto.MenuDto;
+import com.akmal.springfoodieappbackend.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

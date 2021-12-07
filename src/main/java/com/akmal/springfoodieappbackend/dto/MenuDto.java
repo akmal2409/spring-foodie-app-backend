@@ -16,6 +16,5 @@ import java.util.List;
 public record MenuDto(Long id,
                       @NotEmpty(message = "Name is required") String name,
                       @NotNull(message = "Category is required") CategoryDto category,
-                      long restaurantId,
-                      List<MenuItemDto> menuItems) {
+                      long restaurantId) {
 }
