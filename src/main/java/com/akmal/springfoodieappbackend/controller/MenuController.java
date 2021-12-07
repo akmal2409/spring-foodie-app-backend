@@ -25,10 +25,10 @@ import static com.akmal.springfoodieappbackend.shared.http.ResponseEntityConvert
 @RequestMapping(MenuController.BASE_URL)
 @RequiredArgsConstructor
 public class MenuController {
-  public static final String BASE_URL = "/api/menus";
+  public static final String BASE_URL = "/api/restaurants/{restaurantId}/menus";
   private final MenuService menuService;
 
-  @GetMapping("/restaurant/{restaurantId}")
+  @GetMapping
   public Page<MenuDto> findAllByRestaurant(@PathVariable long restaurantId,
                                            @RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "10") int size) {
