@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.akmal.springfoodieappbackend.shared.http.ResponseEntityConverter.ok;
 
 /**
@@ -19,12 +21,17 @@ import static com.akmal.springfoodieappbackend.shared.http.ResponseEntityConvert
 @RequestMapping(MenuItemController.BASE_URL)
 @RequiredArgsConstructor
 public class MenuItemController {
-  public static final String BASE_URL = "/api/menu-items";
+  public static final String BASE_URL = "/api/menus/{menuId}/menu-items";
   private final MenuItemService menuItemService;
 
   @GetMapping("/{id}")
   public ResponseEntity<MenuItemDto> findById(@PathVariable Long id) {
     return ok(this.menuItemService.findById(id));
+  }
+
+  @GetMapping
+  public List<MenuItemDto> findByMenuId(@PathVariable Long menuId) {
+    return this.menuItemService.findByMenuId(menuId);
   }
 
   @PostMapping
