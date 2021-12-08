@@ -4,7 +4,9 @@ import com.akmal.springfoodieappbackend.dto.RestaurantDto;
 import com.akmal.springfoodieappbackend.exception.InsufficientRightsException;
 import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import com.akmal.springfoodieappbackend.mapper.RestaurantMapper;
+import com.akmal.springfoodieappbackend.model.OpeningTime;
 import com.akmal.springfoodieappbackend.model.Restaurant;
+import com.akmal.springfoodieappbackend.repository.OpeningTimeRepository;
 import com.akmal.springfoodieappbackend.repository.RestaurantRepository;
 import com.akmal.springfoodieappbackend.shared.database.TransactionRunner;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,7 @@ import java.util.Objects;
 public class RestaurantService {
   private final RestaurantRepository restaurantRepository;
   private final RestaurantMapper restaurantMapper;
+  private final OpeningTimeRepository openingTimeRepository;
   private final UserService userService;
   private final TransactionRunner transactionRunner;
 
@@ -80,7 +83,10 @@ public class RestaurantService {
     final var restaurant =
         this.restaurantMapper.from(restaurantDto).withOwnerId(currentUser.userId());
 
+    this.linkOpeningTimes(restaurant);
+
     final var savedRestaurant = this.restaurantRepository.save(restaurant);
+
     return this.restaurantMapper.toDto(savedRestaurant);
   }
 
@@ -108,6 +114,8 @@ public class RestaurantService {
     final var currentUser = this.userService.getCurrentUser();
 
     this.transactionRunner.runInTransaction(() -> this.verifyUserIsOwner(existingRestaurant));
+
+    this.linkOpeningTimes(existingRestaurant);
 
     final var updatedRestaurant =
         this.restaurantMapper
@@ -195,6 +203,21 @@ public class RestaurantService {
         || !currentUser.userId().equals(restaurant.getOwnerId())) {
       throw new InsufficientRightsException(
           "You must be the owner of the resource in order to modify it");
+    }
+  }
+
+  /**
+   * The method is responsible for setting the relation to the parent from {@link OpeningTime} to
+   * {@link Restaurant} due to JPA nature the owning side of a ManyToMany relationship is required
+   * to manage the persistence of the parent in the relationship.
+   *
+   * @param restaurant {@link Restaurant} entity.
+   */
+  private void linkOpeningTimes(final Restaurant restaurant) {
+    if (restaurant.getOpeningTimes() != null) {
+      for (OpeningTime time : restaurant.getOpeningTimes()) {
+        time.setRestaurant(restaurant);
+      }
     }
   }
 }

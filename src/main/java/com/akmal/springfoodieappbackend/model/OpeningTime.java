@@ -29,7 +29,8 @@ public class OpeningTime {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
-  private final Restaurant restaurant;
+  @Setter
+  private Restaurant restaurant;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
