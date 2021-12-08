@@ -47,6 +47,7 @@ public class Restaurant {
       cascade = CascadeType.ALL,
       mappedBy = "restaurant",
       orphanRemoval = true)
+  @OrderBy(value = "day asc")
   @Builder.Default
   private List<OpeningTime> openingTimes = new ArrayList<>();
 
