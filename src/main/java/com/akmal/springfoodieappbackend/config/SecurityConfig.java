@@ -1,8 +1,6 @@
 package com.akmal.springfoodieappbackend.config;
 
-import com.akmal.springfoodieappbackend.controller.CategoryController;
-import com.akmal.springfoodieappbackend.controller.LocationController;
-import com.akmal.springfoodieappbackend.controller.RestaurantController;
+import com.akmal.springfoodieappbackend.controller.*;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
@@ -45,6 +43,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .hasRole(SecurityConfig.ROLE_ADMIN)
                     .antMatchers(CategoryController.BASE_URL)
                     .hasRole(SecurityConfig.ROLE_ADMIN)
+                    .antMatchers(
+                        HttpMethod.POST,
+                        MenuItemController.BASE_URL + "/menu-items/*",
+                        MenuItemController.BASE_URL + "/menus/{menuId}/menu-items/*")
+                    .hasAnyRole(SecurityConfig.ROLE_ADMIN, SecurityConfig.ROLE_RESTAURANT)
+                    .antMatchers(
+                        HttpMethod.PUT,
+                        MenuItemController.BASE_URL + "/menu-items/*",
+                        MenuItemController.BASE_URL + "/menus/{menuId}/menu-items/*")
+                    .hasAnyRole(SecurityConfig.ROLE_ADMIN, SecurityConfig.ROLE_RESTAURANT)
+                    .antMatchers(
+                        HttpMethod.DELETE,
+                        MenuItemController.BASE_URL + "/menu-items/*",
+                        MenuItemController.BASE_URL + "/menus/{menuId}/menu-items/*")
+                    .hasAnyRole(SecurityConfig.ROLE_ADMIN, SecurityConfig.ROLE_RESTAURANT)
+                    .antMatchers(HttpMethod.POST, MenuController.BASE_URL + "/menus/*")
+                    .hasAnyRole(SecurityConfig.ROLE_ADMIN, SecurityConfig.ROLE_RESTAURANT)
+                    .antMatchers(HttpMethod.PUT, MenuController.BASE_URL + "/menus/*")
+                    .hasAnyRole(SecurityConfig.ROLE_ADMIN, SecurityConfig.ROLE_RESTAURANT)
+                    .antMatchers(HttpMethod.DELETE, MenuController.BASE_URL + "/menus/*")
+                    .hasAnyRole(SecurityConfig.ROLE_ADMIN, SecurityConfig.ROLE_RESTAURANT)
                     .anyRequest()
                     .authenticated())
         .csrf()
