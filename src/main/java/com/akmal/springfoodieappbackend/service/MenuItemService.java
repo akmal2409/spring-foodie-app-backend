@@ -87,6 +87,8 @@ public class MenuItemService {
     final var existingMenu =
         this.transactionRunner.runInTransaction(() -> this.getExistingMenu(menuItemDto.menuId()));
 
+    this.restaurantService.verifyUserIsOwner(existingMenu.getRestaurant());
+
     final var mappedMenuItem =
         this.menuItemMapper.from(menuItemDto).withMenu(existingMenu).withId(null);
 
@@ -107,6 +109,8 @@ public class MenuItemService {
   public MenuItemDto update(MenuItemDto menuItemDto, Long id) {
     final var existingMenu =
         this.transactionRunner.runInTransaction(() -> this.getExistingMenu(menuItemDto.menuId()));
+
+    this.restaurantService.verifyUserIsOwner(existingMenu.getRestaurant());
 
     final var existingMenuItem =
         this.menuItemRepository
@@ -131,6 +135,18 @@ public class MenuItemService {
    */
   @Transactional
   public void deleteById(Long id) {
+    final var existingMenuItemOptional = this.menuItemRepository.findById(id);
+
+    if (existingMenuItemOptional.isEmpty()) {
+      return;
+    }
+
+    final var menu = existingMenuItemOptional.get().getMenu();
+
+    if (menu != null) {
+      this.restaurantService.verifyUserIsOwner(menu.getRestaurant());
+    }
+
     this.menuItemRepository.deleteById(id);
   }
 
