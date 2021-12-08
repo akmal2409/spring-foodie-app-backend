@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class represents a contract based on which Mapstruct library generates the
- * mapper class at runtime. Converts OptionSer Object to DTO and vice versa.
+ * Class represents a contract based on which Mapstruct library generates the mapper class at
+ * runtime. Converts OptionSer Object to DTO and vice versa.
  *
  * @author Akmal Alikhujaev
  * @version 1.0
@@ -24,15 +24,16 @@ import java.util.Optional;
  */
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public abstract class OptionSetMapper {
-  @Autowired
-  private OptionMapper optionMapper;
+  @Autowired private OptionMapper optionMapper;
 
   @Mapping(target = "optionSetType", source = "optionSetType.type")
   @Mapping(target = "options", expression = "java(mapOptionsToDto(optionSet.getOptions()))")
   @Mapping(target = "menuItemId", source = "menuItem.id")
   public abstract OptionSetDto toDto(OptionSet optionSet);
 
-  @Mapping(target = "optionSetType", expression = "java(mapOptionSetType(optionSetDto.optionSetType()))")
+  @Mapping(
+      target = "optionSetType",
+      expression = "java(mapOptionSetType(optionSetDto.optionSetType()))")
   @Mapping(target = "options", expression = "java(mapToOptions(optionSetDto.options()))")
   @Mapping(target = "menuItem", ignore = true)
   public abstract OptionSet from(OptionSetDto optionSetDto);
@@ -42,18 +43,14 @@ public abstract class OptionSetMapper {
   }
 
   protected List<OptionDto> mapOptionsToDto(List<Option> options) {
-    return Optional.ofNullable(options)
-            .orElse(List.of())
-            .stream()
-            .map(this.optionMapper::toDto)
-            .toList();
+    return Optional.ofNullable(options).orElse(List.of()).stream()
+        .map(this.optionMapper::toDto)
+        .toList();
   }
 
   protected List<Option> mapToOptions(List<OptionDto> options) {
-    return Optional.ofNullable(options)
-            .orElse(List.of())
-            .stream()
-            .map(this.optionMapper::from)
-            .toList();
+    return Optional.ofNullable(options).orElse(List.of()).stream()
+        .map(this.optionMapper::from)
+        .toList();
   }
 }

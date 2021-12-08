@@ -4,8 +4,8 @@ import com.akmal.springfoodieappbackend.model.FileMetaData;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * The FileService interface represents a contract needed to upload the files
- * to the external service.
+ * The FileService interface represents a contract needed to upload the files to the external
+ * service.
  *
  * @author Akmal Alikhujaev
  * @version 1.0
@@ -15,14 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface FileService {
 
-
-  enum FileType {
-    IMAGE, PDF
-  }
-
   /**
-   * Abstract method that every class must implement in order
-   * to let client to upload the files.
+   * Abstract method that every class must implement in order to let client to upload the files.
+   *
    * @param file {@link MultipartFile} object
    * @param type {@link FileType} object
    * @return {@link FileMetaData} object.
@@ -31,7 +26,13 @@ public interface FileService {
 
   /**
    * Method is responsible for deleting the file by key.
+   *
    * @param key of the file
    */
   void deleteById(String key);
+
+  enum FileType {
+    IMAGE,
+    PDF
+  }
 }

@@ -4,8 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * The class represents the exception that is thrown if the file related operations
- * fail.
+ * The class represents the exception that is thrown if the file related operations fail.
  *
  * @author Akmal Alikhujaev
  * @version 1.0
@@ -32,7 +31,8 @@ public class FileException extends RuntimeException {
     super(cause);
   }
 
-  public FileException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+  public FileException(
+      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 }

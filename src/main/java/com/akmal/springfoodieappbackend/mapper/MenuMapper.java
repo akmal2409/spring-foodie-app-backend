@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class represents a contract based on which Mapstruct library generates the
- * mapper class at runtime. Converts Menu Object to DTO and vice versa.
+ * Class represents a contract based on which Mapstruct library generates the mapper class at
+ * runtime. Converts Menu Object to DTO and vice versa.
  *
  * @author Akmal Alikhujaev
  * @version 1.0
@@ -26,19 +26,15 @@ import java.util.Optional;
  */
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public abstract class MenuMapper {
-  @Autowired
-  private CategoryMapper categoryMapper;
-  @Autowired
-  private MenuItemMapper menuItemMapper;
+  @Autowired private CategoryMapper categoryMapper;
+  @Autowired private MenuItemMapper menuItemMapper;
 
   @Mapping(target = "category", expression = "java(mapCategoryToDto(menu.getCategory()))")
   @Mapping(target = "restaurantId", source = "restaurant.id")
-  @Mapping(target = "menuItems", expression = "java(mapMenuItemsToDto(menu.getMenuItems()))")
   public abstract MenuDto toDto(Menu menu);
 
   @Mapping(target = "category", expression = "java(mapToCategory(menuDto.category()))")
   @Mapping(target = "restaurant", ignore = true)
-  @Mapping(target = "menuItems", expression = "java(mapToMenuItems(menuDto.menuItems()))")
   public abstract Menu from(MenuDto menuDto);
 
   protected CategoryDto mapCategoryToDto(Category category) {
@@ -50,18 +46,14 @@ public abstract class MenuMapper {
   }
 
   protected List<MenuItemDto> mapMenuItemsToDto(List<MenuItem> menuItems) {
-    return Optional.ofNullable(menuItems)
-            .orElse(List.of())
-            .stream()
-            .map(this.menuItemMapper::toDto)
-            .toList();
+    return Optional.ofNullable(menuItems).orElse(List.of()).stream()
+        .map(this.menuItemMapper::toDto)
+        .toList();
   }
 
   protected List<MenuItem> mapToMenuItems(List<MenuItemDto> menuItems) {
-    return Optional.ofNullable(menuItems)
-            .orElse(List.of())
-            .stream()
-            .map(this.menuItemMapper::from)
-            .toList();
+    return Optional.ofNullable(menuItems).orElse(List.of()).stream()
+        .map(this.menuItemMapper::from)
+        .toList();
   }
 }

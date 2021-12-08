@@ -1,6 +1,7 @@
 package com.akmal.springfoodieappbackend.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -35,6 +36,7 @@ public abstract sealed class AbstractItem permits OrderLineItem, CartItem {
   @JoinColumn(name = "menu_item_id")
   private final MenuItem menuItem;
   @ManyToMany(fetch = FetchType.LAZY)
+  @Builder.Default
   private final List<Option> selectedOptions = new ArrayList<>();
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

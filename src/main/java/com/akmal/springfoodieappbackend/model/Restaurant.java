@@ -28,25 +28,37 @@ import java.util.List;
 public class Restaurant {
   @NotBlank(message = "Name is required")
   private final String name;
+
   @NotBlank(message = "Phone is required")
   private final String phone;
-  @Embedded
-  private final Address address;
+
+  @Embedded private final Address address;
   private final int averageDeliveryTime;
   private final BigDecimal deliveryCost;
   private final double minimumOrderValue;
   private final String ownerId;
+
   @DecimalMin(value = "0.0")
   @DecimalMax(value = "5.0")
   private final double rating;
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
+
+  @OneToMany(
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      mappedBy = "restaurant",
+      orphanRemoval = true)
+  @Builder.Default
   private List<OpeningTime> openingTimes = new ArrayList<>();
-  @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+  @Builder.Default
   private List<Category> categories = new ArrayList<>();
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
-  private List<Menu> menus = new ArrayList<>();
+
   @OneToOne(fetch = FetchType.LAZY)
   private Image thumbnailImage;
+
   @OneToOne(fetch = FetchType.LAZY)
   private Image fullImage;
 
@@ -55,10 +67,11 @@ public class Restaurant {
   private long id;
 
   /**
-   * <strong>addOpeningTime(OpeningTime openingTime)</strong> is a helper method that enables the client
-   * to synchronize the both sides of the @OneToMany relationship.
-   * The owning side of the relationship is the {@link OpeningTime} class
-   * and therefore, it should manage the persistence of the restaurant by itself.
+   * <strong>addOpeningTime(OpeningTime openingTime)</strong> is a helper method that enables the
+   * client to synchronize the both sides of the @OneToMany relationship. The owning side of the
+   * relationship is the {@link OpeningTime} class and therefore, it should manage the persistence
+   * of the restaurant by itself.
+   *
    * @param openingTime - object representing opening time of a restaurant
    * @return immutable copy of the {@link OpeningTime} instance with the restaurant reference
    */

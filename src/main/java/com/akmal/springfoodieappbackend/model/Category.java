@@ -7,10 +7,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Class represents restaurant's category.
- * A restaurant may relate to several categories, whereas
- * one category may relate to multiple restaurants, hence,
- * {@code @ManyToMany} was used.
+ * Class represents restaurant's category. A restaurant may relate to several categories, whereas
+ * one category may relate to multiple restaurants, hence, {@code @ManyToMany} was used.
  *
  * @author Akmal ALikhujaev
  * @version 1.0
@@ -28,14 +26,18 @@ public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
+
   @NotBlank(message = "Name is required")
   @Size(min = 3)
   private String name;
+
   @NotBlank(message = "Description is required")
   @Size(min = 5)
   private String description;
+
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name="icon_id", referencedColumnName = "id", nullable = true)
+  @JoinColumn(name = "icon_id", referencedColumnName = "id", nullable = true)
   private Image icon;
+
   private int groupId;
 }

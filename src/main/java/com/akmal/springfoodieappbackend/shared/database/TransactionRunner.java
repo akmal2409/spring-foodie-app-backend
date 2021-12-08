@@ -7,10 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.function.Supplier;
 
 /**
- * The helper class enables us to run the methods in the same or in a new transaction.
- * The current limitations of spring proxy classes is that if the method is called within
- * the same class, then it will not be intercepted by the proxy, hence will be in a new transactions.
- * This can be overcome by having this helper class through which those said methods will be intercepted.
+ * The helper class enables us to run the methods in the same or in a new transaction. The current
+ * limitations of spring proxy classes is that if the method is called within the same class, then
+ * it will not be intercepted by the proxy, hence will be in a new transactions. This can be
+ * overcome by having this helper class through which those said methods will be intercepted.
  *
  * @author Akmal Alikhujaev
  * @version 1.0
@@ -22,11 +22,11 @@ import java.util.function.Supplier;
 public class TransactionRunner {
 
   /**
-   * The method is responsible for taking in a {@link Supplier} function
-   * and executing it within the same transaction
+   * The method is responsible for taking in a {@link Supplier} function and executing it within the
+   * same transaction
    *
    * @param supplier {@link Supplier} instance
-   * @param <T>      generic type
+   * @param <T> generic type
    * @return result of the supplier function
    */
   @Transactional(propagation = Propagation.REQUIRED)
@@ -35,8 +35,8 @@ public class TransactionRunner {
   }
 
   /**
-   * The method is responsible for taking in a {@link Runnable} function
-   * and executing it within the same transaction.
+   * The method is responsible for taking in a {@link Runnable} function and executing it within the
+   * same transaction.
    *
    * @param runnable {@link Runnable} instance
    */
@@ -46,11 +46,11 @@ public class TransactionRunner {
   }
 
   /**
-   * The method is responsible for taking in a {@link Supplier} function
-   * and executing it in a new transaction.
+   * The method is responsible for taking in a {@link Supplier} function and executing it in a new
+   * transaction.
    *
    * @param supplier {@link Supplier} instance
-   * @param <T>      generic type
+   * @param <T> generic type
    * @return result of the supplier function
    */
   @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -59,8 +59,8 @@ public class TransactionRunner {
   }
 
   /**
-   * The method is responsible for taking in a {@link Runnable} function
-   * and executing it in a new transaction.
+   * The method is responsible for taking in a {@link Runnable} function and executing it in a new
+   * transaction.
    *
    * @param runnable {@link Runnable} instance
    */

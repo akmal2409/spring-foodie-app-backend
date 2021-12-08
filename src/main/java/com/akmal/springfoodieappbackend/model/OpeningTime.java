@@ -5,10 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalTime;
 
-
 /**
- * Class represents opening times of a facility.
- * Day is an integer from 1 to 7 where 1 is Sunday.
+ * Class represents opening times of a facility. Day is an integer from 1 to 7 where 1 is Sunday.
  *
  * @author Akmal Alikhujaev
  * @version 1.0
@@ -23,13 +21,16 @@ import java.time.LocalTime;
 @Builder
 @With
 public class OpeningTime {
-  @Column(name = "openingDay")
+  @Column(name = "opening_day")
   private final int day;
+
   private final LocalTime openFrom;
   private final LocalTime openTill;
+
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(referencedColumnName = "id")
+  @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
   private final Restaurant restaurant;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;

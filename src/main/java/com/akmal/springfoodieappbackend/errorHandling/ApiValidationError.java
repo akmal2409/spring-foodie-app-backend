@@ -4,9 +4,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
+ *
+ *
  * <h1>ApiValidationError</h1>
- * The class represents the error object that will be returned in
- * case if validation in a certain method call fails.
+ *
+ * The class represents the error object that will be returned in case if validation in a certain
+ * method call fails.
+ *
  * @author Akmal Alikhujaev
  * @version 1.0
  * @created 14/11/2021 - 1:36 PM
@@ -29,19 +33,18 @@ public class ApiValidationError extends ApiSubError {
   }
 
   /**
-   * Method returns the {@link Builder}. It requires mandatory
-   * presence of message argument and therefore, message cannot be changed
-   * and must be set at the beginning.
+   * Method returns the {@link Builder}. It requires mandatory presence of message argument and
+   * therefore, message cannot be changed and must be set at the beginning.
+   *
    * @param message error message
    * @return instance of {@link Builder} class
    */
   public static Builder message(String message) {
-    return new Builder()
-            .message(message);
+    return new Builder().message(message);
   }
   /**
-   * Inner builder class following the Builder Design Pattern.
-   * Allows user to define optional number of arguments.
+   * Inner builder class following the Builder Design Pattern. Allows user to define optional number
+   * of arguments.
    */
   public static class Builder {
     private String object;

@@ -8,10 +8,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 
 /**
- * Class represents a contract based on which Mapstruct library generates the
- * mapper class at runtime. Converts Address Object to DTO and vice versa.
- * Due to close relationship between an Address object and a Location object,
- * because both of them exist only together, the mapping class includes the methods to map the location
+ * Class represents a contract based on which Mapstruct library generates the mapper class at
+ * runtime. Converts Address Object to DTO and vice versa. Due to close relationship between an
+ * Address object and a Location object, because both of them exist only together, the mapping class
+ * includes the methods to map the location
  *
  * @author Akmal Alikhujaev
  * @version 1.0

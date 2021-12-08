@@ -25,9 +25,8 @@ public class LocationController {
   private final LocationService locationService;
 
   @GetMapping("/search")
-  public PlaceSearchResults searchPlaces(@RequestParam String query,
-                                         @RequestParam(defaultValue = "10") int limit) {
+  public PlaceSearchResults searchPlaces(
+      @RequestParam String query, @RequestParam(defaultValue = "10") int limit) {
     return this.locationService.search(query, limit);
   }
 }
-

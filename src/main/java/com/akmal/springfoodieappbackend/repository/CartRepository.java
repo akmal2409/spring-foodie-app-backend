@@ -12,5 +12,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-public interface CartRepository extends JpaRepository<Cart, Long> {
-}
+public interface CartRepository extends JpaRepository<Cart, Long> {}

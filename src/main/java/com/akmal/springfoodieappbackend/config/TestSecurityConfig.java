@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 /**
  * The class represents the configuration for unit tests to run.
+ *
  * @author Akmal Alikhujaev
  * @version 1.0
  * @created 15/11/2021 - 5:09 PM
@@ -19,10 +20,8 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests(authorizeRequests ->
-                    authorizeRequests
-                            .anyRequest()
-                            .permitAll())
-            .csrf().disable();
+    http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().permitAll())
+        .csrf()
+        .disable();
   }
 }

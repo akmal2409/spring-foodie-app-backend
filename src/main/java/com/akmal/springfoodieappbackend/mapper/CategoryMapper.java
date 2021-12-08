@@ -9,8 +9,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 
 /**
- * Interface represents a contract based on which Mapstruct library generates the
- * mapper class at runtime. Converts Category Object to DTO and vice versa.
+ * Interface represents a contract based on which Mapstruct library generates the mapper class at
+ * runtime. Converts Category Object to DTO and vice versa.
  *
  * @author Akmal Alikhujaev
  * @version 1.0

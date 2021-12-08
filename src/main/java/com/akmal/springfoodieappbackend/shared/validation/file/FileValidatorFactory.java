@@ -1,9 +1,7 @@
 package com.akmal.springfoodieappbackend.shared.validation.file;
 
-import com.akmal.springfoodieappbackend.exception.NotImplementedException;
 import com.akmal.springfoodieappbackend.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -26,13 +24,13 @@ public class FileValidatorFactory {
 
   @Autowired
   private FileValidatorFactory(List<FileValidator> beans) {
-    for (FileValidator validator: beans) {
+    for (FileValidator validator : beans) {
       COMPONENT_CACHE.put(validator.getType(), validator);
     }
   }
 
   public static FileValidator getInstance(FileService.FileType type) {
     return Optional.ofNullable(COMPONENT_CACHE.get(type))
-            .orElseThrow(() -> new IllegalArgumentException("The type of validator does not exist"));
+        .orElseThrow(() -> new IllegalArgumentException("The type of validator does not exist"));
   }
 }

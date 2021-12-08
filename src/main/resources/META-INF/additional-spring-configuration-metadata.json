@@ -15,4 +15,5 @@
       "type": "java.lang.String",
       "description": "TomTom API key for search services"
     }
-  ] }
+  ]
+}

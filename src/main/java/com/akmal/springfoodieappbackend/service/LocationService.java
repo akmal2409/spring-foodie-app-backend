@@ -15,8 +15,8 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * The class is responsible for communicating with TomTom API, to search for places
- * and calculating the distances between the locations.
+ * The class is responsible for communicating with TomTom API, to search for places and calculating
+ * the distances between the locations.
  *
  * @author Akmal Alikhujaev
  * @version 1.0
@@ -29,19 +29,21 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class LocationService {
   private final RestTemplate restTemplate;
+
   @Value("${tomtom.api.key}")
   private String tomtomApiKey;
+
   @Value("${tomtom.api.url}")
   private String tomtomApiUrl;
 
   /**
-   * Method is responsible for retrieving the search results from the TomTom search API
-   * that performs fuzzy search.
+   * Method is responsible for retrieving the search results from the TomTom search API that
+   * performs fuzzy search.
    *
    * @param query of a place
    * @param limit number of results
    * @return {@link PlaceSearchResults} instance object.
-   * @throws ExternalCallException   if the call to TomTomAPI fails
+   * @throws ExternalCallException if the call to TomTomAPI fails
    * @throws JsonProcessingException if the jackson fails to interpret the error body
    */
   public PlaceSearchResults search(String query, int limit) {
@@ -50,33 +52,36 @@ public class LocationService {
     }
 
     try {
-      ResponseEntity<PlaceSearchResults> response = this.restTemplate
-              .getForEntity(this.tomtomApiUrl + "/search/2/search/{encodedQuery}.json?typeahead=true&limit={limit}&key={tomtomApiKey}",
-                      PlaceSearchResults.class,
-                      query,
-                      limit,
-                      this.tomtomApiKey);
+      ResponseEntity<PlaceSearchResults> response =
+          this.restTemplate.getForEntity(
+              this.tomtomApiUrl
+                  + "/search/2/search/{encodedQuery}.json?typeahead=true&limit={limit}&key={tomtomApiKey}",
+              PlaceSearchResults.class,
+              query,
+              limit,
+              this.tomtomApiKey);
       return response.getBody();
     } catch (HttpStatusCodeException e) {
       final var mapper = new ObjectMapper();
 
       try {
         final var tomtomApiError =
-                mapper.readValue(e.getResponseBodyAsString(), TomTomErrorResponse.class);
+            mapper.readValue(e.getResponseBodyAsString(), TomTomErrorResponse.class);
 
-        log.error("Call to TomTom API has failed. HTTP code {}. Error: {}. Detailed Error (Code: {}): {}",
-                e.getRawStatusCode(),
-                tomtomApiError.errorText(),
-                tomtomApiError.detailedError().code(),
-                tomtomApiError.detailedError().message());
+        log.error(
+            "Call to TomTom API has failed. HTTP code {}. Error: {}. Detailed Error (Code: {}): {}",
+            e.getRawStatusCode(),
+            tomtomApiError.errorText(),
+            tomtomApiError.detailedError().code(),
+            tomtomApiError.detailedError().message());
 
       } catch (JsonProcessingException ex) {
         log.error("Object Mapper has failed when converting TomTom API Error response");
       }
-      throw new ExternalCallException(String
-              .format("External call to TomTom API has failed. The API responded with HTTP %d. Message: %s",
-                      e.getRawStatusCode(),
-                      e.getMessage()));
+      throw new ExternalCallException(
+          String.format(
+              "External call to TomTom API has failed. The API responded with HTTP %d. Message: %s",
+              e.getRawStatusCode(), e.getMessage()));
     }
   }
 }

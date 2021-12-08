@@ -12,5 +12,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-public interface OpeningTimeRepository extends JpaRepository<OpeningTime, Long> {
-}
+public interface OpeningTimeRepository extends JpaRepository<OpeningTime, Long> {}

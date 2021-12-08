@@ -6,8 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.Optional;
-
 /**
  * Spring data JPA repository to persist and manage restaurant entity.
  *
@@ -23,18 +21,18 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
    * Method that is using custom JPQL hibernate query, it is discouraged to use native queries
    * directly.
    *
-   * @param country  String - Restaurant Country
-   * @param city     String - Restaurant City
+   * @param country String - Restaurant Country
+   * @param city String - Restaurant City
    * @param pageable Pageable - Spring Data Jpa Pageable object, defines the page, size and the
-   *                 sorting direction needed for pagination.
+   *     sorting direction needed for pagination.
    * @return page - Page object containing content, number of the page, size, totalPages etc.
    */
   @Query("SELECT res FROM Restaurant res WHERE res.address.country = ?1 AND res.address.city = ?2")
   Page<Restaurant> findAllByCountryAndCity(String country, String city, Pageable pageable);
 
   /**
-   * Method is using custom JPQL Hibernate query, finds all restaurants that have
-   * thumbnail image or full image id's matching with the provided one.
+   * Method is using custom JPQL Hibernate query, finds all restaurants that have thumbnail image or
+   * full image id's matching with the provided one.
    *
    * @param imageId of the image.
    * @return collection of {@link Restaurant} entities.

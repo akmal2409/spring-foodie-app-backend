@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * The class is {@link RestController} that enables CRUD operations for
- * {@link com.akmal.springfoodieappbackend.model.Image} entity
+ * The class is {@link RestController} that enables CRUD operations for {@link
+ * com.akmal.springfoodieappbackend.model.Image} entity
  *
  * @author Akmal Alikhujaev
  * @version 1.0
@@ -27,7 +27,8 @@ public class ImageController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ImageDto upload(@RequestParam("file") MultipartFile image, @RequestParam("title") String title) {
+  public ImageDto upload(
+      @RequestParam("file") MultipartFile image, @RequestParam("title") String title) {
     return this.imageService.uploadAndSave(image, title);
   }
 

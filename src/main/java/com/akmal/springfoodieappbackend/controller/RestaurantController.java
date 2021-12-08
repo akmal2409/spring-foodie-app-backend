@@ -13,9 +13,8 @@ import javax.validation.Valid;
 import static com.akmal.springfoodieappbackend.shared.http.ResponseEntityConverter.ok;
 
 /**
- * The RestController class containing methods of different HTTP request type handlers.
- * The data returned is strictly JSON.
- * The class is using strictly constructor bean injection.
+ * The RestController class containing methods of different HTTP request type handlers. The data
+ * returned is strictly JSON. The class is using strictly constructor bean injection.
  *
  * @author Akmal Alikhujaev
  * @version 1.0
@@ -31,8 +30,8 @@ public class RestaurantController {
   private final RestaurantService restaurantService;
 
   @GetMapping
-  public Page<RestaurantDto> findAll(@RequestParam(defaultValue = "0") int page,
-                                                     @RequestParam(defaultValue = "10") int size) {
+  public Page<RestaurantDto> findAll(
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
     return this.restaurantService.findAll(page, size);
   }
 
@@ -48,8 +47,8 @@ public class RestaurantController {
   }
 
   @PutMapping("/{id}")
-  public RestaurantDto update(@PathVariable long id,
-                              @RequestBody @Valid RestaurantDto restaurantDto) {
+  public RestaurantDto update(
+      @PathVariable long id, @RequestBody @Valid RestaurantDto restaurantDto) {
     return this.restaurantService.update(id, restaurantDto);
   }
 

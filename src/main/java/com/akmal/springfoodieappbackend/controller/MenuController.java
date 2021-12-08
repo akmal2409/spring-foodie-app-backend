@@ -1,6 +1,7 @@
 package com.akmal.springfoodieappbackend.controller;
 
 import com.akmal.springfoodieappbackend.dto.MenuDto;
+import com.akmal.springfoodieappbackend.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,14 @@ import static com.akmal.springfoodieappbackend.shared.http.ResponseEntityConvert
 @RequestMapping(MenuController.BASE_URL)
 @RequiredArgsConstructor
 public class MenuController {
-  public static final String BASE_URL = "/api/menus";
+  public static final String BASE_URL = "/api/restaurants/{restaurantId}/menus";
   private final MenuService menuService;
 
-  @GetMapping("/restaurant/{restaurantId}")
-  public Page<MenuDto> findAllByRestaurant(@PathVariable long restaurantId,
-                                           @RequestParam(defaultValue = "0") int page,
-                                           @RequestParam(defaultValue = "10") int size) {
+  @GetMapping
+  public Page<MenuDto> findAllByRestaurant(
+      @PathVariable long restaurantId,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
     return this.menuService.findAllByRestaurantId(restaurantId, page, size);
   }
 
@@ -45,8 +47,7 @@ public class MenuController {
   }
 
   @PutMapping("/{id}")
-  public MenuDto update(@RequestBody @Valid MenuDto menuDto,
-                        @PathVariable long id) {
+  public MenuDto update(@RequestBody @Valid MenuDto menuDto, @PathVariable long id) {
     return this.menuService.update(menuDto, id);
   }
 

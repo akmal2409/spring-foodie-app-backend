@@ -28,36 +28,33 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class LocationServiceTest {
 
-  @Mock
-  private RestTemplate restTemplate;
+  @Mock private RestTemplate restTemplate;
 
-  @InjectMocks
-  private LocationService locationService;
+  @InjectMocks private LocationService locationService;
 
   @Test
-  @DisplayName("Test search() will succeed when null query is provided and the result will be empty PlaceSearchResults")
+  @DisplayName(
+      "Test search() will succeed when null query is provided and the result will be empty PlaceSearchResults")
   void testSearchSucceedEmptyQuery() {
     final var expectedResult = PlaceSearchResults.empty();
 
     final var actualResult = this.locationService.search(null, 10);
 
-    assertThat(actualResult)
-            .usingRecursiveComparison()
-            .isEqualTo(expectedResult);
+    assertThat(actualResult).usingRecursiveComparison().isEqualTo(expectedResult);
   }
 
   @Test
   @DisplayName("Test search() will succeed when valid query is passed")
   void testSearchSucceed() {
-    final var expectedResult = new PlaceSearchResults(10, 10, 10, List.of(new PlaceSearchResult(
-            "building", "3423", null, null)));
+    final var expectedResult =
+        new PlaceSearchResults(
+            10, 10, 10, List.of(new PlaceSearchResult("building", "3423", null, null)));
 
-    when(restTemplate.getForEntity(anyString(), any(), any(), any(), any())).thenReturn(ResponseEntity.ok(expectedResult));
+    when(restTemplate.getForEntity(anyString(), any(), any(), any(), any()))
+        .thenReturn(ResponseEntity.ok(expectedResult));
 
     final var actualResult = this.locationService.search("test", 10);
 
-    assertThat(actualResult)
-            .usingRecursiveComparison()
-            .isEqualTo(expectedResult);
+    assertThat(actualResult).usingRecursiveComparison().isEqualTo(expectedResult);
   }
 }

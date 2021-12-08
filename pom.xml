@@ -23,6 +23,9 @@
         <lombok.maven.plugin.version>1.18.20.0</lombok.maven.plugin.version>
         <maven.javadoc.plugin.version>3.3.1</maven.javadoc.plugin.version>
         <spring.cloud.aws.version>2.2.6.RELEASE</spring.cloud.aws.version>
+        <checkstyle.location>codestyle/checkstyle.xml</checkstyle.location>
+        <maven.checkstyle.version>3.1.2</maven.checkstyle.version>
+        <checkstyle.version>9.2</checkstyle.version>
     </properties>
     <dependencies>
         <dependency>
@@ -288,6 +291,33 @@
                                 <exclude>**/*Test.java</exclude>
                             </excludes>
                         </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>ci</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <version>${maven.checkstyle.version}</version>
+                        <configuration>
+                            <configLocation>${checkstyle.location}</configLocation>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>true</consoleOutput>
+                            <failsOnError>true</failsOnError>
+                            <linkXRef>false</linkXRef>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.puppycrawl.tools</groupId>
+                                <artifactId>checkstyle</artifactId>
+                                <version>${checkstyle.version}</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
