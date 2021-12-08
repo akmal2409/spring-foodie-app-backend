@@ -46,7 +46,8 @@ public class OptionSet {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "menu_item_id", referencedColumnName = "id")
-  private final MenuItem menuItem;
+  @Setter
+  private MenuItem menuItem;
 
   @Enumerated(EnumType.STRING)
   private final OptionSetType optionSetType;

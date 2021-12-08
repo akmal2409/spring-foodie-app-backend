@@ -5,6 +5,7 @@ import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import com.akmal.springfoodieappbackend.mapper.MenuItemMapper;
 import com.akmal.springfoodieappbackend.model.Menu;
 import com.akmal.springfoodieappbackend.model.MenuItem;
+import com.akmal.springfoodieappbackend.model.OptionSet;
 import com.akmal.springfoodieappbackend.repository.MenuItemRepository;
 import com.akmal.springfoodieappbackend.repository.MenuRepository;
 import com.akmal.springfoodieappbackend.shared.database.TransactionRunner;
@@ -92,6 +93,8 @@ public class MenuItemService {
     final var mappedMenuItem =
         this.menuItemMapper.from(menuItemDto).withMenu(existingMenu).withId(null);
 
+    this.linkOptionSets(mappedMenuItem);
+
     return this.menuItemMapper.toDto(this.menuItemRepository.save(mappedMenuItem));
   }
 
@@ -124,6 +127,8 @@ public class MenuItemService {
             .from(menuItemDto)
             .withId(existingMenuItem.getId())
             .withMenu(existingMenu);
+
+    this.linkOptionSets(mappedMenuItem);
 
     return this.menuItemMapper.toDto(this.menuItemRepository.save(mappedMenuItem));
   }
@@ -183,5 +188,21 @@ public class MenuItemService {
                     new NotFoundException(String.format("Menu with ID %s was not found", menuId)));
     this.restaurantService.verifyUserIsOwner(existingMenu.getRestaurant());
     return existingMenu;
+  }
+
+  /**
+   * The method is responsible for setting up the relationship between {@link
+   * com.akmal.springfoodieappbackend.model.OptionSet} and {@link MenuItem}. Due to JPA nature, the
+   * owning side of the Many-To-One relationship must manage the persistence of the link between two
+   * items.
+   *
+   * @param menuItem {@link MenuItem} entity.
+   */
+  private void linkOptionSets(final MenuItem menuItem) {
+    if (menuItem.getOptionSets() != null) {
+      for (OptionSet set : menuItem.getOptionSets()) {
+        set.setMenuItem(menuItem);
+      }
+    }
   }
 }
