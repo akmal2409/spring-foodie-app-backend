@@ -25,10 +25,10 @@ import static com.akmal.springfoodieappbackend.shared.http.ResponseEntityConvert
 @RequestMapping(MenuController.BASE_URL)
 @RequiredArgsConstructor
 public class MenuController {
-  public static final String BASE_URL = "/api/restaurants/{restaurantId}/menus";
+  public static final String BASE_URL = "/api";
   private final MenuService menuService;
 
-  @GetMapping
+  @GetMapping("/restaurants/{restaurantId}/menus")
   public Page<MenuDto> findAllByRestaurant(
       @PathVariable long restaurantId,
       @RequestParam(defaultValue = "0") int page,
@@ -36,22 +36,22 @@ public class MenuController {
     return this.menuService.findAllByRestaurantId(restaurantId, page, size);
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("/menus/{id}")
   public ResponseEntity<MenuDto> findById(@PathVariable long id) {
     return ok(this.menuService.findById(id));
   }
 
-  @PostMapping
+  @PostMapping("/menus")
   public MenuDto save(@RequestBody @Valid MenuDto menuDto) {
     return this.menuService.save(menuDto);
   }
 
-  @PutMapping("/{id}")
+  @PutMapping("/menus/{id}")
   public MenuDto update(@RequestBody @Valid MenuDto menuDto, @PathVariable long id) {
     return this.menuService.update(menuDto, id);
   }
 
-  @DeleteMapping("/{id}")
+  @DeleteMapping("/menus/{id}")
   public void deleteById(@PathVariable long id) {
     this.menuService.deleteById(id);
   }
