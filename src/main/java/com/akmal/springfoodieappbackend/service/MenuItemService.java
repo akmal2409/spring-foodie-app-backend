@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * The class represents the service of the {@link com.akmal.springfoodieappbackend.model.MenuItem}
@@ -35,6 +36,22 @@ public class MenuItemService {
   private final MenuRepository menuRepository;
   private final RestaurantService restaurantService;
   private final TransactionRunner transactionRunner;
+
+  /**
+   * The method is responsible for fetching the {@link MenuItem} by ID. It is essentially a
+   * duplicated method of {@link MenuItemService#findById(Long)}, however, instead of
+   * <strong>DTO</strong> object it returns {@link Optional<MenuItem>} containing the raw entity. It
+   * is package private and is accessible only to other services. It was created to elimate the
+   * direct dependency on the repository and expose api that manages the {@link MenuItem} solely
+   * through the service (loose coupling and encapsulation).
+   *
+   * @param id of an existing {@link MenuItem}.
+   * @return {@link Optional<MenuItem>} object.
+   */
+  @Transactional(readOnly = true)
+  Optional<MenuItem> findMenuItemById(Long id) {
+    return this.menuItemRepository.findById(id);
+  }
 
   /**
    * The method is responsible for deleting all the image references for a given image ID. It
