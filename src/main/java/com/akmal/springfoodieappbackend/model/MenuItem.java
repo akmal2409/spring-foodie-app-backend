@@ -24,7 +24,6 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 @Builder
 @With
-@ToString
 public class MenuItem {
   @NotBlank(message = "Name is required")
   private final String name;
