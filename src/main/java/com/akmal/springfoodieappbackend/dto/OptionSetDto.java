@@ -20,4 +20,19 @@ public record OptionSetDto(Long id,
                            String optionSetType,
                            long menuItemId,
                            List<OptionDto> options) {
+
+  /**
+   * The method creates an immutable copy of the instance object.
+   * @param id of an entity.
+   * @return {@link OptionSetDto} object with a new ID.
+   */
+  public OptionSetDto withId(Long id) {
+    return new OptionSetDto(id, this.name, this.orderPosition,
+            this.maximumOptionsSelected,
+            this.exclusive,
+            this.required,
+            this.optionSetType,
+            this.menuItemId,
+            this.options);
+  }
 }

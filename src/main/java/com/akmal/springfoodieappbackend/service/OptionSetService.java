@@ -32,6 +32,30 @@ public class OptionSetService {
   private final TransactionRunner transactionRunner;
 
   /**
+   * The method is responsible for updating the {@link OptionSet} entity. It requires the entity to
+   * be present on the time of update.
+   *
+   * @throws NotFoundException if the {@link OptionSet} is not found.
+   * @param setDto {@link OptionSetDto} object.
+   * @param setId of the existing {@link OptionSet} entity.
+   * @return {@link OptionSetDto} mapped and saved object.
+   */
+  @Transactional
+  public OptionSetDto update(OptionSetDto setDto, Long setId) {
+    final var existingSet =
+        this.optionSetRepository
+            .findById(setId)
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        String.format("OptionSet with an id %d was not found", setId)));
+
+    final var setWithId = setDto.withId(existingSet.getId());
+
+    return this.transactionRunner.runInTransaction(() -> this.save(setWithId));
+  }
+
+  /**
    * The method is responsible for mapping the dto object and calling {@link
    * OptionSetService#saveAndConvert(OptionSet)} that saves the entity and converts it back to DTO.
    * Note: It utilizes the {@link TransactionRunner} in particular {@link
@@ -82,8 +106,8 @@ public class OptionSetService {
   }
 
   /**
-   * The method is responsible for saving the {@link OptionSet} entity and converting it
-   * to the {@link OptionSetDto} object.
+   * The method is responsible for saving the {@link OptionSet} entity and converting it to the
+   * {@link OptionSetDto} object.
    *
    * @param optionSet {@link OptionSet} object.
    * @return {@link OptionSetDto} object.

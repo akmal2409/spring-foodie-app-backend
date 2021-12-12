@@ -4,10 +4,7 @@ import com.akmal.springfoodieappbackend.dto.OptionSetDto;
 import com.akmal.springfoodieappbackend.model.OptionSet;
 import com.akmal.springfoodieappbackend.service.OptionSetService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -32,5 +29,11 @@ public class OptionSetController {
   @PostMapping
   public OptionSetDto save(@RequestBody @Valid OptionSetDto setDto) {
     return this.optionSetService.save(setDto);
+  }
+
+  @PutMapping("/{id}")
+  public OptionSetDto update(@RequestBody @Valid OptionSetDto setDto,
+                             @PathVariable Long id) {
+    return this.optionSetService.update(setDto, id);
   }
 }
