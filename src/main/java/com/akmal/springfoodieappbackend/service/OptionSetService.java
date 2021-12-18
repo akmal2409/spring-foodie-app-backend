@@ -117,4 +117,35 @@ public class OptionSetService {
 
     return this.optionSetMapper.toDto(savedSet);
   }
+
+  /**
+   * The method is responsible for deleting {@link OptionSet} entity by ID. If the entity is not
+   * found, the method returns. It will not verify ownership in following cases:
+   *
+   * <ol>
+   *   <li>If existing {@link com.akmal.springfoodieappbackend.model.MenuItem} does not exist
+   *   <li>If existing {@link com.akmal.springfoodieappbackend.model.Menu} does not exist
+   * </ol>
+   *
+   * @param id of an existing {@link OptionSet} entity.
+   */
+  public void deleteById(long id) {
+    final var existingSetOptional = this.optionSetRepository.findById(id);
+
+    if (existingSetOptional.isEmpty()) {
+      return;
+    }
+
+    final var existingMenuItem = existingSetOptional.get().getMenuItem();
+
+    if (existingMenuItem != null) {
+      final var existingMenu = existingMenuItem.getMenu();
+
+      if (existingMenu != null && existingMenu.getRestaurant() != null) {
+        this.restaurantService.verifyUserIsOwner(existingMenu.getRestaurant());
+      }
+    }
+
+    this.optionSetRepository.deleteById(id);
+  }
 }
