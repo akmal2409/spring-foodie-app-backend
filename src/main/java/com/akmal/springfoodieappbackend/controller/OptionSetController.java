@@ -32,8 +32,12 @@ public class OptionSetController {
   }
 
   @PutMapping("/{id}")
-  public OptionSetDto update(@RequestBody @Valid OptionSetDto setDto,
-                             @PathVariable Long id) {
+  public OptionSetDto update(@RequestBody @Valid OptionSetDto setDto, @PathVariable Long id) {
     return this.optionSetService.update(setDto, id);
+  }
+
+  @DeleteMapping("/{id}")
+  public void delete(@PathVariable long id) {
+    this.optionSetService.deleteById(id);
   }
 }
