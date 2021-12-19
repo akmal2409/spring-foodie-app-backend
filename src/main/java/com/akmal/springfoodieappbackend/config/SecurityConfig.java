@@ -68,6 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authenticated())
         .csrf()
         .disable()
+        .cors()
+        .disable()
         .oauth2ResourceServer()
         .jwt();
   }
