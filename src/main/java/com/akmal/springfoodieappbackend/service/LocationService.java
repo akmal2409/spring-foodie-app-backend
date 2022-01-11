@@ -50,8 +50,12 @@ public class LocationService {
     if (!StringUtils.hasText(query)) {
       return PlaceSearchResults.empty();
     }
-
     try {
+      log.info(
+          "Sending request to TomTom API {}",
+          String.format(
+              "%s/search/2/search/%s.json?typeahead=true&limit=%d&key=<apiKey>",
+              this.tomtomApiUrl, query, limit));
       ResponseEntity<PlaceSearchResults> response =
           this.restTemplate.getForEntity(
               this.tomtomApiUrl
@@ -76,7 +80,9 @@ public class LocationService {
             tomtomApiError.detailedError().message());
 
       } catch (JsonProcessingException ex) {
-        log.error("Object Mapper has failed when converting TomTom API Error response");
+        log.error(
+            "Object Mapper has failed when converting TomTom API Error response. Error {}",
+            ex.getMessage());
       }
       throw new ExternalCallException(
           String.format(
