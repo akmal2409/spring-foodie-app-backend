@@ -1,12 +1,14 @@
 package com.akmal.springfoodieappbackend.config;
 
 import com.akmal.springfoodieappbackend.controller.*;
+import com.akmal.springfoodieappbackend.filter.CorsFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.session.SessionManagementFilter;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -15,10 +17,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   public static final String ROLE_USER = "USER";
   public static final String ROLE_RESTAURANT = "RESTAURANT";
   public static final String ROLE_ADMIN = "ADMIN";
+  private final CorsFilter corsFilter;
+
+  public SecurityConfig(CorsFilter corsFilter) {
+    this.corsFilter = corsFilter;
+  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests(
+    http.addFilterBefore(this.corsFilter, SessionManagementFilter.class)
+        .authorizeRequests(
             authorizeRequests ->
                 authorizeRequests
                     .antMatchers(
@@ -67,8 +75,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest()
                     .authenticated())
         .csrf()
-        .disable()
-        .cors()
         .disable()
         .oauth2ResourceServer()
         .jwt();
