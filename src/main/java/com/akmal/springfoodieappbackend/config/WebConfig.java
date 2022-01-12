@@ -32,16 +32,17 @@ public class WebConfig {
   public ClientHttpRequestInterceptor requestInterceptor() {
     return (HttpRequest request, byte[] body, ClientHttpRequestExecution execution) -> {
       log.info(
-          "type=externalRequest requestStatus=dispatched method={} url={} size={} time={}",
+          "time={} type=externalRequest requestStatus=dispatched method={} url={} size={}",
+          Instant.now(),
           request.getMethod(),
           request.getURI(),
-          body.length,
-          Instant.now());
+          body.length);
       final var stopWatch = StopWatch.start();
       ClientHttpResponse response = execution.execute(request, body);
       stopWatch.stop();
       log.info(
-          "type=externalRequest requestStatus=complete method={} url={} size={} request_time={}ms httpStatus={}",
+          "time={} type=externalRequest requestStatus=complete method={} url={} size={} request_time={}ms httpStatus={}",
+          Instant.now(),
           request.getMethod(),
           request.getURI(),
           body.length,

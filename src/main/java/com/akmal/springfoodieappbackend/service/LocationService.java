@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
+
 /**
  * The class is responsible for communicating with TomTom API, to search for places and calculating
  * the distances between the locations.
@@ -51,11 +53,6 @@ public class LocationService {
       return PlaceSearchResults.empty();
     }
     try {
-      log.info(
-          "Sending request to TomTom API {}",
-          String.format(
-              "%s/search/2/search/%s.json?typeahead=true&limit=%d&key=<apiKey>",
-              this.tomtomApiUrl, query, limit));
       ResponseEntity<PlaceSearchResults> response =
           this.restTemplate.getForEntity(
               this.tomtomApiUrl
@@ -73,7 +70,11 @@ public class LocationService {
             mapper.readValue(e.getResponseBodyAsString(), TomTomErrorResponse.class);
 
         log.error(
-            "Call to TomTom API has failed. HTTP code {}. Error: {}. Detailed Error (Code: {}): {}",
+            "time={} type=externalCall requestStatus=failed method=GET url={} httpStatus={} error={}, errorCode={} debugMessage={}",
+            Instant.now(),
+            String.format(
+                "%s/search/2/search/%s.json?typeahead=true&limit=%d&key=<apiKey>",
+                this.tomtomApiUrl, query, limit),
             e.getRawStatusCode(),
             tomtomApiError.errorText(),
             tomtomApiError.detailedError().code(),
@@ -81,7 +82,7 @@ public class LocationService {
 
       } catch (JsonProcessingException ex) {
         log.error(
-            "Object Mapper has failed when converting TomTom API Error response. Error {}",
+            "type=serialization status=failed error=Object Mapper has failed when converting TomTom API Error response debugMessage={}",
             ex.getMessage());
       }
       throw new ExternalCallException(
