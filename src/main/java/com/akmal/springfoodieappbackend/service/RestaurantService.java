@@ -2,6 +2,7 @@ package com.akmal.springfoodieappbackend.service;
 
 import com.akmal.springfoodieappbackend.dto.RestaurantDto;
 import com.akmal.springfoodieappbackend.exception.InsufficientRightsException;
+import com.akmal.springfoodieappbackend.exception.MissingParametersException;
 import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import com.akmal.springfoodieappbackend.mapper.RestaurantMapper;
 import com.akmal.springfoodieappbackend.model.OpeningTime;
@@ -51,6 +52,33 @@ public class RestaurantService {
     PageRequest pageRequest = PageRequest.of(page, size);
 
     return this.restaurantRepository.findAll(pageRequest).map(this.restaurantMapper::toDto);
+  }
+
+  /**
+   * The method is responsible for finding all restaurants with specified page and size offsets as
+   * well as provided country and city. The return object is converted into DTO.
+   *
+   * @param page page index (zero based indexing)
+   * @param size number of elements in a page
+   * @param country of the request
+   * @param city of the request
+   * @return page List of restaurants within the offset
+   */
+  @Transactional(readOnly = true)
+  public Page<RestaurantDto> findAllByCountry(int page, int size, String country, String city) {
+    if (!StringUtils.hasText(country)) {
+      throw new MissingParametersException("Country request parameter is missing");
+    }
+
+    if (!StringUtils.hasText(city)) {
+      throw new MissingParametersException("City request parameter is missing");
+    }
+
+    PageRequest pageRequest = PageRequest.of(page, size);
+
+    return this.restaurantRepository
+        .findAllByCountryAndCity(pageRequest, country, city)
+        .map(this.restaurantMapper::toDto);
   }
 
   /**

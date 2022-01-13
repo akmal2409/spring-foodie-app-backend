@@ -31,8 +31,12 @@ public class RestaurantController {
 
   @GetMapping
   public Page<RestaurantDto> findAll(
-      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-    return this.restaurantService.findAll(page, size);
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size,
+      @RequestParam String city,
+      @RequestParam String country) {
+
+    return this.restaurantService.findAllByCountry(page, size, country, city);
   }
 
   @GetMapping("/{id}")

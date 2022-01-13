@@ -67,3 +67,6 @@ FD00021:
 FD00022:
   message: "Call to the external service has failed"
   debug: "ExternalCallException occurred"
+FD00023:
+  message: "Required request parameter is missing"
+  debug: "MissingParameterException occurred"

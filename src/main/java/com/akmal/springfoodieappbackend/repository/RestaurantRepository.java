@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  * Spring data JPA repository to persist and manage restaurant entity.
@@ -27,8 +28,13 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
    *     sorting direction needed for pagination.
    * @return page - Page object containing content, number of the page, size, totalPages etc.
    */
-  @Query("SELECT res FROM Restaurant res WHERE res.address.country = ?1 AND res.address.city = ?2")
-  Page<Restaurant> findAllByCountryAndCity(String country, String city, Pageable pageable);
+  @Query(
+      value =
+          "SELECT res FROM Restaurant res WHERE UPPER(TRIM(res.address.country)) = UPPER(TRIM(:country)) "
+              + "AND UPPER(TRIM(res.address.city)) = UPPER(TRIM(:city)) "
+              + "ORDER BY res.rating DESC")
+  Page<Restaurant> findAllByCountryAndCity(
+      Pageable pageable, @Param("country") String country, @Param("city") String city);
 
   /**
    * Method is using custom JPQL Hibernate query, finds all restaurants that have thumbnail image or
@@ -37,6 +43,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
    * @param imageId of the image.
    * @return collection of {@link Restaurant} entities.
    */
-  @Query("SELECT res FROM Restaurant res WHERE res.thumbnailImage.id = ?1 OR res.fullImage.id = ?1")
+  @Query(
+      value =
+          "SELECT res FROM Restaurant res WHERE res.thumbnailImage.id = ?1 OR res.fullImage.id = ?1")
   Iterable<Restaurant> findAllByThumbnailImageOrFullImageId(String imageId);
 }
