@@ -109,7 +109,11 @@ public class RestaurantService {
     final var currentUser = this.userService.getCurrentUser();
 
     final var restaurant =
-        this.restaurantMapper.from(restaurantDto).withOwnerId(currentUser.userId());
+        this.restaurantMapper
+            .from(restaurantDto)
+            .withOwnerId(currentUser.userId())
+            .withRating(0.0)
+            .withAverageDeliveryTime(30);
 
     this.linkOpeningTimes(restaurant);
 
