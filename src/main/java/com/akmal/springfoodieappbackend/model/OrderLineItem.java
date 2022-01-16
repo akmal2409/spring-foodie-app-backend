@@ -6,15 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.With;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
- * The class {@code OrderLineItem} represents a single item in the user's order. It extends {@link
- * AbstractItem} class in order to avoid code duplication between the {@code OrderLineItem} and the
- * {@link CartItem} class.
+ * The class {@code OrderLineItem} represents a single item in the user's order. It contains a
+ * snapshot data at the time of the purchase, however, it also contains references to the original
+ * {@link Menu} and {@link MenuItem} entities.
  *
  * @author Akmal Alikhujaev
  * @version 1.0
@@ -28,8 +28,27 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor(force = true)
 @SuperBuilder
 @With
-public final class OrderLineItem extends AbstractItem {
+public final class OrderLineItem {
+  @Min(value = 1, message = "Quantity must be greater than 1")
+  private final int quantity;
+
+  private final BigDecimal totalPrice;
+  private final BigDecimal basePrice;
+  private final Long originalMenuItemId;
+  private final Long originalMenuId;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "order_id", referencedColumnName = "id")
   private final Order order;
+
+  @OneToMany(
+      fetch = FetchType.LAZY,
+      orphanRemoval = true,
+      cascade = CascadeType.ALL,
+      mappedBy = "orderLineItem")
+  private List<OrderLineItemOption> selectedOptions;
 }
