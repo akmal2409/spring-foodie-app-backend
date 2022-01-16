@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,5 +42,5 @@ public class CustomerDetails {
       orphanRemoval = true,
       cascade = CascadeType.ALL,
       mappedBy = "customerDetails")
-  private List<DeliveryAddress> deliveryAddresses;
+  private List<DeliveryAddress> deliveryAddresses = new ArrayList<>();
 }
