@@ -5,10 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * Class represent the Customer details model. {@code userId} field is mapped from the Okta user
@@ -26,8 +25,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(force = true)
 @Builder
 public class CustomerDetails {
-  @Embedded private final Address address;
-
   @NotBlank(message = "First Name is required")
   private final String firstName;
 
@@ -38,4 +35,11 @@ public class CustomerDetails {
   private final String phoneNumber;
 
   @Id private String userId;
+
+  @OneToMany(
+      fetch = FetchType.LAZY,
+      orphanRemoval = true,
+      cascade = CascadeType.ALL,
+      mappedBy = "customerDetails")
+  private List<DeliveryAddress> deliveryAddresses;
 }
