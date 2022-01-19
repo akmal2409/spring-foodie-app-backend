@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import java.util.List;
 @Builder
 public class Cart {
   private final String userId;
+  private final BigDecimal totalPrice;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart", cascade = CascadeType.ALL)
   @Builder.Default
@@ -36,8 +38,18 @@ public class Cart {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private Long id;
 
+  /**
+   * Static factory method that returns a new instance of the {@link Cart} object for a particular
+   * userid.
+   *
+   * @param userId of the existing user
+   * @return {@link Cart} with userId and 0 as the total price
+   */
+  public static Cart newInstance(String userId) {
+    return new Cart(userId, BigDecimal.ZERO, List.of(), null);
+  }
   /**
    * <strong>addCartItem(CartItem cartItem)</strong> is a helper method that enables the client to
    * synchronize the both sides of the @OneToMany relationship. The owning side of the relationship
