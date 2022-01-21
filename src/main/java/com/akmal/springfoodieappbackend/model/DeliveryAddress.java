@@ -30,7 +30,7 @@ public class DeliveryAddress {
   private final AddressType type;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "customer_details_id", referencedColumnName = "id")
+  @JoinColumn(name = "customer_details_id", referencedColumnName = "user_id")
   private CustomerDetails customerDetails;
 
   public enum AddressType {

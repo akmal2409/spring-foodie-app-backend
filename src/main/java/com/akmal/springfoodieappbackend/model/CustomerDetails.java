@@ -35,12 +35,15 @@ public class CustomerDetails {
   @NotBlank(message = "Phone number is required")
   private final String phoneNumber;
 
-  @Id private String userId;
+  @Id
+  @Column(name = "user_id")
+  private String userId;
 
   @OneToMany(
       fetch = FetchType.LAZY,
       orphanRemoval = true,
       cascade = CascadeType.ALL,
       mappedBy = "customerDetails")
+  @Builder.Default
   private List<DeliveryAddress> deliveryAddresses = new ArrayList<>();
 }
