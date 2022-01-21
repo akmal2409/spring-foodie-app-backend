@@ -1,16 +1,21 @@
 package com.akmal.springfoodieappbackend.service;
 
+import com.akmal.springfoodieappbackend.dto.MenuItemConfigurationDto;
 import com.akmal.springfoodieappbackend.dto.OptionSetDto;
+import com.akmal.springfoodieappbackend.exception.InvalidConfigurationException;
 import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import com.akmal.springfoodieappbackend.mapper.OptionSetMapper;
+import com.akmal.springfoodieappbackend.model.Option;
 import com.akmal.springfoodieappbackend.model.OptionSet;
 import com.akmal.springfoodieappbackend.model.Restaurant;
+import com.akmal.springfoodieappbackend.repository.OptionRepository;
 import com.akmal.springfoodieappbackend.repository.OptionSetRepository;
 import com.akmal.springfoodieappbackend.shared.database.TransactionRunner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -30,6 +35,7 @@ public class OptionSetService {
   private final OptionSetMapper optionSetMapper;
   private final OptionSetRepository optionSetRepository;
   private final TransactionRunner transactionRunner;
+  private final OptionRepository optionRepository;
 
   /**
    * The method is responsible for updating the {@link OptionSet} entity. It requires the entity to
@@ -70,6 +76,105 @@ public class OptionSetService {
     final var mappedSet = this.transactionRunner.runInTransaction(() -> convertAndValidate(setDto));
 
     return this.transactionRunner.runInTransaction(() -> this.saveAndConvert(mappedSet));
+  }
+
+  /**
+   * The method is responsible for validating provided selected options. It constructs two hashmap,
+   * namely setMap and optionMap. The setMap contains fetched {@link OptionSet} entities and acts as
+   * a cache, since multiple selected options might relate to the same option set. The second
+   * hashmap, optionMap, is used to group the options together based on a key, which in this case is
+   * the OptionSet object.
+   *
+   * @throws InvalidConfigurationException If the {@link OptionSet} doesn't contain the selected
+   *     option
+   * @param selectedOptions {@link
+   *     com.akmal.springfoodieappbackend.dto.MenuItemConfigurationDto.SelectedOption} DTO
+   * @return a flattened list of {@link Option}
+   */
+  @Transactional(readOnly = true)
+  public List<Option> validateSelectedOptions(
+      List<MenuItemConfigurationDto.SelectedOption> selectedOptions) {
+    Objects.requireNonNull(selectedOptions, "Selected options must not be null");
+    final Map<Long, OptionSet> setMap = new HashMap<>(); // used for caching, not to look up again
+    final Map<OptionSet, List<Option>> optionMap = new HashMap<>();
+
+    for (MenuItemConfigurationDto.SelectedOption selectedOption : selectedOptions) {
+      Objects.requireNonNull(selectedOption, "Selected option was null");
+
+      Option option =
+          this.transactionRunner.runInTransaction(
+              () -> this.findOptionById(selectedOption.optionId()));
+      OptionSet set =
+          setMap.getOrDefault(
+              selectedOption.optionSetId(), this.findOptionSetById(selectedOption.optionSetId()));
+
+      if (!setMap.containsKey(set.getId())) { // cache for subsequent queries.
+        setMap.put(set.getId(), set);
+      }
+
+      boolean validOption =
+          set.getOptions().stream().anyMatch(o -> Objects.equals(o.getId(), option.getId()));
+      if (validOption) {
+        optionMap.computeIfAbsent(set, k -> new LinkedList<>());
+        optionMap.get(set).add(option);
+      } else {
+        throw new InvalidConfigurationException(
+            String.format(
+                "Option with ID %d does not belong to the set with ID %d",
+                option.getId(), set.getId()));
+      }
+    }
+
+    for (Map.Entry<OptionSet, List<Option>> entry : optionMap.entrySet()) {
+      // run in the same transaction, in order to be able to rollback
+      this.transactionRunner.runInTransaction(
+          () -> this.validateOptionSetConstraints(entry.getKey(), entry.getValue()));
+    }
+
+    return optionMap.values().stream().flatMap(Collection::stream).toList();
+  }
+
+  /**
+   * The method is responsible for checking two invariants associated with the {@link OptionSet}.
+   * Firstly, if the option set is exclusive, meaning it can have only one selected option (e.g. one
+   * type of glazing) Secondly, if the maximum option is not specified as -1, which is the default
+   * value, and selected options exceed that number, then the exception will be thrown.
+   *
+   * @throws InvalidConfigurationException if the "exclusiveness" is violated or the maximu number
+   *     of items was exceeded.
+   * @param set {@link OptionSet}
+   * @param options {@link List<Option>}
+   */
+  private void validateOptionSetConstraints(OptionSet set, List<Option> options) {
+    if (set.isExclusive() && options.size() > 1) {
+      throw new InvalidConfigurationException(
+          String.format("Option set with ID %d can have only 1 selected option", set.getId()));
+    }
+
+    if (set.getMaximumOptionsSelected() != -1 && set.getMaximumOptionsSelected() < options.size()) {
+      throw new InvalidConfigurationException(
+          String.format(
+              "Option set with ID %d cannot have more than %d selected items. Provided: %d",
+              set.getId(), set.getMaximumOptionsSelected(), options.size()));
+    }
+  }
+
+  private Option findOptionById(long id) {
+    return this.optionRepository
+        .findById(id)
+        .orElseThrow(
+            () ->
+                new NotFoundException(
+                    String.format("Option " + "with ID %d was " + "not found", id)));
+  }
+
+  private OptionSet findOptionSetById(long id) {
+    return this.optionSetRepository
+        .findById(id)
+        .orElseThrow(
+            () ->
+                new NotFoundException(
+                    String.format("Option set " + "with ID %d was not found", id)));
   }
 
   /**
