@@ -4,6 +4,7 @@ import com.akmal.springfoodieappbackend.dto.CartDto;
 import com.akmal.springfoodieappbackend.dto.ModifyCartRequest;
 import com.akmal.springfoodieappbackend.service.CartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,5 +37,10 @@ public class CartController {
   public CartDto addItem(
       @RequestBody ModifyCartRequest cartItemRequest, @PathVariable String userId) {
     return this.cartService.addCartItem(cartItemRequest, userId);
+  }
+
+  @DeleteMapping("/{cartItemId}")
+  public CartDto removeItem(@PathVariable String userId, @PathVariable Long cartItemId) {
+    return this.cartService.removeCartItem(userId, cartItemId);
   }
 }

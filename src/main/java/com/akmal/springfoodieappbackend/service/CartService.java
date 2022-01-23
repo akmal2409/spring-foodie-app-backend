@@ -93,15 +93,41 @@ public class CartService {
 
     cart.addCartItem(cartItem);
 
+    final var savedCart =
+        this.transactionRunner.runInTransaction(() -> this.recalculateCartTotalAndSave(cart));
+
+    return this.cartMapper.toDto(savedCart);
+  }
+
+  @Transactional
+  @PreAuthorize("@userService.currentUser.userId().equals(#userId)")
+  public CartDto removeCartItem(String userId, Long cartItemId) {
+    final var cartItem =
+        this.cartItemRepository
+            .findById(cartItemId)
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        String.format("Cart Item with ID %d was not found", cartItemId)));
+    final var cart =
+        this.transactionRunner.runInTransaction(() -> this.findCartByUserIdOrDefault(userId));
+
+    cart.getCartItems().remove(cartItem);
+    this.cartItemRepository.deleteById(cartItemId);
+
+    final var savedCart =
+        this.transactionRunner.runInTransaction(() -> this.recalculateCartTotalAndSave(cart));
+    return this.cartMapper.toDto(savedCart);
+  }
+
+  private Cart recalculateCartTotalAndSave(Cart cart) {
     final var recalculatedCart =
         cart.toBuilder()
             .totalPrice(
                 this.transactionRunner.runInTransaction(() -> this.calculateCartTotalPrice(cart)))
             .build();
 
-    final var savedCart = this.cartRepository.save(recalculatedCart);
-
-    return this.cartMapper.toDto(savedCart);
+    return this.cartRepository.save(recalculatedCart);
   }
 
   private BigDecimal calculateItemTotalPrice(MenuItem menuItem, List<Option> selectedOptions) {

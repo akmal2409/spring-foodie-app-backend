@@ -3,6 +3,7 @@ package com.akmal.springfoodieappbackend.model;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -55,7 +56,9 @@ public final class CartItem {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST})
   @JoinColumn(name = "cart_id", referencedColumnName = "id")
   private Cart cart;
 }

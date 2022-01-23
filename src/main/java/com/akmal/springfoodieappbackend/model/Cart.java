@@ -37,7 +37,7 @@ public class Cart {
   private String userId;
   private BigDecimal totalPrice;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart", cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart", cascade = CascadeType.ALL)
   private List<CartItem> cartItems = new ArrayList<>();
 
   @Id
