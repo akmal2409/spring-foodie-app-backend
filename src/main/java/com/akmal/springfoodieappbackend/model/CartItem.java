@@ -1,13 +1,22 @@
 package com.akmal.springfoodieappbackend.model;
 
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-
-import javax.persistence.*;
-import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.With;
 
 /**
  *
@@ -26,21 +35,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity
-@SuperBuilder
+@Builder
 @With
 public final class CartItem {
   @Min(value = 1, message = "Quantity must be greater than 1")
-  private final int quantity;
+  private int quantity;
 
-  private final BigDecimal totalPrice;
+  private BigDecimal totalPrice;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "menu_item_id")
-  private final MenuItem menuItem;
+  private MenuItem menuItem;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @Builder.Default
-  private final List<Option> selectedOptions = new ArrayList<>();
+  private List<Option> selectedOptions = new ArrayList<>();
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,5 +57,5 @@ public final class CartItem {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cart_id", referencedColumnName = "id")
-  private final Cart cart;
+  private Cart cart;
 }

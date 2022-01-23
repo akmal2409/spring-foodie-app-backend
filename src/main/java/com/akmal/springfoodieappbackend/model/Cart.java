@@ -1,14 +1,19 @@
 package com.akmal.springfoodieappbackend.model;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -27,13 +32,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity
-@Builder
+@Builder(toBuilder = true)
 public class Cart {
-  private final String userId;
-  private final BigDecimal totalPrice;
+  private String userId;
+  private BigDecimal totalPrice;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart", cascade = CascadeType.ALL)
-  @Builder.Default
   private List<CartItem> cartItems = new ArrayList<>();
 
   @Id
