@@ -1,21 +1,24 @@
 package com.akmal.springfoodieappbackend.service;
 
+import com.akmal.springfoodieappbackend.dto.MenuItemConfigurationDto;
 import com.akmal.springfoodieappbackend.dto.MenuItemDto;
+import com.akmal.springfoodieappbackend.exception.InvalidConfigurationException;
 import com.akmal.springfoodieappbackend.exception.NotFoundException;
 import com.akmal.springfoodieappbackend.mapper.MenuItemMapper;
 import com.akmal.springfoodieappbackend.model.Menu;
 import com.akmal.springfoodieappbackend.model.MenuItem;
+import com.akmal.springfoodieappbackend.model.Option;
 import com.akmal.springfoodieappbackend.model.OptionSet;
 import com.akmal.springfoodieappbackend.repository.MenuItemRepository;
 import com.akmal.springfoodieappbackend.repository.MenuRepository;
 import com.akmal.springfoodieappbackend.shared.database.TransactionRunner;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * The class represents the service of the {@link com.akmal.springfoodieappbackend.model.MenuItem}
@@ -30,28 +33,12 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MenuItemService {
-
+  private final OptionSetService optionSetService;
   private final MenuItemRepository menuItemRepository;
   private final MenuItemMapper menuItemMapper;
   private final MenuRepository menuRepository;
   private final RestaurantService restaurantService;
   private final TransactionRunner transactionRunner;
-
-  /**
-   * The method is responsible for fetching the {@link MenuItem} by ID. It is essentially a
-   * duplicated method of {@link MenuItemService#findById(Long)}, however, instead of
-   * <strong>DTO</strong> object it returns {@link Optional<MenuItem>} containing the raw entity. It
-   * is package private and is accessible only to other services. It was created to elimate the
-   * direct dependency on the repository and expose api that manages the {@link MenuItem} solely
-   * through the service (loose coupling and encapsulation).
-   *
-   * @param id of an existing {@link MenuItem}.
-   * @return {@link Optional<MenuItem>} object.
-   */
-  @Transactional(readOnly = true)
-  Optional<MenuItem> findMenuItemById(Long id) {
-    return this.menuItemRepository.findById(id);
-  }
 
   /**
    * The method is responsible for deleting all the image references for a given image ID. It
@@ -184,6 +171,48 @@ public class MenuItemService {
     return this.menuItemRepository.findAllByMenuId(menuId).stream()
         .map(this.menuItemMapper::toDto)
         .toList();
+  }
+
+  /**
+   * The method is responsible for validating the {@link MenuItem} configuration. It initializes a
+   * TreeSet to facilitate O(logN) lookups of ids of valid option sets that can be selected by the
+   * client. It finds the menu item and iterates over the option sets that the menu contains, and
+   * adds their ids to the set. Then it iterates through selected options and checks whether each
+   * set is contained in the original menu item. Finally, it utilizes the {@link
+   * OptionSetService#validateSelectedOptions(List)} method to validate the selected options.
+   *
+   * @throws NotFoundException if the menu item is not found.
+   * @param menuItemConfig {@link MenuItemConfigurationDto} DTO provided by the client.
+   * @return extracted {@link Option} entities.
+   */
+  @Transactional(readOnly = true)
+  public List<Option> validateMenuItemConfiguration(MenuItemConfigurationDto menuItemConfig) {
+    Objects.requireNonNull(menuItemConfig, "Menu item configuration is null");
+    final Set<Long> validOptionSetIds = new TreeSet<>();
+    final MenuItem menuItem =
+        this.menuItemRepository
+            .findById(menuItemConfig.menuItemId())
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        String.format(
+                            "Menu item with ID %d was not found", menuItemConfig.menuItemId())));
+
+    for (OptionSet set : menuItem.getOptionSets()) {
+      validOptionSetIds.add(set.getId());
+    }
+
+    for (MenuItemConfigurationDto.SelectedOption selectedOption :
+        menuItemConfig.selectedOptions()) {
+      if (!validOptionSetIds.contains(selectedOption.optionSetId())) {
+        throw new InvalidConfigurationException(
+            String.format(
+                "Option set with ID %d does not belong to the menu item with ID %d",
+                selectedOption.optionSetId(), menuItem.getId()));
+      }
+    }
+
+    return this.optionSetService.validateSelectedOptions(menuItemConfig.selectedOptions());
   }
 
   /**

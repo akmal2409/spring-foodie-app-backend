@@ -8,15 +8,20 @@ import com.akmal.springfoodieappbackend.mapper.OptionSetMapper;
 import com.akmal.springfoodieappbackend.model.Option;
 import com.akmal.springfoodieappbackend.model.OptionSet;
 import com.akmal.springfoodieappbackend.model.Restaurant;
+import com.akmal.springfoodieappbackend.repository.MenuItemRepository;
 import com.akmal.springfoodieappbackend.repository.OptionRepository;
 import com.akmal.springfoodieappbackend.repository.OptionSetRepository;
 import com.akmal.springfoodieappbackend.shared.database.TransactionRunner;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
-import java.util.function.Supplier;
 
 /**
  * The class represents the service layer that manages the persistence of {@link OptionSet} entity.
@@ -30,12 +35,12 @@ import java.util.function.Supplier;
 @Service
 @RequiredArgsConstructor
 public class OptionSetService {
-  private final MenuItemService menuItemService;
   private final RestaurantService restaurantService;
   private final OptionSetMapper optionSetMapper;
   private final OptionSetRepository optionSetRepository;
   private final TransactionRunner transactionRunner;
   private final OptionRepository optionRepository;
+  private final MenuItemRepository menuItemRepository;
 
   /**
    * The method is responsible for updating the {@link OptionSet} entity. It requires the entity to
@@ -193,8 +198,8 @@ public class OptionSetService {
    */
   private OptionSet convertAndValidate(OptionSetDto setDto) {
     final var existingMenuItem =
-        this.menuItemService
-            .findMenuItemById(setDto.menuItemId())
+        this.menuItemRepository
+            .findById(setDto.menuItemId())
             .orElseThrow(
                 () ->
                     new NotFoundException(

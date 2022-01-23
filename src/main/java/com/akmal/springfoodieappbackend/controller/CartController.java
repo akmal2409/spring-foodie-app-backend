@@ -1,10 +1,15 @@
 package com.akmal.springfoodieappbackend.controller;
 
 import com.akmal.springfoodieappbackend.dto.CartDto;
-import com.akmal.springfoodieappbackend.dto.CartItemDto;
+import com.akmal.springfoodieappbackend.dto.ModifyCartRequest;
 import com.akmal.springfoodieappbackend.service.CartService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The class represents a set of endpoints needed to interact with the user's cart.
@@ -15,7 +20,8 @@ import org.springframework.web.bind.annotation.*;
  * @project Spring Foodie App Backend
  * @since 1.0
  */
-@RestController(CartController.BASE_API)
+@RestController
+@RequestMapping(CartController.BASE_API)
 @RequiredArgsConstructor
 public class CartController {
   public static final String BASE_API = "/api/users/{userId}/carts";
@@ -27,7 +33,8 @@ public class CartController {
   }
 
   @PostMapping
-  public CartDto addItem(@RequestBody CartItemDto itemDto, @PathVariable String userId) {
-    return this.cartService.addCartItem(itemDto, userId);
+  public CartDto addItem(
+      @RequestBody ModifyCartRequest cartItemRequest, @PathVariable String userId) {
+    return this.cartService.addCartItem(cartItemRequest, userId);
   }
 }
