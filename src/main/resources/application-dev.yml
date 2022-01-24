@@ -42,6 +42,10 @@ cloud:
 cors:
   enabled: true
 
+es:
+  hosts:
+    - "localhost:9200"
+
 tomtom:
   api:
     url: "https://api.tomtom.com"
