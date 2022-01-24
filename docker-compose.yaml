@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.4'
 
 services:
 
@@ -15,4 +15,29 @@ services:
     volumes:
       - ./dockerdata:/var/lib/mysql
 
+  esNode01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    volumes:
+      - ./esData:/usr/share/elasticsearch/data
+    networks:
+      - elastic
 
+  kibanaContainer:
+    image: docker.elastic.co/kibana/kibana:7.15.2
+    container_name: kibanaContainer
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://esNode01:9200
+      ELASTICSEARCH_HOSTS: '["http://esNode01:9200"]'
+    networks:
+      - elastic
+networks:
+  elastic:
+    driver: bridge
