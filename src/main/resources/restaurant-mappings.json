@@ -1,0 +1,123 @@
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "mapping.coerce": false
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "long"
+      },
+      "name": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "phone": {
+        "type": "keyword"
+      },
+      "address": {
+        "properties": {
+          "country": {
+            "type": "keyword"
+          },
+          "city": {
+            "type": "keyword"
+          },
+          "postCode": {
+            "type": "keyword"
+          },
+          "street": {
+            "type": "text"
+          },
+          "addition": {
+            "type": "text"
+          },
+          "apartmentNumber": {
+            "type": "keyword"
+          },
+          "location": {
+            "type": "geo_point"
+          }
+        }
+      },
+      "averageDeliveryTime": {
+        "type": "integer"
+      },
+      "deliveryCost": {
+        "type": "double"
+      },
+      "minimumOrderValue": {
+        "type": "float"
+      },
+      "rating": {
+        "type": "float"
+      },
+      "openingTimes": {
+        "type": "nested",
+        "properties": {
+          "day": {
+            "type": "integer"
+          },
+          "openFrom": {
+            "type": "date",
+            "format": "hour_minute_second_fraction"
+          },
+          "openTill": {
+            "type": "date",
+            "format": "hour_minute_second_fraction"
+          },
+          "id": {
+            "type": "long"
+          }
+        }
+      },
+      "categories": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "thumbnailImage": {
+        "properties": {
+          "url": {
+            "type": "keyword",
+            "index": false
+          },
+          "title": {
+            "type": "keyword",
+            "index": false
+          },
+          "id": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      "fullImage": {
+        "properties": {
+          "url": {
+            "type": "keyword",
+            "index": false
+          },
+          "title": {
+            "type": "keyword",
+            "index": false
+          },
+          "id": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      }
+    }
+  }
+}
