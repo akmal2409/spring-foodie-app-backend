@@ -1,6 +1,7 @@
 package com.akmal.springfoodieappbackend.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -22,6 +23,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.With;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * Class represents the data model of a restaurant.
@@ -79,6 +81,8 @@ public class Restaurant {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
+  @UpdateTimestamp private LocalDateTime updatedOn;
 
   /**
    * <strong>addOpeningTime(OpeningTime openingTime)</strong> is a helper method that enables the
