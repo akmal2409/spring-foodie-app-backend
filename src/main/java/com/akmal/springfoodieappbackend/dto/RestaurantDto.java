@@ -21,7 +21,7 @@ public record RestaurantDto(long id,
                             double minimumOrderValue,
                             double rating,
                             List<OpeningTimeDto> openingTimes,
-                            List<CategoryDto> categories,
+                            List<String> categories,
                             ImageDto thumbnailImage,
                             ImageDto fullImage) {
 }

@@ -1,14 +1,20 @@
 package com.akmal.springfoodieappbackend.mapper;
 
-import com.akmal.springfoodieappbackend.dto.*;
-import com.akmal.springfoodieappbackend.model.*;
+import com.akmal.springfoodieappbackend.dto.AddressDto;
+import com.akmal.springfoodieappbackend.dto.ImageDto;
+import com.akmal.springfoodieappbackend.dto.OpeningTimeDto;
+import com.akmal.springfoodieappbackend.dto.RestaurantDto;
+import com.akmal.springfoodieappbackend.model.Address;
+import com.akmal.springfoodieappbackend.model.Category;
+import com.akmal.springfoodieappbackend.model.Image;
+import com.akmal.springfoodieappbackend.model.OpeningTime;
+import com.akmal.springfoodieappbackend.model.Restaurant;
+import java.util.List;
+import java.util.Optional;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Class represents a contract based on which Mapstruct library generates the mapper class at
@@ -44,7 +50,7 @@ public abstract class RestaurantMapper {
   @Mapping(
       target = "openingTimes",
       expression = "java(mapToOpeningTimes(restaurantDto.openingTimes()))")
-  @Mapping(target = "categories", expression = "java(mapToCategories(restaurantDto.categories()))")
+  @Mapping(target = "categories", ignore = true)
   @Mapping(
       target = "thumbnailImage",
       expression = "java(mapToImage(restaurantDto.thumbnailImage()))")
@@ -63,15 +69,9 @@ public abstract class RestaurantMapper {
         .toList();
   }
 
-  protected List<CategoryDto> mapCategoriesToDto(List<Category> categories) {
+  protected List<String> mapCategoriesToDto(List<Category> categories) {
     return Optional.ofNullable(categories).orElse(List.of()).stream()
-        .map(this.categoryMapper::toDto)
-        .toList();
-  }
-
-  protected List<Category> mapToCategories(List<CategoryDto> categories) {
-    return Optional.ofNullable(categories).orElse(List.of()).stream()
-        .map(this.categoryMapper::from)
+        .map(Category::getName)
         .toList();
   }
 

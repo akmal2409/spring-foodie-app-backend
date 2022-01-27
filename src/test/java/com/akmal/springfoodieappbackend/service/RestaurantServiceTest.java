@@ -1,5 +1,15 @@
 package com.akmal.springfoodieappbackend.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import com.akmal.springfoodieappbackend.dto.RestaurantDto;
 import com.akmal.springfoodieappbackend.exception.InsufficientRightsException;
 import com.akmal.springfoodieappbackend.exception.NotFoundException;
@@ -8,23 +18,20 @@ import com.akmal.springfoodieappbackend.model.Restaurant;
 import com.akmal.springfoodieappbackend.model.User;
 import com.akmal.springfoodieappbackend.repository.RestaurantRepository;
 import com.akmal.springfoodieappbackend.shared.database.TransactionRunner;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * @author Akmal Alikhujaev
@@ -47,7 +54,7 @@ class RestaurantServiceTest {
   @DisplayName("Test findAll() method returns correct result")
   void testFindAllSucceeds() {
     final var expectedRestaurantPage =
-        new PageImpl<Restaurant>(List.of(Restaurant.builder().id(1).name("First").build()));
+        new PageImpl<Restaurant>(List.of(Restaurant.builder().id(1l).name("First").build()));
     final var expectedDTO =
         new RestaurantDto(1, "First", null, null, 0, null, 0, 0, null, null, null, null);
 
@@ -63,7 +70,7 @@ class RestaurantServiceTest {
   @Test
   @DisplayName("Test findById() method will return correct restaurant")
   void testFindByIdSucceeds() {
-    final var expectedRestaurant = Restaurant.builder().id(1).name("First").build();
+    final var expectedRestaurant = Restaurant.builder().id(1l).name("First").build();
     final var expectedDTO =
         new RestaurantDto(
             1, "First", null, null, 0, BigDecimal.valueOf(0), 0, 0.0, null, null, null, null);
@@ -80,7 +87,7 @@ class RestaurantServiceTest {
   @DisplayName("Test save() method will persist and return correct object containing userId")
   void testSaveSucceeds() {
     final var mockRestaurant = mock(Restaurant.class);
-    final var expectedRestaurant = Restaurant.builder().id(1).ownerId("3423434").build();
+    final var expectedRestaurant = Restaurant.builder().id(1l).ownerId("3423434").build();
     final var expectedDTO =
         new RestaurantDto(
             1, null, null, null, 0, BigDecimal.valueOf(0), 0, 0, null, null, null, null);
@@ -101,7 +108,7 @@ class RestaurantServiceTest {
   @Test
   @DisplayName("Test update() method will update the restaurant entity and return the DTO")
   void testUpdateSucceeds() {
-    final var expectedRestaurant = Restaurant.builder().id(1).ownerId("000").build();
+    final var expectedRestaurant = Restaurant.builder().id(1l).ownerId("000").build();
     final var expectedDTO =
         new RestaurantDto(
             1, null, null, null, 0, BigDecimal.valueOf(0), 0.0, 0.0, null, null, null, null);
@@ -138,7 +145,7 @@ class RestaurantServiceTest {
   @DisplayName(
       "Test update() method will fail and  throw InsufficientRightsException, when owner id and current user id do not match")
   void testUpdateFailsOwnerNotMatch() {
-    final var expectedRestaurant = Restaurant.builder().id(1).ownerId("000").build();
+    final var expectedRestaurant = Restaurant.builder().id(1l).ownerId("000").build();
     final var expectedDTO =
         new RestaurantDto(1, null, null, null, 0, null, 0.0, 0.0, null, null, null, null);
 
@@ -155,7 +162,7 @@ class RestaurantServiceTest {
   @Test
   @DisplayName("Test deleteById() will succeed, the ID passed to delete function will match")
   void testDeleteByIdSucceeds() {
-    final var expectedRestaurant = Restaurant.builder().id(1).ownerId("000").build();
+    final var expectedRestaurant = Restaurant.builder().id(1l).ownerId("000").build();
 
     given(restaurantRepository.findById(anyLong())).willReturn(Optional.of(expectedRestaurant));
     given(userService.getCurrentUser()).willReturn(new User("000", "test"));
@@ -182,7 +189,7 @@ class RestaurantServiceTest {
   @DisplayName(
       "Test deleteById() will fail, when the owner id does not match to the current user's one")
   void testDeleteByIdFailsInsufficientRights() {
-    final var expectedRestaurant = Restaurant.builder().id(1).ownerId("000").build();
+    final var expectedRestaurant = Restaurant.builder().id(1l).ownerId("000").build();
 
     given(restaurantRepository.findById(anyLong())).willReturn(Optional.of(expectedRestaurant));
     given(userService.getCurrentUser()).willReturn(new User("4324", null));
