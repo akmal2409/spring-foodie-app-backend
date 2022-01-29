@@ -1,10 +1,11 @@
 package com.akmal.springfoodieappbackend.model.elasticsearch;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.GeoPointField;
-import org.springframework.data.geo.Point;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 
 /**
  * @author Akmal Alikhujaev
@@ -14,6 +15,7 @@ import org.springframework.data.geo.Point;
  * @since 1.0
  */
 @AllArgsConstructor
+@Getter
 public class ESAddress {
   @Field(type = FieldType.Keyword)
   private final String country;
@@ -33,5 +35,5 @@ public class ESAddress {
   @Field(type = FieldType.Keyword)
   private final String apartmentNumber;
 
-  @GeoPointField private final Point location;
+  @GeoPointField private final GeoPoint location;
 }

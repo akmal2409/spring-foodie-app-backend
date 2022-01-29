@@ -1,6 +1,7 @@
 package com.akmal.springfoodieappbackend.model.elasticsearch;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
@@ -12,6 +13,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
  * @since 1.0
  */
 @AllArgsConstructor
+@Getter
 public class ESImage {
   @Field(type = FieldType.Keyword)
   private final String url;

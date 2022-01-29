@@ -3,6 +3,7 @@ package com.akmal.springfoodieappbackend.model.elasticsearch;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -18,6 +19,7 @@ import org.springframework.data.elasticsearch.annotations.MultiField;
  */
 @Document(indexName = "restaurants", createIndex = false)
 @AllArgsConstructor
+@Getter
 public class ESRestaurant {
   @Field(type = FieldType.Long)
   private final Long id;
