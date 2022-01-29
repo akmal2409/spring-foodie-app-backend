@@ -17,10 +17,10 @@ https://en.wikipedia.org/wiki/Multitier_architecture
 
 # Future Plans and Improvements
 * Move it to Microservice architecture with Spring Cloud
-* Implement CI/CD
+* ~~Implement CI~~/CD
 * Implemented ~~Integration with AWS S3 for image upload~~
 * Deploy it on AWS in a managed Kubernetes cluster as set of microservices
-* Add ElasticSearch
+* ~~Add ElasticSearch
 * Integrate with TomTom API to query delivery places
 
 # Clone repository
