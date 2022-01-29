@@ -1,5 +1,17 @@
 package com.akmal.springfoodieappbackend.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.akmal.springfoodieappbackend.config.MessageSourceConfig;
 import com.akmal.springfoodieappbackend.dto.RestaurantDto;
 import com.akmal.springfoodieappbackend.errorHandling.GlobalRestExceptionHandler;
@@ -7,6 +19,9 @@ import com.akmal.springfoodieappbackend.service.RestaurantService;
 import com.akmal.springfoodieappbackend.shared.TestPage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,17 +36,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author Akmal Alikhujaev
@@ -52,7 +56,19 @@ class RestaurantControllerTest {
 
   private static RestaurantDto emptyRestaurantWithNameAndId() {
     return new RestaurantDto(
-        1L, "Test name", null, null, 0, BigDecimal.valueOf(0), 0, 0.0, null, null, null, null);
+        1L,
+        "Test name",
+        null,
+        null,
+        0,
+        BigDecimal.valueOf(0),
+        0,
+        0.0,
+        null,
+        false,
+        null,
+        null,
+        null);
   }
 
   private static Page<RestaurantDto> pageOf(List<RestaurantDto> dtos) {
