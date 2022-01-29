@@ -9,12 +9,20 @@ import com.akmal.springfoodieappbackend.model.Category;
 import com.akmal.springfoodieappbackend.model.Image;
 import com.akmal.springfoodieappbackend.model.OpeningTime;
 import com.akmal.springfoodieappbackend.model.Restaurant;
+import com.akmal.springfoodieappbackend.model.elasticsearch.ESAddress;
+import com.akmal.springfoodieappbackend.model.elasticsearch.ESImage;
+import com.akmal.springfoodieappbackend.model.elasticsearch.ESOpeningTime;
+import com.akmal.springfoodieappbackend.model.elasticsearch.ESRestaurant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 
 /**
  * Class represents a contract based on which Mapstruct library generates the mapper class at
@@ -35,7 +43,7 @@ public abstract class RestaurantMapper {
 
   @Mapping(target = "address", expression = "java(mapAddressToDto(restaurant.getAddress()))")
   @Mapping(
-      target = "openingTimes",
+      target = "openingTime",
       expression = "java(mapOpeningTimesToDto(restaurant.getOpeningTimes()))")
   @Mapping(
       target = "categories",
@@ -44,12 +52,11 @@ public abstract class RestaurantMapper {
       target = "thumbnailImage",
       expression = "java(mapImageToDto(restaurant.getThumbnailImage()))")
   @Mapping(target = "fullImage", expression = "java(mapImageToDto(restaurant.getFullImage()))")
+  @Mapping(target = "open", expression = "java(isRestaurantOpen(restaurant.getOpeningTimes()))")
   public abstract RestaurantDto toDto(Restaurant restaurant);
 
   @Mapping(target = "address", expression = "java(mapToAddress(restaurantDto.address()))")
-  @Mapping(
-      target = "openingTimes",
-      expression = "java(mapToOpeningTimes(restaurantDto.openingTimes()))")
+  @Mapping(target = "openingTimes", ignore = true)
   @Mapping(target = "categories", ignore = true)
   @Mapping(
       target = "thumbnailImage",
@@ -57,10 +64,39 @@ public abstract class RestaurantMapper {
   @Mapping(target = "fullImage", expression = "java(mapToImage(restaurantDto.fullImage()))")
   public abstract Restaurant from(RestaurantDto restaurantDto);
 
-  protected List<OpeningTimeDto> mapOpeningTimesToDto(List<OpeningTime> openingTimes) {
+  @Mapping(target = "address", expression = "java(mapToESAddress(restaurant.getAddress()))")
+  @Mapping(
+      target = "openingTimes",
+      expression = "java(mapToESOpeningTime(restaurant.getOpeningTimes()))")
+  @Mapping(
+      target = "categories",
+      expression = "java(mapCategoriesToDto(restaurant.getCategories()))")
+  @Mapping(
+      target = "thumbnailImage",
+      expression = "java(mapToESImage(restaurant.getThumbnailImage()))")
+  @Mapping(target = "fullImage", expression = "java(mapToESImage(restaurant.getFullImage()))")
+  public abstract ESRestaurant toESModel(Restaurant restaurant);
+
+  protected String mapOpeningTimesToDto(List<OpeningTime> openingTimes) {
+    int currentDay = LocalDateTime.now().getDayOfWeek().getValue();
+
     return Optional.ofNullable(openingTimes).orElse(List.of()).stream()
-        .map(this.openingTimeMapper::toDto)
-        .toList();
+        .filter(time -> time.getDay() == currentDay)
+        .findFirst()
+        .map(OpeningTime::toRangeString)
+        .orElse("Closed");
+  }
+
+  protected boolean isRestaurantOpen(List<OpeningTime> openingTimes) {
+    final LocalTime currentTime = LocalTime.now();
+    int currentDay = LocalDateTime.now().getDayOfWeek().getValue();
+    return Optional.ofNullable(openingTimes).orElse(List.of()).stream()
+        .filter(time -> time.getDay() == currentDay)
+        .findFirst()
+        .map(
+            time ->
+                currentTime.isAfter(time.getOpenFrom()) && currentTime.isBefore(time.getOpenTill()))
+        .orElse(false);
   }
 
   protected List<OpeningTime> mapToOpeningTimes(List<OpeningTimeDto> openingTimes) {
@@ -77,6 +113,33 @@ public abstract class RestaurantMapper {
 
   protected AddressDto mapAddressToDto(Address address) {
     return this.addressMapper.toDto(address);
+  }
+
+  protected ESAddress mapToESAddress(Address address) {
+    if (address == null) return null;
+
+    return new ESAddress(
+        address.getCountry(),
+        address.getCity(),
+        address.getPostCode(),
+        address.getStreet(),
+        address.getAddition(),
+        address.getApartmentNumber(),
+        new GeoPoint(address.getLocation().getLat(), address.getLocation().getLon()));
+  }
+
+  protected List<ESOpeningTime> mapToESOpeningTime(List<OpeningTime> openingTimes) {
+    return Optional.ofNullable(openingTimes).orElse(new ArrayList<>()).stream()
+        .map(
+            time ->
+                new ESOpeningTime(
+                    time.getDay(), time.getOpenFrom(), time.getOpenTill(), time.getId()))
+        .toList();
+  }
+
+  protected ESImage mapToESImage(Image image) {
+    if (image == null) return null;
+    return new ESImage(image.getUrl(), image.getTitle(), image.getId());
   }
 
   protected Address mapToAddress(AddressDto address) {
