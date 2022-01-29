@@ -1,6 +1,8 @@
 package com.akmal.springfoodieappbackend.repository;
 
 import com.akmal.springfoodieappbackend.model.Restaurant;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -47,4 +49,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
       value =
           "SELECT res FROM Restaurant res WHERE res.thumbnailImage.id = ?1 OR res.fullImage.id = ?1")
   Iterable<Restaurant> findAllByThumbnailImageOrFullImageId(String imageId);
+
+  List<Restaurant> findAllByUpdatedOnAfter(LocalDateTime from);
 }
