@@ -67,11 +67,11 @@
           },
           "openFrom": {
             "type": "date",
-            "format": "hour_minute_second_fraction"
+            "format": "hour_minute"
           },
           "openTill": {
             "type": "date",
-            "format": "hour_minute_second_fraction"
+            "format": "hour_minute"
           },
           "id": {
             "type": "long"
