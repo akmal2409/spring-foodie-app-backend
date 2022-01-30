@@ -2,7 +2,7 @@ package com.akmal.springfoodieappbackend.mapper;
 
 import com.akmal.springfoodieappbackend.dto.AddressDto;
 import com.akmal.springfoodieappbackend.dto.ImageDto;
-import com.akmal.springfoodieappbackend.dto.OpeningTimeDto;
+import com.akmal.springfoodieappbackend.dto.LocationDto;
 import com.akmal.springfoodieappbackend.dto.RestaurantDto;
 import com.akmal.springfoodieappbackend.model.Address;
 import com.akmal.springfoodieappbackend.model.Category;
@@ -55,6 +55,17 @@ public abstract class RestaurantMapper {
   @Mapping(target = "open", expression = "java(isRestaurantOpen(restaurant.getOpeningTimes()))")
   public abstract RestaurantDto toDto(Restaurant restaurant);
 
+  @Mapping(target = "address", expression = "java(mapESAddressToDto(restaurant.getAddress()))")
+  @Mapping(
+      target = "openingTime",
+      expression = "java(mapESOpeningTimesToDto(restaurant.getOpeningTimes()))")
+  @Mapping(
+      target = "thumbnailImage",
+      expression = "java(mapESImageToDto(restaurant.getThumbnailImage()))")
+  @Mapping(target = "fullImage", expression = "java(mapESImageToDto(restaurant.getFullImage()))")
+  @Mapping(target = "open", expression = "java(isESRestaurantOpen(restaurant.getOpeningTimes()))")
+  public abstract RestaurantDto esModelToDto(ESRestaurant restaurant);
+
   @Mapping(target = "address", expression = "java(mapToAddress(restaurantDto.address()))")
   @Mapping(target = "openingTimes", ignore = true)
   @Mapping(target = "categories", ignore = true)
@@ -87,6 +98,16 @@ public abstract class RestaurantMapper {
         .orElse("Closed");
   }
 
+  protected String mapESOpeningTimesToDto(List<ESOpeningTime> openingTimes) {
+    int currentDay = LocalDateTime.now().getDayOfWeek().getValue();
+
+    return Optional.ofNullable(openingTimes).orElse(List.of()).stream()
+        .filter(time -> time.getDay() == currentDay)
+        .findFirst()
+        .map(ESOpeningTime::toRangeString)
+        .orElse("Closed");
+  }
+
   protected boolean isRestaurantOpen(List<OpeningTime> openingTimes) {
     final LocalTime currentTime = LocalTime.now();
     int currentDay = LocalDateTime.now().getDayOfWeek().getValue();
@@ -99,10 +120,16 @@ public abstract class RestaurantMapper {
         .orElse(false);
   }
 
-  protected List<OpeningTime> mapToOpeningTimes(List<OpeningTimeDto> openingTimes) {
+  protected boolean isESRestaurantOpen(List<ESOpeningTime> openingTimes) {
+    final LocalTime currentTime = LocalTime.now();
+    int currentDay = LocalDateTime.now().getDayOfWeek().getValue();
     return Optional.ofNullable(openingTimes).orElse(List.of()).stream()
-        .map(this.openingTimeMapper::from)
-        .toList();
+        .filter(time -> time.getDay() == currentDay)
+        .findFirst()
+        .map(
+            time ->
+                currentTime.isAfter(time.getOpenFrom()) && currentTime.isBefore(time.getOpenTill()))
+        .orElse(false);
   }
 
   protected List<String> mapCategoriesToDto(List<Category> categories) {
@@ -111,21 +138,45 @@ public abstract class RestaurantMapper {
         .toList();
   }
 
+  protected ImageDto mapESImageToDto(ESImage image) {
+    return Optional.ofNullable(image)
+        .map(img -> new ImageDto(img.getId(), img.getUrl(), img.getTitle()))
+        .orElse(null);
+  }
+
   protected AddressDto mapAddressToDto(Address address) {
     return this.addressMapper.toDto(address);
   }
 
   protected ESAddress mapToESAddress(Address address) {
-    if (address == null) return null;
+    return Optional.ofNullable(address)
+        .map(
+            unmapped ->
+                new ESAddress(
+                    unmapped.getCountry(),
+                    unmapped.getCity(),
+                    unmapped.getPostCode(),
+                    unmapped.getStreet(),
+                    unmapped.getAddition(),
+                    unmapped.getApartmentNumber(),
+                    new GeoPoint(unmapped.getLocation().getLat(), unmapped.getLocation().getLon())))
+        .orElse(null);
+  }
 
-    return new ESAddress(
-        address.getCountry(),
-        address.getCity(),
-        address.getPostCode(),
-        address.getStreet(),
-        address.getAddition(),
-        address.getApartmentNumber(),
-        new GeoPoint(address.getLocation().getLat(), address.getLocation().getLon()));
+  protected AddressDto mapESAddressToDto(ESAddress address) {
+    return Optional.ofNullable(address)
+        .map(
+            unmapped ->
+                new AddressDto(
+                    unmapped.getCountry(),
+                    unmapped.getCity(),
+                    unmapped.getPostCode(),
+                    unmapped.getStreet(),
+                    unmapped.getAddition(),
+                    unmapped.getApartmentNumber(),
+                    new LocationDto(
+                        unmapped.getLocation().getLat(), unmapped.getLocation().getLon())))
+        .orElse(null);
   }
 
   protected List<ESOpeningTime> mapToESOpeningTime(List<OpeningTime> openingTimes) {
@@ -138,8 +189,9 @@ public abstract class RestaurantMapper {
   }
 
   protected ESImage mapToESImage(Image image) {
-    if (image == null) return null;
-    return new ESImage(image.getUrl(), image.getTitle(), image.getId());
+    return Optional.ofNullable(image)
+        .map(unmapped -> new ESImage(unmapped.getUrl(), unmapped.getTitle(), unmapped.getId()))
+        .orElse(null);
   }
 
   protected Address mapToAddress(AddressDto address) {
