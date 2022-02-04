@@ -1,0 +1,4 @@
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=https://www.mockaroo.com/
+HostUrl=https://s3.amazonaws.com/mockaroo.files.production/downloads/92872/restaurant.csv?AWSAccessKeyId=AKIAI7XQ7X4Y4LZEAXQQ&Expires=1643382178&Signature=L5tuufvn95lmibWA8B5d8VoQdBM%3D&response-content-disposition=attachment%3B%20filename%3Drestaurant.csv
