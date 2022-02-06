@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: "Foodie Dev App 01"
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3307/foodie?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
@@ -58,3 +60,5 @@ logging:
           EC2MetadataUtils: error
         internal:
           InstanceMetadataServiceResourceFetcher: error
+
+

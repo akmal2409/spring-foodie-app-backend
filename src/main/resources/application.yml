@@ -6,3 +6,21 @@ spring:
       repositories:
         enabled: false
 
+server:
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: ./logs/apache
+
+
+logging:
+  config: "classpath:logback-spring.xml"
+
+log:
+  fileExtension: log
+  directory: ./logs/app
+  fileName: app
+  logstash:
+    host: localhost
+    port: 5000
+
