@@ -27,6 +27,8 @@
     <checkstyle.location>codestyle/checkstyle.xml</checkstyle.location>
     <maven.checkstyle.version>3.1.2</maven.checkstyle.version>
     <checkstyle.version>9.2</checkstyle.version>
+    <logstash.logback.encoder.version>7.0.1</logstash.logback.encoder.version>
+    <logback.version>1.2.10</logback.version>
   </properties>
   <dependencies>
     <dependency>
@@ -130,6 +132,18 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <scope>runtime</scope>
+    </dependency>
+
+    <!--    Logging and ELK dependencies -->
+    <dependency>
+      <groupId>net.logstash.logback</groupId>
+      <artifactId>logstash-logback-encoder</artifactId>
+      <version>${logstash.logback.encoder.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
     </dependency>
   </dependencies>
 
