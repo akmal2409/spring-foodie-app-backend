@@ -33,3 +33,5 @@ build/
 
 dockerdata/
 esData/
+logstashData/
+logs/
