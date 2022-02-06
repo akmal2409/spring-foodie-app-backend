@@ -1,0 +1,62 @@
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+  <springProperty scope="context" name="log.fileExtension" source="log.fileExtension"
+    defaultValue="log"/>
+  <springProperty scope="context" name="log.directory" source="log.directory"
+    defaultValue="./logs"/>
+  <springProperty scope="context" name="log.fileName" source="log.fileName"
+    defaultValue="bootiful-elk"/>
+
+  <springProperty scope="context" name="log.logstash.host" source="log.logstash.host"
+    defaultValue="localhost"/>
+  <springProperty scope="context" name="log.logstash.port" source="log.logstash.port"
+    defaultValue="5000"/>
+  <springProperty scope="context" name="spring.application.name" source="spring.application.name"
+    defaultValue="Foodie Backend"/>
+  <springProperty scope="context" name="server.port" source="server.port"
+    defaultValue="8080"/>
+
+  <appender name="FILE"
+    class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${log.directory}/${log.fileName}.%d{yyyy-MM-dd}.${log.fileExtension}
+      </fileNamePattern>
+    </rollingPolicy>
+
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <providers>
+        <timestamp>
+          <timeZone>EST</timeZone>
+        </timestamp>
+        <pattern>
+          <pattern>
+            {
+            "level": "%level",
+            "traceId": "%X{X-B3-TraceId:-}",
+            "spanId": "%X{X-B3-SpanId:-}",
+            "thread": "%thread",
+            "class": "%logger{40}",
+            "message": "%message"
+            }
+          </pattern>
+        </pattern>
+        <stackTrace>
+          <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+            <maxDepthPerThrowable>30</maxDepthPerThrowable>
+            <maxLength>2048</maxLength>
+            <shortenedClassNameLength>20</shortenedClassNameLength>
+            <rootCauseFirst>true</rootCauseFirst>
+          </throwableConverter>
+        </stackTrace>
+      </providers>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <!--    <appender-ref ref="logstash"/>-->
+    <appender-ref ref="FILE"/>
+  </root>
+</configuration>
