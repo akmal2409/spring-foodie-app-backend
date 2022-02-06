@@ -1,0 +1,22 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/app/*.log
+    tags: [ "app" ]
+    fields:
+      log_type: "app"
+
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/logs/apache/*.log
+    tags: [ "apache-access" ]
+    fields:
+      log_type: "apache-access"
+
+output.logstash:
+  hosts: [ ${ LOGSTASH_HOST } ]
+
+#https://discuss.elastic.co/t/filter-multiple-different-file-beat-logs-in-logstash/76847/2
+
